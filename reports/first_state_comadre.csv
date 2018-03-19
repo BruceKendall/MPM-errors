@@ -1,0 +1,230 @@
+classnames_first,classification,comments
+"""Newborn"" colonies (primary polyps)",Post,Inferred from classname
+< 0.25 cm_,Look up,
+< 0.3 cm in height,Look up,
+< 1 year,Post,Inferred from classname
+< 1 year (pup),Post,Inferred from classname
+< 1 yr old ,Post,Inferred from classname
+< 1 yr old adults,Post,Inferred from classname
+< 10 cm,Look up,
+< 20 mm,Look up,
+< 4 cm,Look up,
+< 4.5 mm,Look up,
+< 8 mm,Look up,
+<= 40 mm,Look up,
+<1 year,Post,Inferred from classname
+> 1 year,Pre,Inferred from classname
+>= 3 (adults),Pre,Inferred from classname
+0,Post,Inferred from classname
+0 days,Post,Inferred from classname
+0 days old,Post,Inferred from classname
+0 months,Post,Inferred from classname
+0 wks,Post,Inferred from classname
+0 year,Post,Inferred from classname
+0 years,Post,Inferred from classname
+0 years old,Post,Inferred from classname
+0 yrs,Post,Inferred from classname
+0 Yrs,Post,Inferred from classname
+0 yrs ,Post,Inferred from classname
+0 yrs Fem,Post,Inferred from classname
+0 yrs female,Post,Inferred from classname
+0 yrs male,Post,Inferred from classname
+0-1 mm: settler,Post,Inferred from classname
+0-1 year,Post,Inferred from classname
+0-1 yrs,Post,Inferred from classname
+0-1 yrs female,Post,Inferred from classname
+0-1 yrs females,Post,Inferred from classname
+0-10 cm,Look up,
+0-10 cm_,Look up,
+0-104,Look up,
+0-15 mm,Look up,
+0-2 cm diameter,Look up,
+0-2 days,Post,Inferred from classname
+0-2 years (subadult),Post,Inferred from classname
+0-200 cm_,Look up,
+0-266,Look up,
+0-4 years,Post,Inferred from classname
+0-5 cm,Look up,
+0-5 yrs,Post,Inferred from classname
+0-50 cm_,Look up,
+0-50 mm^2 colony area,Look up,
+0-6 months,Post,Inferred from classname
+0-60 g,Look up,
+0.2-1.2 mm,Look up,
+0.5-4.0 cm,Look up,
+0+ (juveniles),Post,Inferred from classname
+1 (60-120 mm),Pre,Inferred from classname
+1 year,Pre,Inferred from classname
+1 Year,Pre,Inferred from classname
+1 year ,Pre,Inferred from classname
+1 year (juvenile),Pre,Inferred from classname
+1 year old,Pre,Inferred from classname
+1 year old (never reproduced so far),Pre,Inferred from classname
+1 yr,Pre,Inferred from classname
+1 Yrs,Pre,Inferred from classname
+1-6 days,Look up,
+1st year survival,Look up,
+2 years,Pre,Inferred from classname
+2+ (adults),Pre,Inferred from classname
+25-50 mm,Look up,
+2nd-year juveniles,Look up,
+3 yrs recruits,Look up,
+35-70 mm,Look up,
+A1 - fledglings,Post,Inferred from classname
+A1 - Fledglings,Post,Inferred from classname
+Age 0,Post,Inferred from classname
+Age 0 (0-40 mm),Post,Inferred from classname
+Age 0 (0-55 mm),Post,Inferred from classname
+Age 0 (0-60 mm),Post,Inferred from classname
+Age 0 (0-65 mm),Post,Inferred from classname
+Age 0 (0-90 mm),Post,Inferred from classname
+Age 0 Juveniles,Post,Inferred from classname
+Age 0 to under 1,Post,Inferred from classname
+Age 0 years,Post,Inferred from classname
+Age 0+,Post,Inferred from classname
+Age 1,Pre,Inferred from classname
+Age 1 (11 months),Pre,Inferred from classname
+Age 1 year,Pre,Inferred from classname
+Age class 1,Pre,Inferred from classname
+Age Class 1: pre-Breeder,Pre,Inferred from classname
+Age-0,Post,Inferred from classname
+Age: 1 year,Pre,Inferred from classname
+Base,Look up,
+Born,Post,Inferred from classname
+Breeding age 0,Look up,
+Calf,Post,Inferred from classname
+Calf (0 yrs),Post,Inferred from classname
+Calf Fem,Post,Inferred from classname
+Calf Female,Post,Inferred from classname
+Calf: 0-1 years,Post,Inferred from classname
+Calves,Post,Inferred from classname
+"""Calves: unweaned,  do not make fluke-up dives""",Post,Inferred from classname
+Chick,Post,Inferred from classname
+Class 0: Yearling,Look up,
+Class 1,Look up,
+Cub,Pre,Inferred from classname
+Cubs,Pre,Inferred from classname
+Dummy,Look up,
+Egg,Post,Inferred from classname
+Egg / Hatchling,Post,Inferred from classname
+Egg / small tadpole,Post,Inferred from classname
+Egg-neonate,Post,Inferred from classname
+Egg-neonate (<5cm CCL),Post,Inferred from classname
+Egg/Larv (0-3 mm),Post,Inferred from classname
+Eggs,Post,Inferred from classname
+Eggs / hatchlings (0 yrs),Post,Inferred from classname
+"""Eggs, hatchlings, and yearlings (0 yrs)""",Look up,
+Eggs/Hatchlings (<13 cm),Post,Inferred from classname
+Eggs/Larvae,Post,Inferred from classname
+Embryo,Post,Inferred from classname
+EPY: early pouch young,Post,Inferred from classname
+F Juveniles,Look up,
+Fawn (0-1 years old),Post,Inferred from classname
+Female (>1mm size),Look up,
+Female 0 yrs,Post,Inferred from classname
+Female 0-1 yrs,Post,Inferred from classname
+Female 0-4.9 yrs,Post,Inferred from classname
+Female 1 yr,Pre,Inferred from classname
+Female infant (0-1 yrs),Post,Inferred from classname
+Female Juvenile,Look up,
+Female juveniles,Look up,
+Female kittens (0-11 maleths),Post,Inferred from classname
+Females (incl. Juveniles),Look up,
+First life stage (first and second instars),Look up,
+First viremia,Look up,
+First year,Look up,
+First year birds,Look up,
+First year individual,Look up,
+First-year subadults,Look up,
+First-year turtles,Look up,
+Fledgling,Post,Inferred from classname
+Fledgling: <1 year old,Post,Inferred from classname
+Fledglings,Post,Inferred from classname
+Hatchhling (<0.5m; <1year),Post,Inferred from classname
+Hatchling,Post,Inferred from classname
+Hatchling (0 yrs old),Post,Inferred from classname
+Hatchling (plastron length < 6 cm),Post,Inferred from classname
+Hatchling and oceanic juvenile,Post,Inferred from classname
+I (0-50 cm_),Look up,
+Immature,Look up,
+"""Immatures, Zone 1""",Look up,
+Infant,Post,Inferred from classname
+Infant (0 to 1-year-old) - male,Post,Inferred from classname
+Infants (0 yrs),Post,Inferred from classname
+Juvenile,Look up,
+Juvenile (< 1 year old),Post,Inferred from classname
+Juvenile (< 1 year),Post,Inferred from classname
+Juvenile (² 1 year),Look up,
+Juvenile (0-1 year),Post,Inferred from classname
+Juvenile (0-1 yrs),Post,Inferred from classname
+Juvenile female,Look up,
+Juveniles,Look up,
+Juveniles (Length of body =<63mm),Look up,
+Kitten,Post,Inferred from classname
+Kitten (0-12 months),Post,Inferred from classname
+L (Larvae),Post,Inferred from classname
+L1: larval stage,Post,Inferred from classname
+Lambs,Post,Inferred from classname
+Larvae,Post,Inferred from classname
+Larval instars,Post,Inferred from classname
+M1 (May),Look up,
+Megalopae larvea,Look up,
+N1 - N6 (naupliar stages),Look up,
+Nauplii,Look up,
+NDY,Look up,
+Neonate (34-45 mm SVL),Post,Inferred from classname
+Neonates,Post,Inferred from classname
+Nestling stage,Post,Inferred from classname
+Newborn,Post,Inferred from classname
+Newborn (< 18 mm standard length),Post,Inferred from classname
+Newborns,Post,Inferred from classname
+Non-management-trapped individuals: 0 yrs old,Post,Inferred from classname
+Nonbreeders,Look up,
+One-year-olds,Pre,Inferred from classname
+Oocyte,Post,Inferred from classname
+P,Look up,
+Pelagic Juvenile,Look up,
+Prejuvenile,Look up,
+Prior to visible recruitment,Look up,
+Pup,Post,Inferred from classname
+Pup (0 years),Post,Inferred from classname
+Pups ,Post,Inferred from classname
+"""Pups (< 1 yr,  < 1 m)""",Post,Inferred from classname
+Rank 6 ,Look up,
+Recruits (<= 35 mm SL),Post,Inferred from classname
+River fry,Look up,
+S: small (< 50 cmÂ²),Look up,
+Second year females,Pre,Inferred from classname
+Settler,Look up,
+Sice Class 1 (< 5cm radius),Look up,
+Small,Look up,
+small healthy (<500cm^2),Look up,
+Small juveniles (25-49.9mm),Look up,
+Small-sized (<=100 cm in total linear length),Look up,
+Stage 0,Look up,
+Stage 1,Look up,
+Stage 1 (instar 1),Look up,
+Stage 1- Fecundity: time of  hatching (June-November) to the following May,Look up,
+Stage one: beginning one year from fertilization,Look up,
+SY- females entering second calendar year of life,Pre,Inferred from classname
+SY- second year (yearling),Pre,Inferred from classname
+SY- yearling,Pre,Inferred from classname
+Tadpole,Post,Inferred from classname
+Tick infected as an egg,Look up,
+Tooth class 1,Look up,
+Unfertilized Eggs (Stage duration or value: 1 day),Post,Inferred from classname
+Weanling,Post,Inferred from classname
+Year 1,Look up,
+Year 1 female,Look up,
+Year 1 Juveniles,Look up,
+Year 1 male,Look up,
+Yearlings,Pre,Inferred from classname
+Yearlings  (1 yr),Pre,Inferred from classname
+Yearlings (~0.7-0.9 yr),Pre,Inferred from classname
+Yearlings (1-2 years old),Pre,Inferred from classname
+Young adults (1 year),Pre,Inferred from classname
+Young of the year,Post,Inferred from classname
+Young of the year ,Post,Inferred from classname
+Young of the year (0-1 yrs),Post,Inferred from classname
+Young-of-the-year (age 0),Post,Inferred from classname
+YOY (Young-of-the-year),Post,Inferred from classname

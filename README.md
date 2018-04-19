@@ -1,5 +1,7 @@
 # compadre-plus
 
+## Required libraries
+- **Mage** (`devtools::install_github("jonesor/compadreDB/Mage")`)
 
 
 

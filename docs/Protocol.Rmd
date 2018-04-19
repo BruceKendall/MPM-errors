@@ -1,0 +1,108 @@
+---
+title: "Matrix model error detection protocol"
+author: "Bruce E. Kendall"
+date: "4/9/2018"
+output: pdf_document
+---
+
+Examine each publication to determine the following:
+
+1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)?
+2. What survival value(s) are included in the reproduction transitions?
+3. Do maturing individuals reproduce at the age of first reproduction?
+4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep?
+5. For each of the stages identified in previous step, what is the mean development time?
+6. For each of the stages identified in step 4, how was the growth transition calculated?
+
+For each question, record both your response and, in the associated notes field, the evidence supporting your conclusion.
+
+Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the model in the COMADRE database, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "unknown."
+
+If a study reports mulitiple models, choose the one that is best described, and indicate which entry in the COMADRE database it refers to.
+
+For each study that actually shows the matrix population model, check that the matrix in COMADRE is the the same. If it is not, record this in the general notes section, and describe what has been changed.
+
+In the formulas referenced here, $i$ refers to a stage or age class, $F_i$ is the element in the F matrix associated with stage i, $\phi_i$ is the fertility of stage i (number of offspring produced by an individual who is in stage i at the moment of reproduction), $\sigma_i$ is the per-timestep survival rate of stage i individuals, and $\gamma_i$ is the fraction of surviving stage i individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal).
+
+If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall immediately for further clarification.
+
+# Census type
+Look for two types of information: statements about the structure of the model (e.g., "we constructed a pre-breeding census model") and description of the youngest stage/age class (identified by the row or rows of nonzero values in the F matrix). The first sort of claim should be checked by consulting the stage description, to ensure that the authors actually constructed the model they intended.
+
+There are five possible responses, with most studies falling into the first three categories:
+
+1. **pre**: The youngest class in the matrix is one timestep old. Evidence for this includes
+    a. the model is called a "pre-breeding cenus"
+    a. the age of the class is explicitly stated
+    b. The age of the class is unambigously implied by the name of the class (e.g., "yearling" for a model with an annual timestep)
+    c. The description of the reproduction term explicitly describes survival from birth to the age of the stage
+2. **post**: The youngest class in the matrix is zero timesteps old. Evidence for this includes
+    a. the model is called a "post-breeding cenus"
+    a. the age of the class is explicitly stated
+    b. The age of the class is unambigously implied by the name of the class (e.g., "egg" or "neonate")
+    b. The stage into which the youngest stage matures is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep)
+    c. The description of the reproduction term explicitly describes a full timestep of survival by the parent
+3. **post+**: The yougest class in the matrix is a small fraction of a timestep old (e.g., "fledglings"), and the next class is unambiguously a full timestep old
+4. **mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent stages likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
+5. **flow**: The model is representing a continuously breeding life history ("birth-flow"). Again, this is unusual, and methods taken to discretize the continuous breeding should be prominent in the model description.
+
+One common source of ambiguity is that the stages are described with a range of ages (e.g., "age 0-1"). In most cases this is *not* meant to represent a stage with a range of ages, but rather represents a lack of understanding that the stage is supposed to represent a snapshot. In these cases, do your best using other information in the paper to determine whether the intended census age is the beginning or end of the range.
+
+# Survival in reproduction
+Each transition in the F matrix should contain both a a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the COMADRE database).
+
+Possible values include:
+
+1. **none**: each value in the F matrix equals the corresponding fertility in the life table. Symbolically, $F_{1,i} = \phi_i$.
+2. **offspring**: each value of the F matrix equals the parent's fertility multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = \phi_i \sigma_0$.
+3. **parent**: each value of the F matrix represents the parent's 0ne-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive stage that doesn't mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive stage maturing into a reproductive stage), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive stage that can either stay in the same stage or mature into a subsequent reproductive stage)
+3. **offset parent**: this has parent survival, combined with the fertility associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i \phi_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
+4. **parent | early offspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling)
+5. **partial parent | partial offspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$
+
+# Reproductive maturity
+This has three component questions:
+
+## What is the mean age at first reproduction?
+This should be answered from the perspective of the described life history, not the model implementation. Possible sources of information include:
+
+- textual description of the life history
+- the age associated with the first non-zero fertility in the life table.
+
+The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave it blank
+
+## What is the first reproductive stage?
+Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE.
+
+## Does the model include reproduction by maturing individuals?
+Is there a non-zero value in the F matrix associated with the stage (or stages) that can mature into a reproductive stage by the next timestep?
+
+# "Long" development stages
+Identify the stages in the model that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. The latter can be determined by looking for non-zero values on the diagonal of the U matrix.
+
+Record these using the stage names in COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "none"
+
+# Mean stage durations
+For each of the long developmental stages, record the mean development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
+
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "na"
+
+# Stage duration variances
+For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
+
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "na".
+
+If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "unknown"
+
+# Growth transitions
+For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such stages in the model, write "na"; otherwise choose from the following:
+
+1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001). The rule might be stated; if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
+2. **cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated, or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by Crouse et al. (1987), which might be cited.
+3. **Caswell 6.103**: The formula given by Caswell (2001) eq. 6.103 ("Fixed stage durations"), involving terms in $\sigma_i/\lambda_1$, where $\lambda_1$ is the asymptotic growth rate. Might also refer to Crowder et al (1994).
+4. **observed**: Based on observed transition rates from complete censuses or a multistate capture-mark-recaupture model.
+4. **unrolled**: In the matrix model, the stage has been replaced by $\bar{T}_i$ age classes, each with the same survival and fertility.
+5. **variable**: Based on one of the formulas in Caswell (2001), section 6.4.3 ("Variable stage durations"). Makes use of the variance in development time.
+6. **negative binomial**: Based on the formulas in Caswell (2001), section 6.4.5 ("Negative binomial stage durations"). Makes use of the variance in development time.
+
+If the rule is different from any of the above, write "other" and describe the details in the notes. If you cannot determine the rule from the information in the paper, write "unknown"

@@ -72,13 +72,13 @@ IT WOUDL BE GOOD TO PROVIDE PUBLISHED STUDIES IN COMADRE AND IN COMPADRE FOR EAC
 4. **Parent | EarlyOffspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling).
 5. **PartialParent | PartialOffspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$.
 
-SAME W CITATION AS ABOVE
+SAME W CITATION AS ABOVE **I'm not sure what you mean by this**
 
 # Reproductive maturity
 This section has three component questions:
 
 ## MeanAgeFirstRep?
-This should be answered from the perspective of the described life history, not the model implementation (YOU MEAN NO NEED TO CALCULATE IT FROM THE MPM NO?). Possible sources of information include:
+This should be answered from the perspective of the described life history, not the model implementation (YOU MEAN NO NEED TO CALCULATE IT FROM THE MPM NO? **[BEK] Not only "no need", but essential. The goal is to find out what the model *should* be**). Possible sources of information include:
 
 - Textual description of the life history in the publication (e.g. xxxxx).
 - The age associated with the first non-zero fertility in the life table (e.g. xxxxx).
@@ -88,11 +88,11 @@ The entry should be a number, in units of timesteps; if reproductive maturity is
 ## What is the first reproductive stage?
 Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE. (IS THIS A COMPADRINO TASK? WE CAN DO THAT DIRECLTY IN R NO?)
 
-THERE MAY BE AN ISSUE HERE: FOR INTSANCE, THE VERY FIRST MATRIX IN COMADRE HAS THREE NON-REPROD STAGES AS PER comadre$matrixClass[[1]]$MatrixClassAuthor, BUT colSums(comadre$mat[[1]]$matF) SAYS THAT THE THIRD STAGE IS INDEED REPRODUCTIVE... SO WHICH ONE DO WE GO WITH??
+THERE MAY BE AN ISSUE HERE: FOR INTSANCE, THE VERY FIRST MATRIX IN COMADRE HAS THREE NON-REPROD STAGES AS PER comadre$matrixClass[[1]]$MatrixClassAuthor, BUT colSums(comadre$mat[[1]]$matF) SAYS THAT THE THIRD STAGE IS INDEED REPRODUCTIVE... SO WHICH ONE DO WE GO WITH?? **[BEK] This is exactly what we expect to see in a properly formulated post-breeding census model, where the maturing large juveniles have just matured to adulthood and bred before the census---thus, $F_3 = G_3 \phi_4$. The point of this question is to determine what the breeding stage *should* be, which can be combined with the census type and the information in the next section to see if the model actually succeeds in allowing individuals to breed when they reach reproductive maturity.**
 
 ## Does the model include reproduction by maturing individuals?
 Is there a non-zero value in the F matrix associated with the stage (or stages) that can mature into a reproductive stage by the next timestep? UNCLEAR PLEASE CLARIFY
-HAVE NOT BEEN ABLE TO COME UP WITH A NAME HERE BC I AM NOT SURE I UNDERSTAND IT
+HAVE NOT BEEN ABLE TO COME UP WITH A NAME HERE BC I AM NOT SURE I UNDERSTAND IT **[BEK] see expanded explanation with example**
 
 # "Long" development stages
 Identify the stages in the model that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. The latter can be determined by looking for non-zero values on the diagonal of the U matrix. Use information from MatrixCriteriaOntogeny and MatrixAuthorClass to assess this aspect.

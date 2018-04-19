@@ -49,7 +49,7 @@ There are six possible responses, with most studies falling into the first three
     a. the model is called a "post-breeding census" in the publication.
     a. the age of the class is explicitly stated in the publicatoin and/or the stages of the model.
     b. The age of the class is unambigously implied by the name of the class (e.g., "seed", "egg" or "neonate").
-    b. The stage into which the youngest stage matures **next** is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep). DO YOU AGREE W THIS?
+    b. The stage into which the youngest stage matures **next** is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep). 
     c. The description of the reproduction term explicitly describes a full timestep of survival by the parent.
 3. **Post+**: The yougest class in the matrix is a small fraction of a timestep old (e.g., "fledglings"), and the next class is unambiguously a full timestep old.
 4. **Mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent stages likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
@@ -57,7 +57,7 @@ There are six possible responses, with most studies falling into the first three
 6. **Ambiguous**: In some cases, the youngest class has a name suggesting a range of ages (e.g., "Age 0-1"). In most cases this is *not* meant to represent a stage with a range of ages, but rather represents a lack of understanding by the authors that the class is supposed to represent a snapshot in time, rather than the ages spanned by a timestep. If it is possible to determine the census type using other information, choose the appropriate option above; if not, choose this option.
 6. **Unknown**: The census type cannot be determined from the information in the publication, for reasons other than the ambiguity in the previous option.
 
-**<Insert worked examples>**
+**[Insert worked examples]**
 
 # Survival in reproduction
 Each transition in the F matrix should contain both a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model (See equation X in CITATION FOR COMADRE, See equation Y in CITATION FOR COMPADRE), and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the databases).
@@ -77,21 +77,27 @@ Possible values include:
 This has three components:
 
 ## `MeanAgeFirstRep`
-What is the mean age at first reproduction?
-This should be answered from the perspective of the described life history, not the model implementation. Possible sources of information include:
+What is the mean age at first reproduction? Determine this from either
 
-- textual description of the life history
-- the age associated with the first non-zero fertility in the life table.
+- Textual description of the life history in the publication. 
 
-The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave it blank
+> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus, the mean age of first reproduction is 24, which is what should be recorded.
+
+- The age associated with the first non-zero fertility in the life table (e.g. xxxxx).
+
+The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "N/A". [See issue #6]
 
 ## `StageFirstRep`
 What is the first reproductive stage?
-Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE.
+Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE or COMPADRE. 
+
+> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
 ## `ReproWithMaturation`
 Does the model include reproduction by maturing individuals?
-Is there a non-zero value in the F matrix associated with the stage (or stages) that can mature into a reproductive stage by the next timestep?
+Is there a non-zero value in the F matrix associated with the nonreproductive class (or classes) that can mature into a reproductive class by the next timestep? 
+
+> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, late juveniles, which are nonreproductive, mature into early adults, which are reproductive. Looking at the matrix in Fig. 5c of the paper reveals that the late juveniles (class 3) have a nonzero value in matrix element in the first row, indicating reproduction. Confusingly, Fig. 5b shows zero in this position. Consulting the F matrix in COMADRE, we see a nonzero value for element 1,3, indicating that Fig. 5c represents what was actually done in implementing the model. Thus the value "Yes" should be recorded.
 
 # "Long" development stages
 In this section, you will focus on the stages in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. 

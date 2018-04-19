@@ -60,17 +60,18 @@ There are six possible responses, with most studies falling into the first three
 **<Insert worked examples>**
 
 # Survival in reproduction
-Each transition in the F matrix should contain both a a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the COMADRE database).
+Each transition in the F matrix should contain both a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model (See equation X in CITATION FOR COMADRE, See equation Y in CITATION FOR COMPADRE), and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the databases).
 
 ## `SurvInRep`
 Possible values include:
 
-1. **none**: each value in the F matrix equals the corresponding fertility in the life table. Symbolically, $F_{1,i} = \phi_i$.
-2. **offspring**: each value of the F matrix equals the parent's fertility multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = \phi_i \sigma_0$.
-3. **parent**: each value of the F matrix represents the parent's 0ne-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive stage that doesn't mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive stage maturing into a reproductive stage), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive stage that can either stay in the same stage or mature into a subsequent reproductive stage)
-3. **offset parent**: this has parent survival, combined with the fertility associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i \phi_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
-4. **parent | early offspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling)
-5. **partial parent | partial offspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$
+1. **None**: each value in the F matrix equals the corresponding fertility in the life table. Symbolically, $F_{1,i} = \phi_i$.
+2. **Offspring**: each value of the F matrix equals the parent's fertility multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = \phi_i \sigma_0$.
+3. **Parent**: each value of the F matrix represents the parent's one-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive stage that does not mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive stage maturing into a reproductive stage), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive stage that can either stay in the same stage or mature into a subsequent reproductive stage).
+3. **OffsetParent**: this has parent survival, combined with the fertility associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i \phi_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
+4. **Parent | EarlyOffspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling).
+5. **PartialParent | PartialOffspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$.
+6. **Unknown**: The answer cannont be determined from the information in the source publication and the database.
 
 # Reproductive maturity
 This has three components:

@@ -34,28 +34,30 @@ For each study that actually shows the matrix population model, check that the m
 If "Yes" in MatrixModified, above, record what has been changed (e.g. element f3,2 has been adjusted for pre-breeding census; element u1,2 has bee adjusted for uneven state duration).
 
 # Census type
-Look for two types of information: statements about the structure of the model (e.g., "we constructed a pre-breeding census model") and description of the youngest stage/age class (identified by the row or rows of nonzero values in the F matrix). The first sort of claim should be checked by consulting the stage description, to ensure that the authors actually constructed the model they intended.
+Look for two types of information: statements about the structure of the model (e.g., "we constructed a pre-breeding census model") and description of the youngest stage/age class (identified by the row or rows of nonzero values in the F matrix in variable `MatrixClassAuthor`). The first sort of claim should be checked by consulting the stage description, to ensure that the authors actually constructed the model they intended.
 
 ## `CensusType`
 
-There are five possible responses, with most studies falling into the first three categories:
+There are six possible responses, with most studies falling into the first three categories:
 
-1. **pre**: The youngest class in the matrix is one timestep old. Evidence for this includes
-    a. the model is called a "pre-breeding cenus"
-    a. the age of the class is explicitly stated
-    b. The age of the class is unambigously implied by the name of the class (e.g., "yearling" for a model with an annual timestep)
-    c. The description of the reproduction term explicitly describes survival from birth to the age of the stage
-2. **post**: The youngest class in the matrix is zero timesteps old. Evidence for this includes
-    a. the model is called a "post-breeding cenus"
-    a. the age of the class is explicitly stated
-    b. The age of the class is unambigously implied by the name of the class (e.g., "egg" or "neonate")
-    b. The stage into which the youngest stage matures is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep)
-    c. The description of the reproduction term explicitly describes a full timestep of survival by the parent
-3. **post+**: The yougest class in the matrix is a small fraction of a timestep old (e.g., "fledglings"), and the next class is unambiguously a full timestep old
-4. **mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent stages likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
-5. **flow**: The model is representing a continuously breeding life history ("birth-flow"). Again, this is unusual, and methods taken to discretize the continuous breeding should be prominent in the model description.
+1. **Pre**: The youngest class in the matrix is one timestep old. Evidence for this includes
+    a. the model is called a "pre-breeding census" in the publication.
+    a. the age of the class is explicitly stated in the publication and/or the stages of the model.
+    b. The age of the class is unambigously implied by the name of the class in MatrixClassAuthor (e.g., "yearling" for a model with an annual timestep).
+    c. The description of the reproduction term explicitly describes survival from birth to the age of the stage.
+2. **Post**: The youngest class in the matrix is zero timesteps old. Evidence for this includes
+    a. the model is called a "post-breeding census" in the publication.
+    a. the age of the class is explicitly stated in the publicatoin and/or the stages of the model.
+    b. The age of the class is unambigously implied by the name of the class (e.g., "seed", "egg" or "neonate").
+    b. The stage into which the youngest stage matures **next** is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep). DO YOU AGREE W THIS?
+    c. The description of the reproduction term explicitly describes a full timestep of survival by the parent.
+3. **Post+**: The yougest class in the matrix is a small fraction of a timestep old (e.g., "fledglings"), and the next class is unambiguously a full timestep old.
+4. **Mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent stages likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
+5. **Flow**: The model is representing a continuously breeding life history ("birth-flow"). Again, this is unusual, and methods taken to discretize the continuous breeding should be prominent in the model description.
+6. **Ambiguous**: In some cases, the youngest class has a name suggesting a range of ages (e.g., "Age 0-1"). In most cases this is *not* meant to represent a stage with a range of ages, but rather represents a lack of understanding by the authors that the class is supposed to represent a snapshot in time, rather than the ages spanned by a timestep. If it is possible to determine the census type using other information, choose the appropriate option above; if not, choose this option.
+6. **Unknown**: The census type cannot be determined from the information in the publication, for reasons other than the ambiguity in the previous option.
 
-One common source of ambiguity is that the stages are described with a range of ages (e.g., "age 0-1"). In most cases this is *not* meant to represent a stage with a range of ages, but rather represents a lack of understanding that the stage is supposed to represent a snapshot. In these cases, do your best using other information in the paper to determine whether the intended census age is the beginning or end of the range.
+**<Insert worked examples>**
 
 # Survival in reproduction
 Each transition in the F matrix should contain both a a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the COMADRE database).

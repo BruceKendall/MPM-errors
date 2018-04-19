@@ -5,29 +5,33 @@ date: "4/9/2018"
 output: pdf_document
 ---
 
+**[BEK] Bruce's responses to RSG's comments are in bold**
+
 The goal of this document is to establish potential mistakes in the compilation of demographic models into a matrix population as detailed by the publication of interest.
 
 The primary tasks require examining each assigned publication from COMPADRE & COMADRE to determine the following aspects:
 
 1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)?
-IT WOULD BE GOOD TO PROVIDE HERE A GRAPH (E.G. FROM ELLNER'S BOOK ON IPMS) OR A RANGE OF PAGES FROM CASWELL 2001 FOR THE COMPADRINOS TO REVIEW BEFORE DOING THIS TASK
+IT WOULD BE GOOD TO PROVIDE HERE A GRAPH (E.G. FROM ELLNER'S BOOK ON IPMS) OR A RANGE OF PAGES FROM CASWELL 2001 FOR THE COMPADRINOS TO REVIEW BEFORE DOING THIS TASK **[BEK] Caswell's pages are best, I think. Need to insert page numbers in primary document**
 2. What survival value(s) are included in the reproduction transitions?
 3. Do maturing individuals reproduce at the age of first reproduction?
 4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep?
 5. For each of the stages identified in previous step, what is the mean development time?
 6. For each of the stages identified in step 4, how was the growth transition calculated?
-I SUPPOSE THAT OPTIONS ARE PROVIDED FOR #6 BELOW...
+I SUPPOSE THAT OPTIONS ARE PROVIDED FOR #6 BELOW... **[BEK] This list is meant as a high-level overview; the restructuring I have done should help make this clear**
 
 For each question, record both your response and, in the associated notes field, the evidence supporting your conclusion.
-WE SHOULD CREATE AN EXCEL FILE WITH THE VARIABLES ABOVE, FULL CITATION OF THE STUDY, AND NAME OF THE COMPADRINO, AS WELL AS WHETHER IT'S BEEN CHECKED BY YOU OR I.
+WE SHOULD CREATE AN EXCEL FILE WITH THE VARIABLES ABOVE, FULL CITATION OF THE STUDY, AND NAME OF THE COMPADRINO, AS WELL AS WHETHER IT'S BEEN CHECKED BY YOU OR I. **[BEK] Rob has already created this file, and I have added "Obs" fields and some additional options in the cases to be constrained by menus.**
 
 Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the matrix population model directly in the COMADRE or COMPADRE databases, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "unknown."
-YES, BUT WE COULD ALSO HAVE THE STUDENTS CONTACT THE AUTHOR FOR FURTHER CLARIFICATION. WE DO THIS QUITE FREQUENTLY ANYWAYS.
+YES, BUT WE COULD ALSO HAVE THE STUDENTS CONTACT THE AUTHOR FOR FURTHER CLARIFICATION. WE DO THIS QUITE FREQUENTLY ANYWAYS. **[BEK] See issue #1 on GitHub**
 
 If a study reports multiple models, choose the one that is best described, and indicate which entry in the COMADRE database it refers to.
-IT WOULD BE GOOD TO PROVIDE AN EXAMPLE OF AN ANIMAL PUBLICATION AND A PLANT PUBLICATION FOR THIS. ALSO, WE SHOULD PROVIDE MORE EXPLICIT CRITERIA OF WHAT WE MEAN BY "BEST DESCRIBED". ANOTHER (PERHAPS PREFERRED) WAY IS TO HAVE THEM DO IT IN ALL MODELS IN A GIVEN PUB, BUT OPEN DIFFERENT ROWS IN THE EXCEL FILE WITH SOME SORT OF SUB-INDEXING?
+IT WOULD BE GOOD TO PROVIDE AN EXAMPLE OF AN ANIMAL PUBLICATION AND A PLANT PUBLICATION FOR THIS. **[BEK] Agreed** ALSO, WE SHOULD PROVIDE MORE EXPLICIT CRITERIA OF WHAT WE MEAN BY "BEST DESCRIBED". **[BEK] I've expanded this a bit, but I'm not sure that there is an explicit list of criteria that is fully general.**
 
-Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the U, F, and C matrices, respectively, associated with stage i; $\phi_i$ is the fertility of stage i (number of offspring produced by an individual who is in stage i at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage i individuals; $\gamma_i$ is the fraction of surviving stage i individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression) [SHOULDN'T WE INCLUDE HERE RETROGRESSION TOO?]
+ANOTHER (PERHAPS PREFERRED) WAY IS TO HAVE THEM DO IT IN ALL MODELS IN A GIVEN PUB, BUT OPEN DIFFERENT ROWS IN THE EXCEL FILE WITH SOME SORT OF SUB-INDEXING?  **[BEK] See issue #1 on GitHub**
+
+Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the U, F, and C matrices, respectively, associated with stage i; $\phi_i$ is the fertility of stage i (number of offspring produced by an individual who is in stage i at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage i individuals; $\gamma_i$ is the fraction of surviving stage i individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression) [SHOULDN'T WE INCLUDE HERE RETROGRESSION TOO?] **[BEK] See issue #2 on GitHub**
 
 # MatrixModified: For each study that actually shows the matrix population model, check that the matrix in COMADRE or COMPADRE is the the same.  Options: "Yes" | "No"
 

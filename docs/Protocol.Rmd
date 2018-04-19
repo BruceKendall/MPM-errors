@@ -6,24 +6,23 @@ output: pdf_document
 ---
 
 # Overview
-Examine each publication to determine the following:
+The goal of this document is to establish potential mistakes in the compilation of demographic models into a matrix population as detailed by the publication of interest.
 
-1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)?
+The primary tasks require examining each assigned publication from COMPADRE & COMADRE to determine the following aspects:
+
+1. Does the model in COMADRE or COMPADRE match the one in the source paper?
+1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages XXX-XXX and figure YYY in Caswell (2001).
 2. What survival value(s) are included in the reproduction transitions?
 3. Do maturing individuals reproduce at the age of first reproduction?
-4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep?
-5. For each of the stages identified in previous step, what is the mean development time?
-6. For each of the stages identified in step 4, how was the growth transition calculated?
+4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
 
-For each question, record both your response and, in the associated "Obs" field, the evidence supporting your conclusion.
+Each of these conceptual questions has one or more variables to score, as detailed below. For each question, record both your response the `VariableName` field in the provided Excel file and, in the associated `VariableNameObs` field, the evidence supporting your conclusion.
 
-Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the model in the COMADRE database, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "unknown."
+Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the matrix population model directly in the COMADRE or COMPADRE databases, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "Unknown."
 
-If a study reports mulitiple models, choose the one that is best described, and indicate which entry in the COMADRE database it refers to.
+If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to.
 
-For each study that actually shows the matrix population model, check that the matrix in COMADRE is the the same. If it is not, record this in the general notes section, and describe what has been changed.
-
-In the formulas referenced here, $i$ refers to a stage or age class, $F_i$ is the element in the F matrix associated with stage i, $\phi_i$ is the fertility of stage i (number of offspring produced by an individual who is in stage i at the moment of reproduction), $\sigma_i$ is the per-timestep survival rate of stage i individuals, and $\gamma_i$ is the fraction of surviving stage i individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal).
+Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with stage $i$; $\phi_i$ is the fertility of stage $i$ (number of offspring produced by an individual who is in stage $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage $i$ individuals; $\gamma_i$ is the fraction of surviving stage $i$ individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 
 If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall immediately for further clarification.
 

@@ -24,7 +24,7 @@ If a study reports mulitiple models, choose the one that is is most completetely
 
 Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with stage $i$; $\phi_i$ is the fertility of stage $i$ (number of offspring produced by an individual who is in stage $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage $i$ individuals; $\gamma_i$ is the fraction of surviving stage $i$ individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 
-If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall immediately for further clarification.
+If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
 
 # Match between database and source
 ## `MatrixModified`
@@ -105,32 +105,36 @@ In this section, you will focus on the stages in the model (if any) that (a) rep
 ## `LongStages`
 Long developmetal stages can be identified by 
 
-a. finding the stages that are described as developmental stages in the life history description;
+a. finding the stages that are described as developmental stages in the life history description in the published source;
 b. For each, examining the associated column of the U matrix to determine wether there is a non-zero value on the diagonal of the matrix.
 
-Record any stages that satisfy both criteria using the stage names in COMPADRE or COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "none", and leave the next three fields blank.
+Record these using the stage names in COMADRE or COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar and a space before and after the bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "None".
 
 ## `MeanStageDuration`
 For each of the long developmental stages, record the mean development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). 
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "N/A"
 
 ## `VarStageDuration`
-For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
+For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table (e.g. xxxxxxx).
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). 
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "NA".
 
-If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "unknown"
+If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "Unknown".
 
 ## `GrowthTransition`
-For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. Choose from the following:
+For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such stages in the model, write "N/A"; otherwise choose from the following:
 
-1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001). The rule might be stated; if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
-2. **cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated, or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by Crouse et al. (1987), which might be cited.
-3. **Caswell 6.103**: The formula given by Caswell (2001) eq. 6.103 ("Fixed stage durations"), involving terms in $\sigma_i/\lambda_1$, where $\lambda_1$ is the asymptotic growth rate. Might also refer to Crowder et al (1994).
-4. **observed**: Based on observed transition rates from complete censuses or a multistate capture-mark-recaupture model.
-4. **unrolled**: In the matrix model, the stage has been replaced by $\bar{T}_i$ age classes, each with the same survival and fertility.
-5. **variable**: Based on one of the formulas in Caswell (2001), section 6.4.3 ("Variable stage durations"). Makes use of the variance in development time.
-6. **negative binomial**: Based on the formulas in Caswell (2001), section 6.4.5 ("Negative binomial stage durations"). Makes use of the variance in development time.
+1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001, p. 160). The rule might be stated in the methods (e.g. CITATION?); if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
+2. **Cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated in the methods (e.g. CITATION?), or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by Crouse et al. (1987. equation 1, p 1415), which might be cited.
+3. **Caswell6.103**: The formula given by Caswell (2001, p. 161) eq. 6.103 ("Fixed stage durations"), involving terms in $\sigma_i/\lambda_1$, where $\lambda_1$ is the asymptotic growth rate. Might also refer to Crowder et al (1994, equation 1, p 444).
+4. **Observed**: Based on observed transition rates from complete censuses or a multistate capture-mark-recaupture model.
+5. **Unrolled**: In the matrix model, the stage has been replaced by $\bar{T}_i$ age classes, each with the same survival and fertility.
+6. **Variable**: Based on one of the formulas in Caswell (2001), section 6.4.3 ("Variable stage durations"). Makes use of the variance in development time.
+7. **NegativeBinomial**: Based on the formulas in Caswell (2001), section 6.4.5 ("Negative binomial stage durations"). Makes use of the variance in development time.
+8. **Other**: None of the above apply, but some other rule is described in the publication. Include the published description in the `GrowthTransitionObs` field.
+9. **Unknown**: You cannot determine what rule was applied.
+
+If there are multiple long developmental stages, it is extremely likely that the same rule was applied to all stages. However, if you find evidence that different rules were used for different stages, highlight this in the `GrowthTransitionObs` field.
 
 If the rule is different from any of the above, write "other" and describe the details in the Obs field. If you cannot determine the rule from the information in the paper, write "unknown"

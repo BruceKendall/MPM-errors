@@ -96,7 +96,7 @@ HAVE NOT BEEN ABLE TO COME UP WITH A NAME HERE BC I AM NOT SURE I UNDERSTAND IT 
 
 # "Long" development stages
 Identify the stages in the model that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. The latter can be determined by looking for non-zero values on the diagonal of the U matrix. Use information from MatrixCriteriaOntogeny and MatrixAuthorClass to assess this aspect.
-FOR THE SECOND STEP IN THIS POINT WE CAN AUTOMATIZE THAT IN R TOO NO?
+FOR THE SECOND STEP IN THIS POINT WE CAN AUTOMATIZE THAT IN R TOO NO? **[BEK] It doesn't really help, as MatrixCriteriaOntogeny does not specify which classes are ontogenetic stages. And these stages need to be identified prior to evaluating the next three items. If we trust the existing classification for MatrixCriteriaOntogeny, then we can skip this entire section when `MatrixCriteriaOntogeny == "No"`.**
 
 Record these using the stage names in COMADRE or COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar and a space before and after the bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "None".
 

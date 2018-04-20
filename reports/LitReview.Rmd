@@ -1,0 +1,9 @@
+---
+title: "Literature review"
+author: "Bruce Kendall"
+date: "4/20/2018"
+output: pdf_document
+---
+
+This is literature review for the MPM errors project. It will include a description of how the issues are treated in texts and key papers, as well as any existing literature that highlights these errors.
+

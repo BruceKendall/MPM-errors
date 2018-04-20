@@ -7,3 +7,6 @@ output: pdf_document
 
 This is literature review for the MPM errors project. It will include a description of how the issues are treated in texts and key papers, as well as any existing literature that highlights these errors.
 
+# Guidance on matrix construction
+## Census model and survival in the reproduction transition
+Caswell (2001) introduces this early on (section 2.4, pp. 22-28), in the context of purely age-structured models. He starts with birth-flow models, with deriviations that are conceptually complex; he does not make a big deal out of the survival terms and it's probably easy to miss the conceptual issue. The description of birth-pulse reproduction is cast in terms of arbitrary census timing, with prebreeding and postbreeding derived as special cases. In addition, the prebreeding survival component is given as $l(1)$ rather than $P_0$ (Caswell never calculates $P_0$, although its potential existence is implicit in the survival equation earlier in the section). Thus, it takes some careful reading to realize that it involves newborn survival (although, of course, it is the postbreeding models that are generally problematic).

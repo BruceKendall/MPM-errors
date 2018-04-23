@@ -11,7 +11,10 @@ This is literature review for the MPM errors project. It will include a descript
 ## Census model and survival in the reproduction transition
 Caswell (2001) introduces this early on (section 2.4, pp. 22-28), in the context of purely age-structured models. He starts with birth-flow models, with deriviations that are conceptually complex; he does not make a big deal out of the survival terms and it's probably easy to miss the conceptual issue. The description of birth-pulse reproduction is cast in terms of arbitrary census timing, with prebreeding and postbreeding derived as special cases. In addition, the prebreeding survival component is given as $l(1)$ rather than $P_0$ (Caswell never calculates $P_0$, although its potential existence is implicit in the survival equation earlier in the section). Thus, it takes some careful reading to realize that it involves newborn survival (although, of course, it is the postbreeding models that are generally problematic). The chapter on stage-structured models does not revisit these issues, except for the correction of the teasel model (see below).
 
-In Caswell's notation for birth-pulse models, an individual in age class $i$ will be $i$ years old at its *next* birthday. Thus for the postbreeding census he writes $F_i = P_i m_i$, where $P_i$ is survival from age $i-1$ to age $i$ (which is in fact specified in eq. 2.40) and $m_i$ is maternity at age $i$. This is sensible if you always want class indicies to start from 1; but lack of careful attention to eq. (2.40) may lead to mistakes here.
+In Caswell's notation for birth-pulse models, an individual in age class $i$ will be $i$ years old at its *next* birthday. Thus for the postbreeding census he writes $F_i = P_i m_i$, where $P_i$ is survival from age $i-1$ to age $i$ (which is in fact specified in eq. 2.40) and $m_i$ is maternity at age $i$. This is sensible if you always want class indicies to start from 1; but lack of careful attention to eq. (2.40) may lead to mistakes here. Gotelli (2008) also follows this convention, and in fact only talks about postbreeding census models.
+
+## Maturation and reproduction
+When Gotelli (2008) moves to stage structured models, his first class is zero years old (in the first example, it is labled "egg," and he is only considering postbreeding census models). Thus he has (unknowingly, perhaps) switched from labeling stages by its state at the end of the transition to its state at the beginning of the transition. Nevertheless, individuals that mature from "larva" to "adult" do not reproduce; and in all three examples, all individuals, whether staying in the same class or moving to a different one, have the fertilities of the initial class; he does not describe how to construct those fertilities.
 
 
 # Highlighting errors
@@ -24,7 +27,9 @@ To my view, the "in reality" suggests to the reader that he just forgot that see
 
 # Terminology and notation
 ## Words to talk about reproduction
-Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demographers, and use *fertility* to describe actual reproductive performance and *fecundity* to denote the physiological maximum reproductive output." The term "fertility" is given to the reproductive term in the matrix model; thus, for example, if $n_1(t+1) = F_1 N_1(t) + F_2 N_2(t) + F_3 N_3(t)$ (eq. 2.2), then "$F_i$ is the *fertility* of age class $i$." He uses "maternity" to describe $m(x)$, which he defines as "$E$(offspring per individual aged $x$ per unit time)."
+Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demographers, and use *fertility* to describe actual reproductive performance and *fecundity* to denote the physiological maximum reproductive output." The term "fertility" is given to the reproductive term in the matrix model; thus, for example, if $n_1(t+1) = F_1 N_1(t) + F_2 N_2(t) + F_3 N_3(t)$ (eq. 2.2), then "$F_i$ is the *fertility* of age class $i$." He uses "maternity" to describe $m(x)$, which he defines as "$E$(offspring per individual aged $x$ per unit time)." 
+
+Gotelli (2008) likewise uses "fertility" for $F$, but uses "fecundity" for $m(x)$ (which he denotes $b(x)$)
 
 ## Notation
 ### Instantaneous rates

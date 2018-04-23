@@ -23,3 +23,27 @@ To my view, the "in reality" suggests to the reader that he just forgot that see
 # Terminology and notation
 ## Words to talk about reproduction
 Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demographers, and use *fertility* to describe actual reproductive performance and *fecundity* to denote the physiological maximum reproductive output." The term "fertility" is given to the reproductive term in the matrix model; thus, for example, if $n_1(t+1) = F_1 N_1(t) + F_2 N_2(t) + F_3 N_3(t)$ (eq. 2.2), then "$F_i$ is the *fertility* of age class $i$." He uses "maternity" to describe $m(x)$, which he defines as "$E$(offspring per individual aged $x$ per unit time)."
+
+## Notation
+### Instantaneous rates
+- $\mu(x)$ is the "mortality rate" or "hazard function" (Caswell 2001, p. 21)
+- $m(x)$ is the "maternity function" (Caswell 2001, p. 22)
+
+### Discrete-time transitions
+Leslie model:
+
+- "$P_i$ is the probability that an individual in age class $i$ will survive from $t$ to $t+1$" (Caswell 2001, p. 23; for age-structured models)
+- $F_i$ are the elements in the first row of the Leslie matrix (Caswell 2001, p. 24; for age-structured models)
+
+Standard size-classified model (Caswell 2001's term; p. 59):
+
+- The $P_i$ are the diagonal elements of the matrix (Caswell 2001, p. 59). $P_i = \sigma_i (1-\gamma_i)$ (Caswell 2001, p. 160).
+- The $G_i$ are the diagonal elements of the matrix (Caswell 2001, p. 59). $G_i = \sigma_i \gamma_i$ (Caswell 2001, p. 160).
+- $\sigma_i$ is "probability of survival of an individual in stage $i$" (Caswell 2001, p. 159)
+- $\gamma_i$ is "probability of growth from $i$ to $i+1$ given survival" (Caswell 2001, p. 160)
+
+Matrices:
+
+- The projection matrix is $\mathbf{A}$ (Caswell 2001); `matA` in COM[P]ADRE.
+- The matrix describing transitions of living individuals is $\mathbf{T}$ (Caswell 2001); `matU` in COM[P]ADRE.
+- The matrix describing "reproduction" is $\mathbf{F}$ (Caswell 2001); `matF` in COM[P]ADRE.

@@ -33,6 +33,8 @@ Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demog
 
 Gotelli (2008) likewise uses "fertility" for $F$, but uses "fecundity" for $m(x)$ (which he denotes $b(x)$)
 
+Morris and Doak (2002; p. 206) use "reproduction" for $F$, and "fertility" for $m(x)$ (which they denote $f_i$). Their footnote on this terminology says, "The terms *fertility, fecundity,* and *reproduction* have all been used for both matrix elements and vital rates, and human demographers tend to use these terms differentlly than do ecologists, who cannot seem to agree amng themselves what these words mean. Rather than trying to sort out this semantic morass, we will choose one set of definitions and apply them consistently."
+
 ## Notation
 ### Instantaneous rates
 - $\mu(x)$ is the "mortality rate" or "hazard function" (Caswell 2001, p. 21)

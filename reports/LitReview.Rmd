@@ -50,4 +50,9 @@ Matrices:
 - The matrix describing transitions of living individuals is $\mathbf{T}$ (Caswell 2001); `matU` in COM[P]ADRE.
 - The matrix describing "reproduction" is $\mathbf{F}$ (Caswell 2001); `matF` in COM[P]ADRE.
 
+# References
+Caswell, H. 1989. Matrix population models: Construction, analysis, and interpretation. Sinauer: Sunderland, MA.
 
+Caswell, H. 2001. Matrix population models: Construction, analysis, and interpretation, 2nd edition. Sinauer: Sunderland, MA.
+
+Gotelli, N.J. 2008. A primer of ecology, 4th edition. Sinauer: Sunderland, MA.

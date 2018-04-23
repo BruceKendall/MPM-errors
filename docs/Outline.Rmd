@@ -1,0 +1,11 @@
+---
+title: "Outline"
+author: "Bruce Kendall"
+date: "4/23/2018"
+output: pdf_document
+---
+
+
+# Things to think about
+
+In section 5.3, "Age-specific traits from stage-specific models," Caswell (2001) presents methods for calculating quantities such as mean duration in a stage by calculating the fundamental matrix, **N**, from the transition matrix **T**. I suspect that these statistics will only be correct if the maturation rates are calculated with an assumption of $\lambda = 1$ in eq. (6.103). Thus, models built to get the correct asymptotic population growth rate will give incorrect age-specific statistics based on the fundamental matrix. One thing I'm not sure of is how much the latter is done; but I think that it is the basis also for the entropy calculations in Tulja's "dynamic heterogeneity."

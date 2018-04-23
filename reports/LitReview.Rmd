@@ -5,7 +5,7 @@ date: "4/20/2018"
 output: pdf_document
 ---
 
-This is literature review for the MPM errors project. It will include a description of how the issues are treated in texts and key papers, as well as any existing literature that highlights these errors.
+This is literature review for the MPM errors project. It will include a description of how the issues are treated in texts and key papers, as well as any existing literature that highlights these errors. Note that in all areas consulted, the treatment in Caswell (1989) is identical to that in Caswell (2001).
 
 # Guidance on matrix construction
 ## Census model and survival in the reproduction transition
@@ -29,7 +29,7 @@ Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demog
 ## Notation
 ### Instantaneous rates
 - $\mu(x)$ is the "mortality rate" or "hazard function" (Caswell 2001, p. 21)
-- $m(x)$ is the "maternity function" (Caswell 2001, p. 22)
+- $m(x)$ is the "maternity function" (Caswell 2001, p. 22). Gotelli (2008) calls this the "fecundity schedule" and denotes it $b(x)$ (while mentioning the $m(x)$ notation).
 
 ### Discrete-time transitions
 Leslie model:
@@ -49,3 +49,5 @@ Matrices:
 - The projection matrix is $\mathbf{A}$ (Caswell 2001); `matA` in COM[P]ADRE.
 - The matrix describing transitions of living individuals is $\mathbf{T}$ (Caswell 2001); `matU` in COM[P]ADRE.
 - The matrix describing "reproduction" is $\mathbf{F}$ (Caswell 2001); `matF` in COM[P]ADRE.
+
+

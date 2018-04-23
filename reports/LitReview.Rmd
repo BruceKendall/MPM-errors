@@ -38,7 +38,7 @@ Morris and Doak (2002; p. 206) use "reproduction" for $F$, and "fertility" for $
 ## Notation
 ### Instantaneous rates
 - $\mu(x)$ is the "mortality rate" or "hazard function" (Caswell 2001, p. 21)
-- $m(x)$ is the "maternity function" (Caswell 2001, p. 22). Gotelli (2008) calls this the "fecundity schedule" and denotes it $b(x)$ (while mentioning the $m(x)$ notation).
+- $m(x)$ is the "maternity function" (Caswell 2001, p. 22). Gotelli (2008) calls this the "fecundity schedule" and denotes it $b(x)$ (while mentioning the $m(x)$ notation). This is $f_i$ in Morris and Doak (2002, p. 206).
 
 ### Discrete-time transitions
 Leslie model:
@@ -50,8 +50,9 @@ Standard size-classified model (Caswell 2001's term; p. 59):
 
 - The $P_i$ are the diagonal elements of the matrix (Caswell 2001, p. 59). $P_i = \sigma_i (1-\gamma_i)$ (Caswell 2001, p. 160).
 - The $G_i$ are the diagonal elements of the matrix (Caswell 2001, p. 59). $G_i = \sigma_i \gamma_i$ (Caswell 2001, p. 160).
-- $\sigma_i$ is "probability of survival of an individual in stage $i$" (Caswell 2001, p. 159)
+- $\sigma_i$ is "probability of survival of an individual in stage $i$" (Caswell 2001, p. 159). This is $s_i$ in Morris and Doak (2002, p. 206).
 - $\gamma_i$ is "probability of growth from $i$ to $i+1$ given survival" (Caswell 2001, p. 160)
+- $g_{ij}$ is "the porbablity that an individual in class $j$ at one census makes the transition to class $i$ in the next census, given that it survives" (Morris and Doak 2002, p. 206)
 
 Matrices:
 

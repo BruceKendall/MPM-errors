@@ -18,4 +18,8 @@ In example 4.1, Caswell (2001) corrects his earlier model of teasel (Werner and 
 
 > The description of reproduction in $\mathbf{A}_1$ [the original model] is fundamentally flawed. According to Figure 4.3 flowering plants in year $t$ produce seeds in year $t+1$, some of which germinate to produce vegetative rosettes in year $t+2$. In reality, flowering plants in year $t$ produce seeds that may germinate and produce rosettes in year $t+1$. Thus $\mathbf{A}_1$ has introduced an unrealistic delay of 1 year in the process of reproduction.
 
-To my view, the "in reality" suggests to the reader that he just forgot that seeds can germinate right away, and takes the focus away from the fact that the first class in a prebreeding model must be a year old. He also doesn't explain how he calculates the reproductive transition, which would have been another place to highlight this issue.
+To my view, the "in reality" suggests to the reader that he just forgot that seeds can germinate right away, and takes the focus away from the fact that the first class in a prebreeding model must be a year old. He also doesn't explain how he recalculates the reproductive transition, which would have been another place to highlight this issue.
+
+# Terminology and notation
+## Words to talk about reproduction
+Caswell (2001) says, in footnote on on p. 10, "I follow the usage of human demographers, and use *fertility* to describe actual reproductive performance and *fecundity* to denote the physiological maximum reproductive output." The term "fertility" is given to the reproductive term in the matrix model; thus, for example, if $n_1(t+1) = F_1 N_1(t) + F_2 N_2(t) + F_3 N_3(t)$ (eq. 2.2), then "$F_i$ is the *fertility* of age class $i$." He uses "maternity" to describe $m(x)$, which he defines as "$E$(offspring per individual aged $x$ per unit time)."

@@ -23,7 +23,7 @@ At the very introduction of the Leslie matrix model, Caswell (2001) has a figure
 
 In Caswell's notation for birth-pulse models, an individual in age class $i$ will be $i$ years old at its *next* birthday. Thus for the postbreeding census he writes $F_i = P_i m_i$, where $P_i$ is survival from age $i-1$ to age $i$ (which is in fact specified in eq. 2.40) and $m_i$ is maternity at age $i$. This is sensible if you always want class indicies to start from 1; but lack of careful attention to eq. (2.40) may lead to mistakes here. Gotelli (2008) also follows this convention, and in fact only talks about postbreeding census models.
 
-Morris and Doak's (2002, pp. 207-210) is consistent with Caswell for prebreeding and birth-flow models. For postbreeding models, they say $F_j = s_j f_j$. It is clear from their treatment of survival and growth that $j$ references the state at the start of the interval.
+Morris and Doak's (2002, pp. 207-210) is consistent with Caswell for prebreeding and birth-flow models. For postbreeding models, they say $F_j = s_j f_j$. It is clear from their treatment of survival and growth that $j$ references the state at the start of the interval. Mills (2007) follow the same path, and explicitly has age class zero for the post-breeding census.
 
 # Highlighting errors
 ## Treatment of seeds
@@ -72,5 +72,7 @@ Caswell, H. 1989. Matrix population models: Construction, analysis, and interpre
 Caswell, H. 2001. Matrix population models: Construction, analysis, and interpretation, 2nd edition. Sinauer: Sunderland, MA.
 
 Gotelli, N.J. 2008. A primer of ecology, 4th edition. Sinauer: Sunderland, MA.
+
+Mills, L.S. 2007. Conservation of wildlife populations: Demography, genetics, and management. Blackwell: Malden, MA.
 
 Morris, W.F., and D.F. Doak. 2002. Quantitative conservation biology: Theory and practice of population viability analysis. Sinauer: Sunderland, MA.

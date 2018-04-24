@@ -11,6 +11,8 @@ This is literature review for the MPM errors project. It will include a descript
 ## Census model and survival in the reproduction transition
 Caswell (2001) introduces this early on (section 2.4, pp. 22-28), in the context of purely age-structured models. He starts with birth-flow models, with deriviations that are conceptually complex; he does not make a big deal out of the survival terms and it's probably easy to miss the conceptual issue. The description of birth-pulse reproduction is cast in terms of arbitrary census timing, with prebreeding and postbreeding derived as special cases. In addition, the prebreeding survival component is given as $l(1)$ rather than $P_0$ (Caswell never calculates $P_0$, although its potential existence is implicit in the survival equation earlier in the section). Thus, it takes some careful reading to realize that it involves newborn survival (although, of course, it is the postbreeding models that are generally problematic). The chapter on stage-structured models does not revisit these issues, except for the correction of the teasel model (see below).
 
+Mills (2007) only treats birth-pulse models, and has perhaps the clearest figures (7.2 for age-structured models and 7.3 for stage-structured models).
+
 ## Maturation and reproduction
 Caswell treats fertilities in stage-structured models in section 6.7. For prebreeding census, he gives $F_i = l(1) m_i$ (eq. 6.146), and for a postbreeding census of his standard model, he gives $F_i = P_i m_i + G_i m_{i+1}$ (eq. 6.150). Note that this implicitly assumes that the stage name describes the state at the beginning of the time interval, a change from his treatment of age-structured models.
 
@@ -18,12 +20,14 @@ When Gotelli (2008) moves to stage structured models, his first class is zero ye
 
 Morris and Doak (2002) do not discuss this. Their one worked example is for a prebreeding census, so does not provide insight on how they would have handled maturation in a postbreeding census.
 
+Mills (2007) has an explicit example of this in a postbreeding census model (Fig. 7.3), showing Juveniles becoming Adults and then reproducing as Adults.
+
 ## Class names
 At the very introduction of the Leslie matrix model, Caswell (2001) has a figure (2.1, on p. 8) that shows "Age-class (i)" *spanning* the entire period from age $i-1$ to age $i$. On the next page, he explicitely invokes a hypthetical population in which "individuals are classified into three age classes (0--1, 1--2, and 2--3 years)." Gotelli (2008) copies this figure; it is his only graphical representation of the relationship between age and class. This definition makes sense for a birth-flow population, but not for a birth-pulse population with a well-defined census age. It is not until p. 26 that Caswell introduces the notion that age class $i$ represents individuals of age $i-1+p$. This is perhaps why so many models use interval class names for birth-pulse models.
 
 In Caswell's notation for birth-pulse models, an individual in age class $i$ will be $i$ years old at its *next* birthday. Thus for the postbreeding census he writes $F_i = P_i m_i$, where $P_i$ is survival from age $i-1$ to age $i$ (which is in fact specified in eq. 2.40) and $m_i$ is maternity at age $i$. This is sensible if you always want class indicies to start from 1; but lack of careful attention to eq. (2.40) may lead to mistakes here. Gotelli (2008) also follows this convention, and in fact only talks about postbreeding census models.
 
-Morris and Doak's (2002, pp. 207-210) is consistent with Caswell for prebreeding and birth-flow models. For postbreeding models, they say $F_j = s_j f_j$. It is clear from their treatment of survival and growth that $j$ references the state at the start of the interval. Mills (2007) follow the same path, and explicitly has age class zero for the post-breeding census.
+Morris and Doak's (2002, pp. 207-210) is consistent with Caswell for prebreeding and birth-flow models. For postbreeding models, they say $F_j = s_j f_j$. It is clear from their treatment of survival and growth that $j$ references the state at the start of the interval. Mills (2007) follows the same path, and explicitly has age class zero for the post-breeding census.
 
 # Highlighting errors
 ## Treatment of seeds
@@ -41,6 +45,8 @@ Gotelli (2008) likewise uses "fertility" for $F$, but uses "fecundity" for $m(x)
 
 Morris and Doak (2002; p. 206) use "reproduction" for $F$, and "fertility" for $m(x)$ (which they denote $f_i$). Their footnote on this terminology says, "The terms *fertility, fecundity,* and *reproduction* have all been used for both matrix elements and vital rates, and human demographers tend to use these terms differentlly than do ecologists, who cannot seem to agree amng themselves what these words mean. Rather than trying to sort out this semantic morass, we will choose one set of definitions and apply them consistently."
 
+Mills (2007, p. 135) uses "fecundity" for $m(x)$ and "reproduction to next time step" for $F_i$ (although he doesn't use the latter notation). He notes (footnote 3, p. 135) that the latter "is often called **fertility** by human demographers, but fertility has different meanings in the ecological literature so I will avoid the term here."
+
 ## Notation
 ### Instantaneous rates
 - $\mu(x)$ is the "mortality rate" or "hazard function" (Caswell 2001, p. 21)
@@ -50,7 +56,7 @@ Morris and Doak (2002; p. 206) use "reproduction" for $F$, and "fertility" for $
 Leslie model:
 
 - "$P_i$ is the probability that an individual in age class $i$ will survive from $t$ to $t+1$" (Caswell 2001, p. 23; for age-structured models)
-- $F_i$ are the elements in the first row of the Leslie matrix (Caswell 2001, p. 24; for age-structured models)
+- $F_i$ are the elements in the first row of the Leslie matrix (Caswell 2001, p. 24; for age-structured models). Mills (2007) doesn't give any name to these terms, instead writing out the product of the relevant $m$ and $P$.
 
 Standard size-classified model (Caswell 2001's term; p. 59):
 
@@ -60,9 +66,11 @@ Standard size-classified model (Caswell 2001's term; p. 59):
 - $\gamma_i$ is "probability of growth from $i$ to $i+1$ given survival" (Caswell 2001, p. 160)
 - $g_{ij}$ is "the porbablity that an individual in class $j$ at one census makes the transition to class $i$ in the next census, given that it survives" (Morris and Doak 2002, p. 206)
 
+Although Mills (2007) presents a stage-structured model (Fig. 7.3), he doesn't use symbols for the elements.
+
 Matrices:
 
-- The projection matrix is $\mathbf{A}$ (Caswell 2001); `matA` in COM[P]ADRE.
+- The projection matrix is $\mathbf{A}$ (Caswell 2001); `matA` in COM[P]ADRE. Mills (2007) call it $\mathbf{M}$
 - The matrix describing transitions of living individuals is $\mathbf{T}$ (Caswell 2001); `matU` in COM[P]ADRE.
 - The matrix describing "reproduction" is $\mathbf{F}$ (Caswell 2001); `matF` in COM[P]ADRE.
 

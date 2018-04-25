@@ -2,8 +2,14 @@
 title: "Matrix model error detection protocol"
 author: "Bruce E. Kendall"
 date: "4/19/2018"
+bibliography: "Protocol.bib"
 output: pdf_document
 ---
+
+```{r knitcitations, echo=FALSE}
+library("knitcitations") 
+options("citation_format" = "pandoc", style = "markdown", "hyperlink" = "to.bib")
+```
 
 # Overview
 The goal of this document is to establish potential mistakes in the compilation of demographic models into a matrix population as detailed by the publication of interest.
@@ -81,7 +87,7 @@ What is the mean age at first reproduction? Determine this from either
 
 - Textual description of the life history in the publication. 
 
-> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus, the mean age of first reproduction is 24, which is what should be recorded.
+> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus, the mean age of first reproduction is 24, which is what should be recorded.
 
 - The age associated with the first non-zero fertility in the life table (e.g. xxxxx).
 
@@ -91,13 +97,13 @@ The entry should be a number, in units of timesteps; if reproductive maturity is
 What is the first reproductive stage?
 Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE or COMPADRE. 
 
-> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
+> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
 ## `ReproWithMaturation`
 Does the model include reproduction by maturing individuals?
 Is there a non-zero value in the F matrix associated with the nonreproductive class (or classes) that can mature into a reproductive class by the next timestep? 
 
-> For example, Velez-Espino & Koops (2009; doi:10.1577/M08-034.1) state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, late juveniles, which are nonreproductive, mature into early adults, which are reproductive. Looking at the matrix in Fig. 5c of the paper reveals that the late juveniles (class 3) have a nonzero value in matrix element in the first row, indicating reproduction. Confusingly, Fig. 5b shows zero in this position. Consulting the F matrix in COMADRE, we see a nonzero value for element 1,3, indicating that Fig. 5c represents what was actually done in implementing the model. Thus the value "Yes" should be recorded.
+> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, late juveniles, which are nonreproductive, mature into early adults, which are reproductive. Looking at the matrix in Fig. 5c of the paper reveals that the late juveniles (class 3) have a nonzero value in matrix element in the first row, indicating reproduction. Confusingly, Fig. 5b shows zero in this position. Consulting the F matrix in COMADRE, we see a nonzero value for element 1,3, indicating that Fig. 5c represents what was actually done in implementing the model. Thus the value "Yes" should be recorded.
 
 # "Long" development stages
 In this section, you will focus on the stages in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. 
@@ -138,3 +144,8 @@ For the long developmental stages, record the rule or equation used to calculate
 If there are multiple long developmental stages, it is extremely likely that the same rule was applied to all stages. However, if you find evidence that different rules were used for different stages, highlight this in the `GrowthTransitionObs` field.
 
 If the rule is different from any of the above, write "other" and describe the details in the Obs field. If you cannot determine the rule from the information in the paper, write "unknown"
+
+# References
+```{r, echo=FALSE, message=FALSE}
+write.bibtex(file = "Protocol.bib")
+```

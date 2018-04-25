@@ -11,22 +11,71 @@ output: pdf_document
 Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. I highlight three errors commonly encountered in published MPMs: (1) failing to include survival as well as fertility in the reproduction term; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth transition rate out of a stage with a mean development time greater than the model time step. I review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions. These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. To quantify the prevalence of such errors I examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database. The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle graph (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed within-stage age structure. These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be undertaken with caution.
 
 # Introduction
+MPMs have many advantages
+
+It is important to remember that MPMs are approximations, both because they still abstract away much biological detail and because demographic measurements are imprecise. 
+
+Nevertheless, one should always strive not to introduce additional inconsistencies between the model and reality, especially if those result in biased outputs.
+
+My experience teaching MPMs to applied masters students has revealed several aspects of MPM construction that are particularly challenging to novices, and frequent encounters with published MPMs that have failed to meet these challenges.
+
+My goal in this paper is to highlight these challenges, describe their impacts on the outputs of MPMs, and document their prevalence in the peer-reviewed literature.
 
 # Challenges in MPM construction
-## The fertility transition must span a full timestep
+## Ensuring that the fertility transition spans a full timestep
+
 
 ## Matching the age at first reproduction to the species' life history
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 
 # Consequences of incorrect MPM construction
+Effects on lambda (lionfish example)
+
+Effects on sensitivity analysis
+
+Effects on life history statistics
 
 # Prevalence of construction errors in published MPMs
 ## Methods
+Sampling of COMADRE/COMPADRE
+
+Questions related to fertility
+
+Questions related to first reproduction
+
+Questions related to maturation
+
+Statistical analysis: means, trends through time
 
 ## Results
+Fertility
+
+First reproduction
+
+Maturation
 
 # Discussion
+Summary of impacts
+
+Summary of prevalence
+
+Why does this happen? Most texts are imcomplete (especially for stage-structured models) and/or have incosistent or confusing notation. Pick on Caswell as example
+
+Recommendations for practitioners:  
+
+1. Use prebreeding census whenever possible
+2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda$ and generation time.")
+
+Recommendations for experts:
+
+1. Develop handbooks and training materials that are both comprehensive and clear to novices (reference threhshold concepts)
+2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
+
+Revisiting prior results
+
+- Inidividual studies
+- Syntheses
 
 # Things to think about
 

@@ -64,6 +64,7 @@ There are six possible responses, with most studies falling into the first three
 6. **Unknown**: The census type cannot be determined from the information in the publication, for reasons other than the ambiguity in the previous option.
 
 ### Examples
+- `r citet("10.1577/M08-034.1")` name their first stage "age 0" (p. 1071), so this study would be classified as `Post`. They also say "We used a separate postbreeding projection matrix" (p. 1073), confirming this interpretation.
 - `r citet("10.1007/s10530-010-9786-8")` have "Larvae" as their first stage (p. 8). This in itself is somewhat ambiguous, given the short (1 month) timestep of the model. Table 2 reveals that they have survival data on both eggs and larvae, so eggs would be the newborns. However, eggs only live 3 days ($D_E$), compared with 30 days for larvae ($D_L$). Returning to Table 1, these instantaneousl survival rates are transformed into survival across the stage using formulas such as $e^{1M_L D_L}$ (for larvae). The survival of eggs is included in the fertility term ($R_A$); if eggs took a month to hatch then the model would be a prebreeding census. However, because the egg stage is so short, the first stage in the model (Larvae) are closer to zero timesteps old than one timestep old, so the model is classified as `Post+`.
 
 # Survival in reproduction
@@ -81,7 +82,8 @@ Possible values include:
 6. **Unknown**: The answer cannont be determined from the information in the source publication and the database.
 
 ### Examples
-- As descrived above, `r citet("10.1007/s10530-010-9786-8")` includes egg survival in the reproductive term (see their Table 1). However, this only spans 10% of the timestep (eggs are said to hatch in 3 days; timestep is one month). Thus there is no survival term that spans the whole timestep and the model would be classified as `none`.
+- As descrived above, `r citet("10.1007/s10530-010-9786-8")` includes egg survival in the reproductive term (see their Table 1). However, this only spans 10% of the timestep (eggs are said to hatch in 3 days; timestep is one month). Thus there is no survival term that spans the whole timestep and the model would be classified as `None`.
+- `r citet("10.1577/M08-034.1")`, in the synbolic matrix in Fig. 5c, have all three of the forms described under **Parent** above (for late juveniles, early adults, and late adults, respectively) (they use $f_i$ rather than $\phi_i$ for the maternity function). So this model would be classified as `Parent`.
 
 # Reproductive maturity
 This has three components:
@@ -112,7 +114,7 @@ Is there a non-zero value in the F matrix associated with the nonreproductive cl
 > In contrast, `r citet("Morris_2010")` have "Adults" as the first reproductive stage and "Juveniles" as the prereproductive stage. Looking at the matrix (eq. 1), there is no fertility entry associated with the Juvenile column, so the answer is `No`.
 
 # "Long" development stages
-In this section, you will focus on the stages in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. 
+In this section, you will focus on the stages in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. Do not include terminal stages with no upper bound on stage duration (typically "Adult")
 
 ## `LongStages`
 Long developmetal stages can be identified by 
@@ -122,17 +124,26 @@ b. For each, examining the associated column of the U matrix to determine wether
 
 Record these using the stage names in COMADRE or COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar and a space before and after the bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "None".
 
+### Examples
+- `r citet("10.1577/M08-034.1")` have 4 candidate long stages: early and late juveniles, and early and late adults. They say (p. 1071) "the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus early and late juveniles are each meant to span multiple years (12 each) and indeed they have nonzero values on the diagonal in Fig. 5C. Regarding adults, they say "The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age when TL is 95% of $L_{\infty}$." Thus these would also be long stages unless the total adult duration was only 2 years. Table 6 shows the maximum reproductive ages ("MRA") for each of the modeled populations, which range from 36 to 71. Thus, subtracting the length of the juvenile class, the adult classes span at least 12 years. Again, they have non-zero elements on the diagonal of the matrix. Although the late adult stage is terminal, it is clear from the description that the stage is intended not to be indefinite, and indeed the diagonal element includes a term in $\gamma_5$, which represents "maturing" into death. So both juvenile stages and both adult stages should be included. The author does not capitalize these stage names, but looking at the relevant entry in COMADRE reveals that they are capitalized in the database, so this should be recorded as `Early juvenile | Late juvenile | Early adult | Late adult`.
+
 ## `MeanStageDuration`
 For each of the long developmental stages, record the mean development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
 
 Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "N/A"
 
-## `VarStageDuration`
-For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table (e.g. xxxxxxx).
+### Examples
+- As described above `r citet("10.1577/M08-034.1")` have 4 long stages. The two juvenile stages are described as being half of the total juvenile duration, given as 24 years; since the timestep is one year, each of these stages has duration 12 (actually, there is some ambiguity, as the juvenile stage does not include the first year of life; if age at maturity is 24, then the juvenile stages collectively span 23 years, and each should have a duration of 11.5. The paper is unclear on this, which could be documented in the notes). For the adult stages, each is half of the adult lifespan, which differs between populations. Suppose you had selected the first population in the database (row 2, after the mean matrix) ; "Western Hudson Bay." Looking at Table 2 in the paper, this is DU 1, which, in Table 6, has MRA (maximum reproductive age) of 59. Subtracting the age at maturity from this gives 35 years of adulthood, which needs to be split between the two adult classes. Thus you would record `12 | 12 | 17.5 | 17.5`
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "NA".
+## `VarStageDuration`
+For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table. The focus here is on variation among individuals (e.g. some individuals mature earler than others), rather than variation among populations or between years.
+
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "N/A".
 
 If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "Unknown".
+
+### Examples
+- As described above `r citet("10.1577/M08-034.1")` have 4 long stages. Although Table 1 gives a range of values for age at maturity, it is unclear whether this represents variation among individuals, populations, or years. Table 6 gives different maximum adult ages, but that represents variation among populations. The authors do not state that there is *not* among-individual variation in maturation age and maximum reproductive age, so this is best coded as `Unknown`.
 
 ## `GrowthTransition`
 For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such stages in the model, write "N/A"; otherwise choose from the following:
@@ -149,7 +160,10 @@ For the long developmental stages, record the rule or equation used to calculate
 
 If there are multiple long developmental stages, it is extremely likely that the same rule was applied to all stages. However, if you find evidence that different rules were used for different stages, highlight this in the `GrowthTransitionObs` field.
 
-If the rule is different from any of the above, write "other" and describe the details in the Obs field. If you cannot determine the rule from the information in the paper, write "unknown"
+If the rule is different from any of the above, write "other" and describe the details in the Obs field. If you cannot determine the rule from the information in the paper, write "unknown".
+
+### Examples
+- `r citet("10.1577/M08-034.1")` state (p. 1072) "the term $\gamma_j$ is calculated from a geometric distribution of $1/T_j$ ($T_j$ = duration of stage $j$ in years)." The phrase "calculated from" (as opposed to "calculated as") is somewhat ambiguous, but the best interpretation of this is that they used $\gamma_i = 1/\bar{T}_i$, and the study would be classified as `1/Tbar`.
 
 # References
 ```{r, echo=FALSE, message=FALSE}

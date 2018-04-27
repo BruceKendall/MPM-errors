@@ -60,7 +60,7 @@ Summary of impacts
 
 Summary of prevalence
 
-Why does this happen? Most texts are imcomplete (especially for stage-structured models) and/or have incosistent or confusing notation. Pick on Caswell as example
+Why does this happen? Most texts are imcomplete (especially for stage-structured models) and/or have incosistent or confusing notation. Pick on Caswell as example. Also, these are "threshold concepts."
 
 Recommendations for practitioners:  
 

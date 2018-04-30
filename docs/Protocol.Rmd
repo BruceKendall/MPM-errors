@@ -169,6 +169,7 @@ If the rule is different from any of the above, write "other" and describe the d
 
 ### Examples
 - `r citet("10.1577/M08-034.1")` state (p. 1072) "the term $\gamma_j$ is calculated from a geometric distribution of $1/T_j$ ($T_j$ = duration of stage $j$ in years)." The phrase "calculated from" (as opposed to "calculated as") is somewhat ambiguous, but the best interpretation of this is that they used $\gamma_i = 1/\bar{T}_i$, and the study would be classified as `1/Tbar`.
+- `r citet("10.1890/07-1672.1")` say (p. 2246) "We partitioned stage-specific survival estimates into "stasis" and "growth" components using the observed proportion of individuals that remained in the same size class over a four-week period vs. those that grew to a larger size class." Thus this would be classified as `Observed`.
 
 # References
 ```{r, echo=FALSE, message=FALSE}

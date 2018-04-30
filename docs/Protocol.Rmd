@@ -2,8 +2,10 @@
 title: "Matrix model error detection protocol"
 author: "Bruce E. Kendall"
 date: "4/19/2018"
-bibliography: "Protocol.bib"
-output: pdf_document
+bibliography: ["Protocol.bib", "Protocol2.bib"]
+output: 
+    pdf_document:
+        number_sections: true
 ---
 
 ```{r knitcitations, echo=FALSE}
@@ -31,6 +33,8 @@ If a study reports mulitiple models, choose the one that is is most completetely
 Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with stage $i$; $\phi_i$ is the fertility of stage $i$ (number of offspring produced by an individual who is in stage $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage $i$ individuals; $\gamma_i$ is the fraction of surviving stage $i$ individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 
 If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
+
+**Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `N/A` for all columns assocated with sections 3-5.
 
 # Match between database and source
 ## `MatrixModified`

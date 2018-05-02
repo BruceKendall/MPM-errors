@@ -22,7 +22,7 @@ The primary tasks require examining each assigned publication from COMPADRE & CO
 1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages 22-29 and figures 2.1, 2.13, and 2.14 in @Caswell2001. Fig. 7.3 of @Mills2007 may also be helpful.
 2. What survival value(s) are included in the reproduction transitions?
 3. Do maturing individuals reproduce at the age of first reproduction?
-4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
+4. Which classes (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
 
 Each of these conceptual questions has one or more variables to score, as detailed below. For each question, record both your response the `VariableName` field in the provided Excel file and, in the associated `VariableNameObs` field, the evidence supporting your conclusion.
 
@@ -30,7 +30,7 @@ Potential sources of information include the paper itself, supplementary informa
 
 If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to.
 
-Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with stage $i$; $\phi_i$ is the fertility of stage $i$ (number of offspring produced by an individual who is in stage $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of stage $i$ individuals; $\gamma_i$ is the fraction of surviving stage $i$ individuals who mature to the next stage. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same stage (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next stage (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
+Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $\phi_i$ is the fertility of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 
 If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
 
@@ -52,19 +52,19 @@ There are six possible responses, with most studies falling into the first three
 
 1. **Pre**: The youngest class in the matrix is one timestep old. Evidence for this includes
     a. the model is called a "pre-breeding census" in the publication.
-    a. the age of the class is explicitly stated in the publication and/or the stages of the model.
+    a. the age of the class is explicitly stated in the publication.
     b. The age of the class is unambigously implied by the name of the class in MatrixClassAuthor (e.g., "yearling" for a model with an annual timestep).
-    c. The description of the reproduction term explicitly describes survival from birth to the age of the stage.
+    c. The description of the reproduction term explicitly describes survival from birth to the age of the class.
 2. **Post**: The youngest class in the matrix is zero timesteps old. Evidence for this includes
     a. the model is called a "post-breeding census" in the publication.
-    a. the age of the class is explicitly stated in the publicatoin and/or the stages of the model.
+    a. the age of the class is explicitly stated in the publication.
     b. The age of the class is unambigously implied by the name of the class (e.g., "seed", "egg" or "neonate").
-    b. The stage into which the youngest stage matures **next** is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep). 
+    b. The class into which the youngest class matures **next** is unambiguously one timestep old (e.g., "yearling" for a model with an annual timestep). 
     c. The description of the reproduction term explicitly describes a full timestep of survival by the parent.
 3. **Post+**: The yougest class in the matrix is a small fraction of a timestep old (e.g., "fledglings"), and the next class is unambiguously a full timestep old.
-4. **Mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent stages likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
+4. **Mid**: The youngest class in the matrix is approximately half a timestep old, and subsequent classes likewise have non-integer ages (1.5, etc.). This is unusual enough that it will probably be explicitly described in the model description; other evidence includes explicit treatment of half-timestep survival in the reproduction terms.
 5. **Flow**: The model is representing a continuously breeding life history ("birth-flow"). Again, this is unusual, and methods taken to discretize the continuous breeding should be prominent in the model description.
-6. **Ambiguous**: In some cases, the youngest class has a name suggesting a range of ages (e.g., "Age 0-1"). Unless the model is a birth-flow population, this nomenclature is *not* meant to represent a stage with a range of ages, but rather represents a lack of understanding by the authors that the class is supposed to represent a snapshot in time, rather than the ages spanned by a timestep. If it is possible to determine the census type using other information, choose the appropriate option above; if not, choose this option.
+6. **Ambiguous**: In some cases, the youngest class has a name suggesting a range of ages (e.g., "Age 0-1"). Unless the model is a birth-flow population, this nomenclature is *not* meant to represent a class with a range of ages, but rather represents a lack of understanding by the authors that the class is supposed to represent a snapshot in time, rather than the ages spanned by a timestep. If it is possible to determine the census type using other information, choose the appropriate option above; if not, choose this option.
 6. **Unknown**: The census type cannot be determined from the information in the publication, for reasons other than the ambiguity in the previous option.
 
 ### Examples
@@ -81,7 +81,7 @@ Possible values include:
 
 1. **None**: each value in the F matrix equals the corresponding fertility in the life table. Symbolically, $F_{1,i} = \phi_i$.
 2. **Offspring**: each value of the F matrix equals the parent's fertility multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = \phi_i \sigma_0$.
-3. **Parent**: each value of the F matrix represents the parent's one-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive stage that does not mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive stage maturing into a reproductive stage), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive stage that can either stay in the same stage or mature into a subsequent reproductive stage).
+3. **Parent**: each value of the F matrix represents the parent's one-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive class that does not mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive class maturing into a reproductive class), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive class that can either stay in the same class or mature into a subsequent reproductive class).
 3. **OffsetParent**: this has parent survival, combined with the fertility associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i \phi_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
 4. **Parent | EarlyOffspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling).
 5. **PartialParent | PartialOffspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$.
@@ -107,9 +107,9 @@ What is the mean age at first reproduction? Determine this from either
 
 The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "N/A". [See issue #6]
 
-## `StageFirstRep`
-What is the first reproductive stage?
-Record the youngest stage with a non-zero fertility, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the stage that is used in COMADRE or COMPADRE. 
+## `ClassFirstRep`
+What is the first reproductive class?
+Record the youngest class with a non-zero fertility, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
 
 > For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
@@ -119,26 +119,26 @@ Is there a non-zero value in the F matrix associated with the nonreproductive cl
 
 > For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, late juveniles, which are nonreproductive, mature into early adults, which are reproductive. Looking at the matrix in Fig. 5c of the paper reveals that the late juveniles (class 3) have a nonzero value in matrix element in the first row, indicating reproduction. Confusingly, Fig. 5b shows zero in this position. Consulting the F matrix in COMADRE, we see a nonzero value for element 1,3, indicating that Fig. 5c represents what was actually done in implementing the model. Thus the value `Yes` should be recorded.
 
-> In contrast, `r citet("Morris_2010")` have "Adults" as the first reproductive stage and "Juveniles" as the prereproductive stage. Looking at the matrix (eq. 1), there is no fertility entry associated with the Juvenile column, so the answer is `No`.
+> In contrast, `r citet("Morris_2010")` have "Adults" as the first reproductive class and "Juveniles" as the prereproductive class. Looking at the matrix (eq. 1), there is no fertility entry associated with the Juvenile column, so the answer is `No`.
 
 # "Long" development stages
-In this section, you will focus on the stages in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. Do not include terminal stages with no upper bound on stage duration (typically "Adult")
+In this section, you will focus on the classes in the model (if any) that (a) represent a qualitative development stage in the life cycle (i.e., are not defined simply by a size range) and (b) last for longer than one timestep. Do not include terminal stages with no upper bound on stage duration (typically "Adult")
 
 ## `LongStages`
-Long developmetal stages can be identified by 
+Long developmetal stage classes can be identified by 
 
-a. finding the stages that are described as developmental stages in the life history description in the published source;
+a. finding the classes that are described as developmental stages in the life history description in the published source;
 b. For each, examining the associated column of the U matrix to determine wether there is a non-zero value on the diagonal of the matrix.
 
-Record these using the stage names in COMADRE or COMPADRE. If there is more than one such stage in the model, separate them with a vertical bar and a space before and after the bar (e.g., "Juvenile | Subadult"). If there are no such stages in the model, write "None".
+Record these using the class names in COMADRE or COMPADRE. If there is more than one such class in the model, separate them with a vertical bar and a space before and after the bar (e.g., "Juvenile | Subadult"). If there are no such classes in the model, write "None".
 
 ### Examples
-- `r citet("10.1577/M08-034.1")` have 4 candidate long stages: early and late juveniles, and early and late adults. They say (p. 1071) "the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus early and late juveniles are each meant to span multiple years (12 each) and indeed they have nonzero values on the diagonal in Fig. 5C. Regarding adults, they say "The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age when TL is 95% of $L_{\infty}$." Thus these would also be long stages unless the total adult duration was only 2 years. Table 6 shows the maximum reproductive ages ("MRA") for each of the modeled populations, which range from 36 to 71. Thus, subtracting the length of the juvenile class, the adult classes span at least 12 years. Again, they have non-zero elements on the diagonal of the matrix. Although the late adult stage is terminal, it is clear from the description that the stage is intended not to be indefinite, and indeed the diagonal element includes a term in $\gamma_5$, which represents "maturing" into death. So both juvenile stages and both adult stages should be included. The author does not capitalize these stage names, but looking at the relevant entry in COMADRE reveals that they are capitalized in the database, so this should be recorded as `Early juvenile | Late juvenile | Early adult | Late adult`.
+- `r citet("10.1577/M08-034.1")` have 4 candidate long stages: early and late juveniles, and early and late adults. They say (p. 1071) "the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus early and late juveniles are each meant to span multiple years (12 each) and indeed they have nonzero values on the diagonal in Fig. 5C. Regarding adults, they say "The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age when TL is 95% of $L_{\infty}$." Thus these would also be long stages unless the total adult duration was only 2 years. Table 6 shows the maximum reproductive ages ("MRA") for each of the modeled populations, which range from 36 to 71. Thus, subtracting the length of the juvenile class, the adult classes span at least 12 years. Again, they have non-zero elements on the diagonal of the matrix. Although the late adult stage is terminal, it is clear from the description that the stage is intended not to be indefinite, and indeed the diagonal element includes a term in $\gamma_5$, which represents "maturing" into death. So both juvenile stages and both adult stages should be included. The author does not capitalize these class names, but looking at the relevant entry in COMADRE reveals that they are capitalized in the database, so this should be recorded as `Early juvenile | Late juvenile | Early adult | Late adult`.
 
 ## `MeanStageDuration`
 For each of the long developmental stages, record the mean development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "N/A"
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "N/A"
 
 ### Examples
 - As described above `r citet("10.1577/M08-034.1")` have 4 long stages. The two juvenile stages are described as being half of the total juvenile duration, given as 24 years; since the timestep is one year, each of these stages has duration 12 (actually, there is some ambiguity, as the juvenile stage does not include the first year of life; if age at maturity is 24, then the juvenile stages collectively span 23 years, and each should have a duration of 11.5. The paper is unclear on this, which could be documented in the notes). For the adult stages, each is half of the adult lifespan, which differs between populations. Suppose you had selected the first population in the database (row 2, after the mean matrix) ; "Western Hudson Bay." Looking at Table 2 in the paper, this is DU 1, which, in Table 6, has MRA (maximum reproductive age) of 59. Subtracting the age at maturity from this gives 35 years of adulthood, which needs to be split between the two adult classes. Thus you would record `12 | 12 | 17.5 | 17.5`
@@ -146,7 +146,7 @@ Record them as numeric values, in units of timesteps. If there is more than one 
 ## `VarStageDuration`
 For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table. The focus here is on variation among individuals (e.g. some individuals mature earler than others), rather than variation among populations or between years.
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such stages in the model, write "N/A".
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "N/A".
 
 If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "Unknown".
 
@@ -154,7 +154,7 @@ If a variance is not mentioned, but it is clear from the life history descriptio
 - As described above `r citet("10.1577/M08-034.1")` have 4 long stages. Although Table 1 gives a range of values for age at maturity, it is unclear whether this represents variation among individuals, populations, or years. Table 6 gives different maximum adult ages, but that represents variation among populations. The authors do not state that there is *not* among-individual variation in maturation age and maximum reproductive age, so this is best coded as `Unknown`.
 
 ## `GrowthTransition`
-For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such stages in the model, write "N/A"; otherwise choose from the following:
+For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such classes in the model, write "N/A"; otherwise choose from the following:
 
 1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001, p. 160). The rule might be stated in the methods (e.g., `r citet("Morris_2010")` p. 8); if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
 2. **Cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated in the methods (e.g. CITATION?), or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by `r citet("10.2307/1939225")` [, equation 1, p 1415], which might be cited.

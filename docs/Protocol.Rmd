@@ -30,7 +30,7 @@ Potential sources of information include the paper itself, supplementary informa
 
 If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to.
 
-Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $\phi_i$ is the fertility of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
+Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $m_i$ is the maternity of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 
 If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
 
@@ -74,17 +74,17 @@ There are six possible responses, with most studies falling into the first three
 - `r citet("10.1111/j.1600-0633.2005.00084.x")` state (p. 128) "Life table analysis was undertaken using the formulae for the case of overlapping generations and birth-flow populations developed by Leslie (1945) and more recently reviewed by Caswell (2001)." Furthermore, the end of the paragraph at the top of the second column of the page gives formulas for "$S_i$" (survival) and "$E_i$" (fertility) that match those in section 2.4.1 of Caswell (2001). Thus the study would be coded `Flow`.
 
 # Survival in reproduction
-Each transition in the F matrix should contain both a fertility (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model (See equation X in CITATION FOR COMADRE, See equation Y in CITATION FOR COMPADRE), and/or by comparing listed values of survival and fertility (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the databases).
+Each transition in the F matrix should contain both a maternity (number of newborns produced by an individual of that age) and a survival (of the parent and/or the offspring, depending on the type of census). The evidence for determining which survival (if any) is included in the F matrix can come from a symbolic representation of the model (See equation X in CITATION FOR COMADRE, See equation Y in CITATION FOR COMPADRE), and/or by comparing listed values of survival and maternity (often presented in a life table) with the quantitative values of the F matrix (read from the appropriate rows of the model presented in the source, or from the F matrix in the databases).
 
 ## `SurvInRep`
 Possible values include:
 
-1. **None**: each value in the F matrix equals the corresponding fertility in the life table. Symbolically, $F_{1,i} = \phi_i$.
-2. **Offspring**: each value of the F matrix equals the parent's fertility multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = \phi_i \sigma_0$.
-3. **Parent**: each value of the F matrix represents the parent's one-timestep survival times its fertility at the end of the timestep. Possible values include: $F_{1,i} = P_i \phi_i$ (for a reproductive class that does not mature further), $F_{1,i} = G_i \phi_{i+1}$ (for a pre-reproductive class maturing into a reproductive class), or $F_{1,i} = P_i \phi_i + G_i \phi_{i+1}$ (for a reproductive class that can either stay in the same class or mature into a subsequent reproductive class).
-3. **OffsetParent**: this has parent survival, combined with the fertility associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i \phi_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
+1. **None**: each value in the F matrix equals the corresponding maternity in the life table. Symbolically, $F_{1,i} = m_i$.
+2. **Offspring**: each value of the F matrix equals the parent's maternity multiplied by the survival from birth to age one. Symbolically, $F_{1,i} = m_i \sigma_0$.
+3. **Parent**: each value of the F matrix represents the parent's one-timestep survival times its maternity at the end of the timestep. Possible values include: $F_{1,i} = P_i m_i$ (for a reproductive class that does not mature further), $F_{1,i} = G_i m_{i+1}$ (for a pre-reproductive class maturing into a reproductive class), or $F_{1,i} = P_i m_i + G_i m_{i+1}$ (for a reproductive class that can either stay in the same class or mature into a subsequent reproductive class).
+3. **OffsetParent**: this has parent survival, combined with the maternity associated with the class at the *beginning* of the timestep rather than the end (e.g., $F_{1,i} = G_i m_i$). This is most often seen in age-structured models, where $G_i = \sigma_i$.
 4. **Parent | EarlyOffspring**: like the `parent` case, but where the first class is a small time into the first timestep (e.g., fledglings). The terms from the `parent` case are multiplied by the relevant partial-timestep survival of the offspring (e.g., egg to fledgling).
-5. **PartialParent | PartialOffspring**: For models in which reproduction is in the middle of a timestep. Fertility is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} \phi_i P_0^{1-\tau}$.
+5. **PartialParent | PartialOffspring**: For models in which reproduction is in the middle of a timestep. maternity is multiplied by partial-timestep survival of the parent and partial-timestep survival of the offspring. For reproduduction occuring at fraction $\tau$ through a timestep, this might be represented, e.g., $F_{1,i} = P_i^{\tau} m_i P_0^{1-\tau}$.
 6. **Unknown**: The answer cannont be determined from the information in the source publication and the database.
 
 ### Examples
@@ -103,13 +103,13 @@ What is the mean age at first reproduction? Determine this from either
 
 > For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively." Thus, the mean age of first reproduction is 24, which is what should be recorded.
 
-- The age associated with the first non-zero fertility in the life table (e.g. xxxxx).
+- The age associated with the first non-zero maternity in the life table (e.g. xxxxx).
 
 The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "N/A". [See issue #6]
 
 ## `ClassFirstRep`
 What is the first reproductive class?
-Record the youngest class with a non-zero fertility, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
+Record the youngest class with a non-zero maternity, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
 
 > For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 

@@ -19,7 +19,7 @@ The goal of this document is to establish potential mistakes in the compilation 
 The primary tasks require examining each assigned publication from COMPADRE & COMADRE to determine the following aspects:
 
 1. Does the model in COMADRE or COMPADRE match the one in the source paper?
-1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages XXX-XXX and figure YYY in Caswell (2001).
+1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages 22-29 and figures 2.1, 2.13, and 2.14 in @Caswell2001. Fig. 7.3 of @Mills2007 may also be helpful.
 2. What survival value(s) are included in the reproduction transitions?
 3. Do maturing individuals reproduce at the age of first reproduction?
 4. Which stages (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
@@ -87,6 +87,7 @@ Possible values include:
 6. **Unknown**: The answer cannont be determined from the information in the source publication and the database.
 
 ### Examples
+- In @Crouse_1987, the column labeled "Fecundity" in the life table given in Table 3 is evidently maternity (its units are eggs per year). These exact maternity values have been placed in the top row of the matrix in Table 4, unmodified by survival terms. Thus the model would be classified as `None`.
 - As descrived above, `r citet("10.1007/s10530-010-9786-8")` includes egg survival in the reproductive term (see their Table 1). However, this only spans 10% of the timestep (eggs are said to hatch in 3 days; timestep is one month). Thus there is no survival term that spans the whole timestep and the model would be classified as `None`.
 - `r citet("10.1577/M08-034.1")`, in the synbolic matrix in Fig. 5c, have all three of the forms described under **Parent** above (for late juveniles, early adults, and late adults, respectively) (they use $f_i$ rather than $\phi_i$ for the maternity function). So this model would be classified as `Parent`.
 
@@ -154,8 +155,8 @@ If a variance is not mentioned, but it is clear from the life history descriptio
 For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such stages in the model, write "N/A"; otherwise choose from the following:
 
 1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001, p. 160). The rule might be stated in the methods (e.g., `r citet("Morris_2010")` p. 8); if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
-2. **Cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated in the methods (e.g. CITATION?), or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by Crouse et al. (1987. equation 1, p 1415), which might be cited.
-3. **Caswell6.103**: The formula given by Caswell (2001, p. 161) eq. 6.103 ("Fixed stage durations"), involving terms in $\sigma_i/\lambda_1$, where $\lambda_1$ is the asymptotic growth rate. Might also refer to Crowder et al (1994, equation 1, p 444).
+2. **Cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated in the methods (e.g. CITATION?), or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by `r citet("10.2307/1939225")` [, equation 1, p 1415], which might be cited.
+3. **Caswell6.103**: The formula given by Caswell (2001, p. 161) eq. 6.103 ("Fixed stage durations"), involving terms in $\sigma_i/\lambda_1$, where $\lambda_1$ is the asymptotic growth rate. Might also refer to `r citet("10.2307/1941948")` [, equation 1, p 444].
 4. **Observed**: Based on observed transition rates from complete censuses or a multistate capture-mark-recaupture model.
 5. **Unrolled**: In the matrix model, the stage has been replaced by $\bar{T}_i$ age classes, each with the same survival and fertility.
 6. **Variable**: Based on one of the formulas in Caswell (2001), section 6.4.3 ("Variable stage durations"). Makes use of the variance in development time.

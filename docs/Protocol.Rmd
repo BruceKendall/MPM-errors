@@ -107,7 +107,7 @@ The entry should be a number, in units of timesteps; if reproductive maturity is
 
 ## `StageFirstRep`
 What is the first reproductive stage?
-Record the youngest stage with a non-zero fertility, ideally determined from the life table or the text description of the population. Record it as the name of the stage that is used in COMADRE or COMPADRE. 
+Record the youngest stage with a non-zero fertility, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the stage that is used in COMADRE or COMPADRE. 
 
 > For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
@@ -170,6 +170,8 @@ If the rule is different from any of the above, write "other" and describe the d
 
 ### Examples
 - `r citet("10.1577/M08-034.1")` state (p. 1072) "the term $\gamma_j$ is calculated from a geometric distribution of $1/T_j$ ($T_j$ = duration of stage $j$ in years)." The phrase "calculated from" (as opposed to "calculated as") is somewhat ambiguous, but the best interpretation of this is that they used $\gamma_i = 1/\bar{T}_i$, and the study would be classified as `1/Tbar`.
+- @Crouse_1987 [, p 1415] describes the derivation of $G$ in terms of a "cohort," and gives equations that are mathematically equivalent to those under **Cohort** above. Thus this model would be classified `Cohort`.
+- @Crowder_1994 Give their formula for $\gamma$ in eq. (1) of their Appendix 1. It is clearly meant to represent Caswell's (2001) eq. (6.103) (actually it is based on the same formula from the first edition of Caswell's book), but as written the numerator and denominator are not properly grouped. The latter is probably just a typo introduced in the manuscript, so classify this as `Caswell6.103`
 - `r citet("10.1890/07-1672.1")` say (p. 2246) "We partitioned stage-specific survival estimates into "stasis" and "growth" components using the observed proportion of individuals that remained in the same size class over a four-week period vs. those that grew to a larger size class." Thus this would be classified as `Observed`.
 
 # References

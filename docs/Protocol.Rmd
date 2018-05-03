@@ -28,7 +28,16 @@ Each of these conceptual questions has one or more variables to score, as detail
 
 Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the matrix population model directly in the COMADRE or COMPADRE databases, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "Unknown."
 
-If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to.
+If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to. Because the database does not currently have a unique ID associated with each model, this needs to be specified through one or more values of SpeciesAuthor,
+MatrixPopulation,
+MatrixTreatment,
+MatrixStartYear,
+MatrixStartSeason,
+MatrixStartMonth,
+MatrixEndYear,
+MatrixEndSeason, or
+MatrixEndMonth.
+Typically one of these will be sufficient to uniquely identify a model within a study, but sometimes you may need a second (e.g., SpeciesAuthor and MatrixPolulation). To record this, choose the identifying field in **MatrixIDField** and record the value from the database in **MatrixIDvalue**. If you need a second field to uniquely identify the model, add it using **MatrixIDfield2** and **MatrixIDvalue2**.
 
 Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $m_i$ is the maternity of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
 

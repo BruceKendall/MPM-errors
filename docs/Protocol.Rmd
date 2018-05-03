@@ -28,6 +28,23 @@ Each of these conceptual questions has one or more variables to score, as detail
 
 Potential sources of information include the paper itself, supplementary information associated with the paper, and papers cited by the paper. If the model is not presented in any of those places, look at the matrix population model directly in the COMADRE or COMPADRE databases, as that was presumably obtained by personal communication with the author. If any of the answers remains indeterminate after consulting all of these sources, code it as "Unknown."
 
+
+Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $m_i$ is the maternity of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
+
+If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
+
+**Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `N/A` for all columns assocated with sections 4-6.
+
+# Match between database and source
+Use the **Author,	Journal,	YearPublication,** and	**DOI.ISBN** fields to record the citation information exactly as it appears in the database. If the citation info in the database is incorrect (e.g., the doi has a typo or points to a different paper than is given by the rest of the citation information, or the model description and parameterization is actually in a different source than the one cited in the database), then use the appropriate **XXX.corr** field(s) to record the corrected information.
+
+## `MatrixModified`
+For each study that actually shows the matrix population model, check that the matrix in COMADRE or COMPADRE is the the same.  Options: "Yes" | "No"
+
+## `MatrixModifiedObs`
+If "Yes" in MatrixModified, above, record what has been changed (e.g. element f3,2 has been adjusted for pre-breeding census; element u1,2 has bee adjusted for uneven state duration).
+
+# Selecting a focal model from the study
 If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to. Because the database does not currently have a unique ID associated with each model, this needs to be specified through one or more values of SpeciesAuthor,
 MatrixPopulation,
 MatrixTreatment,
@@ -38,21 +55,6 @@ MatrixEndYear,
 MatrixEndSeason, or
 MatrixEndMonth.
 Typically one of these will be sufficient to uniquely identify a model within a study, but sometimes you may need a second (e.g., SpeciesAuthor and MatrixPolulation). To record this, choose the identifying field in **MatrixIDField** and record the value from the database in **MatrixIDvalue**. If you need a second field to uniquely identify the model, add it using **MatrixIDfield2** and **MatrixIDvalue2**. For example, @V_lez_Espino_2009 describe models for multiple populations (called "designatable units" in the paper); to select DU #1 (labeled "Western Hudson Bay" in Table 2), select `MatrixPopulation` for **MatrixIDField** and enter `Western Hudson Bay` in **MatrixIDvalue**. Always make sure to enter the value exactly as it is entered in the database (sometimes capitalization differs from the original paper).
-
-Notation: in the formulas referenced below, $i$ refers to a stage or age class, $U_i$, $F_i$ and $C_i$, are the element in the **U**, **F**, and **C** matrices, respectively, associated with class $i$; $m_i$ is the maternity of class $i$ (number of offspring produced by an individual who is in class $i$ at the moment of reproduction); $\sigma_i$ is the per-timestep survival rate of class $i$ individuals; $\gamma_i$ is the fraction of surviving class $i$ individuals who mature to the next class. $P_i = (1-\gamma_i) \sigma_i$ is the fraction of individuals who survive and stay in the same class (found along the diagonal of the matrix) and $G_i = \gamma_i \sigma_i$ is the fraction that survive and mature to the next class (on the subdiagonal). So it must be noted that $U_i$ comes in two flavours: $P_i$ (stasis) and $G_i$ (progression)
-
-If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
-
-**Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `N/A` for all columns assocated with sections 3-5.
-
-# Match between database and source
-Use the **Author,	Journal,	YearPublication,** and	**DOI.ISBN** fields to record the citation information exactly as it appears in the database. If the citation info in the database is incorrect (e.g., the doi has a typo or points to a different paper than is given by the rest of the citation information, or the model description and parameterization is actually in a different source than the one cited in the database), then use the appropriate **XXX.corr** field(s) to record the corrected information.
-
-## `MatrixModified`
-For each study that actually shows the matrix population model, check that the matrix in COMADRE or COMPADRE is the the same.  Options: "Yes" | "No"
-
-## `MatrixModifiedObs`
-If "Yes" in MatrixModified, above, record what has been changed (e.g. element f3,2 has been adjusted for pre-breeding census; element u1,2 has bee adjusted for uneven state duration).
 
 # Census type
 Look for two types of information: statements about the structure of the model (e.g., "we constructed a pre-breeding census model") and description of the youngest stage/age class (identified by the row or rows of nonzero values in the F matrix in variable `MatrixClassAuthor`). The first sort of claim should be checked by consulting the stage description, to ensure that the authors actually constructed the model they intended.

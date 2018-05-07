@@ -33,7 +33,7 @@ Notation: in the formulas referenced below, $i$ refers to a stage or age class, 
 
 If you find that you cannot make sense of the protocol or are not sure how it applies to a particular source, please contact Bruce Kendall (kendall@bren.ucsb.edu) or Rob Salguero-Gomez (rob.salguero@zoo.ox.ac.uk) immediately for further clarification, including the attached paper of interest and the question/doubt. Best if the excel file for that study is also attached and filled to the best of your abilities.
 
-**Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `N/A` for all columns assocated with sections 4-6.
+**Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `Not Applicable` for all columns assocated with sections 4-6.
 
 # Match between database and source
 Use the **Author,	Journal,	YearPublication,** and	**DOI.ISBN** fields to record the citation information exactly as it appears in the database. If the citation info in the database is incorrect (e.g., the doi has a typo or points to a different paper than is given by the rest of the citation information, or the model description and parameterization is actually in a different source than the one cited in the database), then use the appropriate **XXX.corr** field(s) to record the corrected information.
@@ -118,7 +118,7 @@ What is the mean age at first reproduction? Determine this from either
 
 - The age associated with the first non-zero maternity in the life table (e.g. xxxxx).
 
-The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "N/A". [See issue #6]
+The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "Not Applicable". [See issue #6]
 
 ## `ClassFirstRep`
 What is the first reproductive class?
@@ -151,7 +151,7 @@ Record these using the class names in COMADRE or COMPADRE. If there is more than
 ## `MeanStageDuration`
 For each of the long developmental stages, record the mean development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table.
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "N/A"
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "Not Applicable"
 
 ### Examples
 - As described above `r citet("10.1577/M08-034.1")` have 4 long stages. The two juvenile stages are described as being half of the total juvenile duration, given as 24 years; since the timestep is one year, each of these stages has duration 12 (actually, there is some ambiguity, as the juvenile stage does not include the first year of life; if age at maturity is 24, then the juvenile stages collectively span 23 years, and each should have a duration of 11.5. The paper is unclear on this, which could be documented in the notes). For the adult stages, each is half of the adult lifespan, which differs between populations. Suppose you had selected the first population in the database (row 2, after the mean matrix) ; "Western Hudson Bay." Looking at Table 2 in the paper, this is DU 1, which, in Table 6, has MRA (maximum reproductive age) of 59. Subtracting the age at maturity from this gives 35 years of adulthood, which needs to be split between the two adult classes. Thus you would record `12 | 12 | 17.5 | 17.5`
@@ -159,7 +159,7 @@ Record them as numeric values, in units of timesteps. If there is more than one 
 ## `VarStageDuration`
 For each of the long developmental stages, record the variance in development time of the stage. This should be inferred from the description of the life history, rather than from looking at the model itself. The information may appear in the text, or in a life table. The focus here is on variation among individuals (e.g. some individuals mature earler than others), rather than variation among populations or between years.
 
-Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "N/A".
+Record them as numeric values, in units of timesteps. If there is more than one long developmental stage in the model, separate the values with a vertical bar (e.g., "3 | 2"). If there are no such classes in the model, write "Not Applicable".
 
 If a variance is not mentioned, but it is clear from the life history description that all individuals have the same development time, enter 0 (zero) for the variance. Otherwise enter "Unknown".
 
@@ -167,7 +167,7 @@ If a variance is not mentioned, but it is clear from the life history descriptio
 - As described above `r citet("10.1577/M08-034.1")` have 4 long stages. Although Table 1 gives a range of values for age at maturity, it is unclear whether this represents variation among individuals, populations, or years. Table 6 gives different maximum adult ages, but that represents variation among populations. The authors do not state that there is *not* among-individual variation in maturation age and maximum reproductive age, so this is best coded as `Unknown`.
 
 ## `GrowthTransition`
-For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such classes in the model, write "N/A"; otherwise choose from the following:
+For the long developmental stages, record the rule or equation used to calculate the maturation transition rate ($G_i = \gamma_i \sigma_i$). In what follows, Tbar and $\bar{T}_i$ refer to the mean development time of the stage. If there are no such classes in the model, write "Not Applicable"; otherwise choose from the following:
 
 1. **1/Tbar**: $\gamma_i = 1/\bar{T}_i$. This is equation 6.99 or the "geometric distribution" in Caswell (2001, p. 160). The rule might be stated in the methods (e.g., `r citet("Morris_2010")` p. 8); if not, you can quickly test it by calculating whether $G_i = \sigma_i/\bar{T}_i$ (where $\sigma_i$ can be obtained from the life table or by summing column i of the U matrix).
 2. **Cohort**: $\gamma_i = \frac{\sigma_i^{\bar{T}_i}}{\sum_{\tau=1}^{\bar{T}_i} \sigma_i^{\tau}} = \frac{\sigma_i^{\bar{T}_i - 1} (1-\sigma_i)}{1 - \sigma_i^{\bar{T}_i}}$. The rule might be stated in the methods (e.g. CITATION?), or you may infer it from the logic given in the paper, especially if the demographic rates come from following a single cohort through development. It also is the formula given by `r citet("10.2307/1939225")` [, equation 1, p 1415], which might be cited.

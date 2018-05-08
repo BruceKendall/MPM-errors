@@ -11,7 +11,8 @@ dois <- unique(ssData$metadata$DOI.ISBN)
 ft_search(dois[1])
 test_pdfs <- ft_get(dois, type = "pdf")
 
-doitest <- "10.1093/jme/tjv112"
+doitest <- "10.1007/s00227-012-1933-6"
 tempdata <- subsetDB(comadre, DOI.ISBN == doitest)
-tempdata
-convert2flat(tempdata)
+
+convert2flat(tempdata)[1,]
+tempdata$mat[[1]]$matA

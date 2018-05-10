@@ -33,4 +33,12 @@ sample_21 <- sample(row.names(study_list_21), size = 60, replace = FALSE)
 
 full_sample <- c(row.names(study_list_20), sample_21)
 
-# Now augment to ensure good dev coverage in developmental stages
+# Randomize the order
+full_sample <- sample(full_sample)
+
+sample_details <- comadre$metadata[full_sample, c("Authors", "Journal", 
+                                                  "YearPublication", 
+                                                  "DOI.ISBN")]
+
+write.csv(sample_details, "reports/comadre_sample.csv", quote = FALSE, 
+          fileEncoding = "UTF-8", row.names = FALSE)

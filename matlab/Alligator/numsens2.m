@@ -1,54 +1,70 @@
 function sens=numsens2
-%% Numerical Differentiation to Calculate Sensitivity
-%% Matching Proportion with lambda (Fixed Stage Duration with discounting with Lambda)
-% Paramters in the paper
-Ml=0.350;
-Ma=0.052;
-Mj=0.165;
-rho=0.46;
-Dl=30;
-Me=0.310;
-f=194577;
-De=3;
-% The finite Survival Rates.
-Se=exp(-Me*De);
-Sl=exp(-Ml*Dl);
-Sj=exp(-Mj);
-Sa=exp(-Ma);
-% Parameters at which lambda is evaluated
-P=zeros(100,4,4);
-P(:,1,1)=linspace(Sl,Sl+0.0000001,100)';
-P(:,2,1)=ones(100,1)*Sj;
-P(:,3,1)=ones(100,1)*Sa;
-P(:,4,1)=ones(100,1)*f;
-P(:,1,2)=ones(100,1)*Sl;
-P(:,2,2)=linspace(Sj,Sj+0.0001,100)';
-P(:,3,2)=ones(100,1)*Sa;
-P(:,4,2)=ones(100,1)*f;
-P(:,1,3)=ones(100,1)*Sl;
-P(:,2,3)=ones(100,1)*Sj;
-P(:,3,3)=linspace(Sa,Sa+0.0001,100)';
-P(:,4,3)=ones(100,1,1)*f;
-P(:,1,4)=ones(100,1,1)*Sl;
-P(:,2,4)=ones(100,1,1)*Sj;
-P(:,3,4)=ones(100,1,1)*Sa;
-P(:,4,4)=linspace(f,f+0.01,100)';
-for PAR=1:4
+% Numerical calculation of sensitivity
+%% Parameters given in the paper
+s0=0.54;
+s1=0.38;
+s2=0.78;
+s3=0.73;
+s4=0.83;
+fn=2.37;
+d2n=7;
+d3n=7;
+P=zeros(100,5,5);
+P(:,1,1)=linspace(s1,s1+0.0001,100)';
+P(:,2,1)=ones(100,1)*s2;
+P(:,3,1)=ones(100,1)*s3;
+P(:,4,1)=ones(100,1)*s4;
+P(:,5,1)=ones(100,1)*fn;
+P(:,1,2)=ones(100,1)*s1;
+P(:,2,2)=linspace(s2,s2+0.0001,100)';
+P(:,3,2)=ones(100,1)*s3;
+P(:,4,2)=ones(100,1)*s4;
+P(:,5,2)=ones(100,1)*fn;
+P(:,1,3)=ones(100,1)*s1;;
+P(:,2,3)=ones(100,1)*s2;
+P(:,3,3)=linspace(s3,s3+0.0001,100)';
+P(:,4,3)=ones(100,1)*s4;
+P(:,5,3)=ones(100,1)*fn;
+P(:,1,4)=ones(100,1)*s1;;
+P(:,2,4)=ones(100,1)*s2;
+P(:,3,4)=ones(100,1)*s3;
+P(:,4,4)=linspace(s4,s4+0.0001,100)';
+P(:,5,4)=ones(100,1)*fn;
+P(:,1,5)=ones(100,1)*s1;;
+P(:,2,5)=ones(100,1)*s2;
+P(:,3,5)=ones(100,1)*s3;
+P(:,4,5)=ones(100,1)*s4;
+P(:,5,5)=linspace(fn,fn+0.01,100)';
+for PAR = 1:5
     for j=1:100
-        Sl=P(j,1,PAR);
-        Sj=P(j,2,PAR);
-        Sa=P(j,3,PAR);
-        f=P(j,4,PAR);
         L=1;
         for k=1:100 % Iterative method to seek convergence of lambda
-            A=[0,rho*f*Se*Sa^(27/30)*(Sj/L).^10/sum((Sj/L).^[0:10])*Sj, rho*f*Se*Sa^(27/30);Sl,sum((Sj/L).^[0:9])/sum((Sj/L).^[0:10])*Sj,0;0,(Sj/L).^10/sum((Sj/L).^[0:10])*Sj,Sa];
+            s1=P(j,1,PAR);
+            s2=P(j,2,PAR);
+            s3=P(j,3,PAR);
+            s4=P(j,4,PAR);
+            fn=P(j,5,PAR);
+            A=zeros(4,4);
+            f3=s4^(9/12)*s0*fn;
+            P2=sum((s2/L).^[0:d2n-2])/sum((s2/L).^[0:d2n-1])*s2;
+            G2=(s2/L).^(d2n-1)/sum((s2/L).^[0:d2n-1])*s2;%
+            P3=sum((s3/L).^[0:d3n-2])/sum((s3/L).^[0:d3n-1])*s3;
+            G3=(s3/L).^(d3n-1)/sum((s3/L).^[0:d3n-1])*s3;%
+            A(2,1)=s1;
+            A(2,2)=P2;
+            A(3,2)=G2;
+            A(3,3)=P3;
+            A(4,3)=G3;
+            A(4,4)=s4;
+            A(1,4)=f3;
             L=max(real(eig(A)));
         end
         lambda(j)=L;
     end
     DP=P(:,PAR,PAR);
     lambda=lambda(:);
-    D=(lambda(2:end)-lambda(1))./(DP(2:end)-DP(1)); % Differences calcualted with different dx values 
+    D=(lambda(2:end)-lambda(1))./(DP(2:end)-DP(1)); % Differences calcualted with different dx values
     STATS=regstats(D,DP(2:end)-DP(1));
     sens(PAR)=STATS.beta(1); % Intercept gives the derivative
 end
+

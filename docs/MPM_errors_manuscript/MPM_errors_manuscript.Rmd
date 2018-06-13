@@ -87,7 +87,6 @@ Thus, in a post-breeding census, individuals that have just been born are classi
 This will make our exposition clearer, but it is important to note that our lifetables and age-structured models will therefor look different from most textbooks.
 
 ## Ensuring that the fertility transition spans a full timestep
-**Check Caswell's notation for stage-structured models and use that here** 
 In a life table (e.g., Table \ref{tab:lifetable}, age specific survival and birth rates look functionally equivalent. 
 But there is an important difference: survival (often denoted $P_x$ (most common, but has a different meaning in stage-structured models), $s_x$, or $\sigma_x$, where $x$ is the age or stage; we will use $\sigma_x$) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
 In contrast, the birth rate (typically denoted $b_x$ or $m_x$; we use the former) is instantaneous: it is the number of of offspring produced at time $t$ by an individual that is alive at time $t$. 
@@ -217,7 +216,10 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. 
 We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics, respectively [@Dunham2014]. 
-These studies made all three of the errors described above; we single them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
+These studies made all three of the errors described above; we singled them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
+All three of these models had other minor errors, which we corrected (while retaining the three focal errors) to create "baseline" models. 
+We then constructed models that fixed one, two, or three of the focal errors to see how these errors affect the model projections and conclusions.
+A full description of these models, and all outputs, are in Appendix A.
 
 ## Effects on asymptotic population growth rate ($\lambda$) 
 
@@ -267,7 +269,7 @@ Revisiting prior results
 - Syntheses
 
 # Acknowledgments {.unnumbered}
-This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol, and XXX, YYY, and ZZZ for carrying out the model evaluations.
+This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol, and [list of compadrinos who actually worked on the project] for carrying out the model evaluations.
 
 # References {#references .unnumbered}
 

@@ -79,7 +79,7 @@ This is potentially confusing, but most practitioners don't move between these m
 However, transitioning from an age-structured model (which is what all texbooks use for a detailed explanation of MPMs) to a stage-structured model creates huge problems, at least for post-breeding census models.
 This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
 The solution is for post-breeding census stage structured models to assign individuals to the stage class they were in at their recent birthday.
-This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILL DOES HERE]
+This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILLS DOES HERE]
 Thus it is not obvious to a novice that the carefully-explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
 
 To avoid the need to be pedantic when moving between age- and stage-structured models, we will apply the stage-structured convention to age-structured models.
@@ -201,12 +201,12 @@ plotmat(mat4, name = class_names, pos = pos, curve = curves,
 par(op)
 ```
 
-To get the timestep in there, we need to multiply $m_x$ by somebody's survival---either the parent or the offspring. 
-For a pre-breeding census model, the reproductive transition is $F_x = m_x p_0$: the parent, in class $x$, produces $m_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $p_0$ (Fig. \@ref(fig:lifecycles)b). 
+To get the timestep in there, we need to multiply $b_x$ by somebody's survival---either the parent or the offspring. 
+For a pre-breeding census model, the reproductive transition is $F_x = b_x \sigma_0$: the parent, in class $x$, produces $b_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $\sigma_0$ (Fig. \@ref(fig:lifecycles)b). 
 For an annual timestep, the transition $F_x$ represents the number of one-year-olds next year produced by an individual in class $x$ this year. 
 
 In a post-breeding census, the parent (which will have just reproduced if it is already an adult) must survive for a timestep, aging by a timestep and possibly maturing into a new class, and then reproduces with a birth rate appropriate to its class at the end of the timestep. 
-If we use $x'$ to denote the parent's class at time $t+1$, then the transision is $F_x = p_x m_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) next year produced next year by an individual that was in class $x$ this year. 
+If we use $x'$ to denote the parent's class at time $t+1$, then the transision is $F_x = \sigma_x b_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) next year produced next year by an individual that was in class $x$ this year. 
 Properly accounting for $x'$ is a separate challenge that we address in the next subsection.
 
 
@@ -216,7 +216,7 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. 
-We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics [@Dunham2014]. 
+We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics, respectively [@Dunham2014]. 
 These studies made all three of the errors described above; we single them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
 
 ## Effects on asymptotic population growth rate ($\lambda$) 

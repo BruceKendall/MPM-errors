@@ -63,12 +63,28 @@ This nomenclature problem likely has two sources. First, many texts introduce bi
 When that same term is applied to a class in a birth-pulse MPM, nontrivial cognitive effort is required to mentally redefine it (so that "Yearling" means age exactly one). 
 
 This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.
+An additional challenge is that most textbooks use inconsistent notation and subscripting conventions for age- and stage-structured models.
+Age-structured models follow a convention that makes sense for a continuously breeding species: an individual is assigned to an age class that is numbered with the individual's age at its *next* birthday (but note that this differs from colloquial use in most languages, where we identify a person's age with their *previous* birthday).
+When looking at a species with discrete breeding seasons, this convention is perfectly fine for a pre-breeding census model, as all individuals are just a tiny fraction of a timestep away from their next birthday, and an individual that is almost three years old will have characteristics almost indistinguishable from one that is exactly three years old.
+In contrast, for a post-breeding census model, this convention would identify an individual that is just a tiny bit past its third birthday as a four-year-old.
+This means that "$x$-year-old survival" (often denoted $P_x$) refers to survival from age $x$ to age $x+1$ in a pre-breeding census model, but from age $x-1$ to age $x$ in a post-breeding census model.
+
+This is potentially confusing, but most practitioners don't move between these models so it is probably not a large issue.
+However, transitioning from an age-structured model (which is what all texbooks use for a detailed explanation of MPMs) to a stage-structured model creates huge problems, at least for post-breeding census models.
+This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
+The solution is for post-breeding census stage structured models to assign individuals to the stage class they were in at their recent birthday.
+This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILL DOES HERE]
+Thus it is not obvious to a novice that the carefully-explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
+
+To avoid the need to be pedantic when moving between age- and stage-structured models, we will apply the stage-structured convention to age-structured models.
+Thus, in a post-breeding census, individuals that have just been born are classified as "age zero" or "newborn," with a subscript of zero.
+This will make our exposition clearer, but it is important to note that our lifetables and age-structured models will therefor look different from most textbooks.
 
 ## Ensuring that the fertility transition spans a full timestep
 **Check Caswell's notation for stage-structured models and use that here** 
 In a life table (e.g., Table 1), age specific survival and birth rates look functionally equivalent. 
-But there is an important difference: survival (often denoted $P_x$, $s_x$, or $\sigma_x$, where $x$ is the age or stage) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
-In contrast, the birth rate (typically denoted $b_x$ or $m_x$) is instantaneous: it is the number of of offspring produced at time $t$ by an individual that is alive at time $t$. 
+But there is an important difference: survival (often denoted $P_x$ (most common, but has a different meaning in stage-structured models), $s_x$, or $\sigma_x$, where $x$ is the age or stage; we will use $\sigma_x$) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
+In contrast, the birth rate (typically denoted $b_x$ or $m_x$; we use the former) is instantaneous: it is the number of of offspring produced at time $t$ by an individual that is alive at time $t$. 
 It is tempting to draw a life-cycle diagram like the one in Fig 1a (and we commonly see that in the litature). 
 While this works as a *conceptual* diagram, translaing it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each transition in the matrix must span a timestep, and $m_x$ does not accomplish that. 
 To get the timestep in there, we need to multiply $m_x$ by somebody's survival---either the parent or the offspring. 
@@ -83,7 +99,7 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 
 **Make 4 life cycle graphs to go with the life table, using `diagram`: Fx = mx (incorrect); post=breeding with no reproduction from subadults (incorrect); correct pre-breeding and post-breeding**
 
-*Talk about the terminology and symbology confusions that contribute to this problem*
+
 
 ## Matching the age at first reproduction to the species' life history
 

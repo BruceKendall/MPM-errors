@@ -215,7 +215,9 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 
 # Consequences of incorrect MPM construction
-We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics [@Dunham2014]. These studies made all three of the errors described above; we single them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
+We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. 
+We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics [@Dunham2014]. 
+These studies made all three of the errors described above; we single them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
 
 ## Effects on asymptotic population growth rate ($\lambda$) 
 

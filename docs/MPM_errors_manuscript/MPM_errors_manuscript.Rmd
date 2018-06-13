@@ -27,6 +27,7 @@ output:
     base_format: rticles::elsevier_article
     keep_tex: true
 numbersections: true
+layout: "12pt, 1p"
 linenumbers: true
 tables: true
 journal: "Ecological Modelling"

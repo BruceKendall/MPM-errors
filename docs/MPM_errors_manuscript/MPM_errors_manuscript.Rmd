@@ -234,6 +234,39 @@ There are further obstacles to any attempted finesse in more complicated models 
 In both stage- and age-structured models, failing to have the reproductive transition out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
+The final challenge is associated with estimating $\gamma_x$, the fraction of individuals maturing out of stage $x$.
+With longitudinal data on individuals, one can simply derive this from the observations, for example using multistate CMR models (CITE, although this is not guaranteed to be robust; see Discussion).
+However, in many cases, the goal is to combine information on stage-specific survival, often variously collected, with knowledge about the stage duration (the number of timesteps that individuals remain in a stage before maturing).
+If stage durations are fixed (e.g., all individuals mature after two years as juveniles), then the goal is to create a "stage-for-age" model (e.g., Ebert) where the mean stage duration in the model equals the fixed stage duration in the life history.
+Even where real stage durations are somewhat variable, if there is a well-defined mean stage duration, then we can still apire to have the modeled mean stage duration match the actual mean stage distribution.
+
+
+@Caswell2001 has a section of his book describing various ways of doing this.
+It's not clear that there is a single "best" approach, as the stage-structured model will never match the age-structured model in all ways (see Discussion).
+Nevertheless, the primary analyses performed on most published MPMs are to calculate the asymtotic growth rate ($\lambda$) and the sensitivity of $\lambda$ to underlying demographic parameters. 
+For these calculations, there is one (and only one) recipe to create a stage structured model that will generate the same results as the equivalent age-structured model with fixed stage durations.
+As best we can tell, it was first introduced by @Caswell1989, although its first application to an ecological populaton may have been by @Crowder1994; it is covered in Caswell's (2001) section on stage-structured models. 
+
+The basic idea is that $\gamma$ represents the fraction of individuals in the stage that have spent enough time in the stage to mature. 
+This, in turn, depends on the (virtual) age structure within the stage.
+In general, this age structure could have any form, depending on the recent history of the population; the one time it is well defined is when the population is at the stable age/stage distribution.
+This is exactly the condition for calculating $\lambda$.
+Under these conditions, there are two factors that affect the age distribution within the stage, and hence the fraction of individuals of an appropriate age to mature.
+The first is the stage-specific survival, which determines how a cohort shrinks as it ages.
+The second is the population growth rate, which determines the degree to which one year's entering cohort is larger or smaller than the previous one.
+This makes $\gamma$ non-trivial to calculate, as the resulting formula involves $\lambda$, which can only be calculated once the MPM has been constructed!
+The solution is an iterative approach: take an initial guess of $\lambda$, calculate $\gamma$ from the formula; calculate the dominant eigenvalue of the resulting matrix; use that as a new guess for $\lambda$; and repeat until the value of $\lambda$ stops changing.
+For someone used to programming, this is straighforward to implement; but non-modellers find this daunting, and we do not know of any programs that implement this algorithm, aside from some difficult-to-generalize Matlab code in @Morris2002a. **Check this out**
+
+Thus, non-modellers will be tempted by easier-to-calculate formulas. 
+Some discover a predecessor to the above formula [@Crouse1987] that had been developed for the same population studied by @Crowder1994.
+This formula is complex-looking but straighforward to calculate, as it doesn't require iteration (in incorporates the within-cohort dynamics, but *assumes* that $\lambda = 1$).
+An even simpler approach is to simply say that, if the stage duration is $T$ timesteps, then the fraction maturing is $1/T$. 
+This effectively assumes that the age distribution is perfectly flat.
+Its popularity probably stems not just from the fact that it is simple to calculate and explain, but because it is the first solution to the problem listed by @Caswell2001, who seems to endorse it. **Check Caswell's actual wording**
+
+We will refer to these as the "asymptotic age structure" (AAS) model, the "stationary age structure" (SAS) model (where "stationary" means that the population is neither growing nor declining), and the "flat age structure" (FAS) model.
+As mentioned above, only the AAS model will replicate $\lambda$ and its sensitivities from the fully age-structured model.
 
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. 

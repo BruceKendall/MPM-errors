@@ -210,12 +210,34 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 
 
 ## Matching the age at first reproduction to the species' life history
+In an age-structured population, the lowest age with a non-zero birth rate represents the age at first reproduction; let us call that $x_m$, for "age at [reproductive] maturity." 
+In a post-breeding census model, the individuals who are age $x_m$ at the end of the timestep, and have just reproduced for the first time, were age $x_m - 1$ at the beginning of the timestep. 
+This creates a reproductive transition from age class $x_m - 1$ to age class zero---the lower of the two reproductive transitions in Fig. \@ref(fig:lifecycles)d. 
+Embracing this transition requires overcoming cognitive dissonance---"juveniles" are reproducing!---and failure to do so results in models like that in Fig. \@ref(fig:lifecycles)c.
+Pre-breeding census models do not cause this problem, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
+
+This is also not a challenge for post-breeding census models if we follow the convention of associating the age class with the age at the individual's next birthday.
+Then the reproduction by newly maturing individuals is $F_{x_m} = P_{x_m} b_{x_m}$ (we use $P$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
+Indeed, this is a strong justification for the convention.
+However, this convention cannot be maintained when moving from age-structured to stage-structured models; since most animal MPMs are at least partially stage structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
+
+The simplest stage-structured model has newborns, a nonreproductive juvenile class that spans multiple timesteps, and reproductive adults (Fig. 2).
+**Make SS lifecycle graphs**
+Within the juvenile class, some individuals remain juveniles in the next timestep (should they survive), whereas others mature into adults.
+If $\gamma_j$ is the fraction surviving individuals that mature ("grow") at the end of the timestep, then the Juvenile--Juvenile transition is given by $P_j = \sigma_j (1-\gamma_j)$ and the Juvenile--Adult transition is given by $G_j = \sigma_j \gamma_j$. 
+This is true for both pre-breeding and post-breeding census models.
+However, for the latter, the individuals that made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
+Thus we need a reproductive transition leading out of the juvenile class---$F_j = G_j b_a$---which again seems to defy common sense.
+There is no way to finesse this in the way that has been done in age-structured models: if we classify individuals by their stage at their next birthday, so that the maturing individuals are called "adults," then we impose a constraint that individuals in the last year of the juvenile stage have the same survival as adults, which often isn't accurate.
+There are further obstacles to any attempted finesse in more complicated models in which individuals can "mature" into more than one subsequent class.
+
+In both stage- and age-structured models, failing to have the reproductive transition out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda$), sensitivity analysis of $\lambda$ to changes in underlying vital rates, and life history statistics such as generation time. 
-We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) with rapdily declining and nearly constant population dynamics, respectively [@Dunham2014]. 
+We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011], and a pair of American alligator (*Alligator mississippiensis*) models that project rapdily declining and nearly constant population dynamics, respectively [@Dunham2014]. 
 These studies made all three of the errors described above; we singled them out not because they are particularly egregious (many other studies make these errors) but because they do an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
 All three of these models had other minor errors, which we corrected (while retaining the three focal errors) to create "baseline" models. 
 We then constructed models that fixed one, two, or three of the focal errors to see how these errors affect the model projections and conclusions.

@@ -284,7 +284,16 @@ A full description of these models, and all outputs, are in Appendix A.
 
 # Prevalence of construction errors in published MPMs
 ## Methods
-Sampling of COMADRE/COMPADRE
+To evaluate the prevalence of these errors in published MPMs, we examined a sample of the studies contaned in the COMADRE animal matrix model database [@Salguero-Gomez2016]. 
+Using version 2.01 of the database, we subset the data to studies of nonhuman animals that had a DOI (as a simple filter to eliminate non-peer-reviewed studies). 
+This left 65 studies published prior to the year 2000, and roughly twice that number published from 2000 to 2018. 
+We retained all of the 20th century studies and took a random sample of 60 of the 21st century studies. 
+Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
+
+Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix 2). 
+This protocol was applied by NNN members of the COMADRE digitization team ("Compadrinos"), all graduate students in demography at the Max Planck Institute for Demographic Research.
+After initial training, consistency was ensured by having all members of the team, as well as the lead author of this paper, independently apply the protocol to the same set of papers until all were getting consistent results.
+If a question didn't apply (e.g., if it was not a stage-structure model), the answer was coded "NA;" if the answer could not be determined from the information in the publication, it was coded as "unknown."
 
 Questions related to fertility
 
@@ -295,6 +304,8 @@ Questions related to maturation
 Statistical analysis: means, trends through time
 
 ## Results
+*Note: The data collection by the Compadrinos is ongoing. Here we report an analysis based on data collected for the initial feasibility study for the project. The publications are recent and haphazardly chosen, but for this preliminary review we have analyzed and presented these data in the same form that we plan for the final dataset.*
+
 Fertility
 
 First reproduction

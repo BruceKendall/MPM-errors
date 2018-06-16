@@ -33,6 +33,11 @@ tables: true
 journal: "Ecological Modelling"
 ---
 
+```{r knitr_options, echo=FALSE, message=FALSE}
+show_code <- FALSE
+knitr::opts_chunk$set(echo = show_code, message = show_code, comment = NA)
+```
+
 # Introduction 
 The use of matrix population models (MPMs) for the ecological study of plants and animals has expanded rapidly in recent years [@Salguero-Gomez2015; @Salguero-Gomez2016].
 MPMs are a convenient way to synthesize demographic information about a population, and are useful in addressing ecological, evolutionary, and management questions [@Caswell2001; @Morris2002a].

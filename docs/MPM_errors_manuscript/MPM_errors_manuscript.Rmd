@@ -26,6 +26,7 @@ output:
   bookdown::pdf_book:
     base_format: rticles::elsevier_article
     keep_tex: true
+    fig_caption: true
 numbersections: true
 layout: "12pt, 1p"
 linenumbers: true
@@ -35,7 +36,8 @@ journal: "Ecological Modelling"
 
 ```{r knitr_options, echo=FALSE, message=FALSE}
 show_code <- FALSE
-knitr::opts_chunk$set(echo = show_code, message = show_code, comment = NA)
+knitr::opts_chunk$set(echo = show_code, message = show_code, warning = show_code,
+                      comment = NA)
 ```
 
 # Introduction 
@@ -311,11 +313,51 @@ Statistical analysis: means, trends through time
 ## Results
 *Note: The data collection by the Compadrinos is ongoing. Here we report an analysis based on data collected for the initial feasibility study for the project. The publications are recent and haphazardly chosen, but for this preliminary review we have analyzed and presented these data in the same form that we plan for the final dataset.*
 
-Fertility
+```{r get_data}
+library(xlsx)
+library(magrittr)
+library(tidyverse)
+data_file <- "Protocol_test_Kendall.xlsx"
+mpm_data <- as.tibble(read.xlsx(data_file, 1))
+```
+
+
+```{r rep_in_fec}
+mpm_data %<>% mutate(
+  FecCorrect = (CensusType == "Pre" & SurvInRep == "Offspring") |
+    (CensusType == "Post" & SurvInRep == "Parent")) 
+mpm_data <- within(mpm_data, 
+                 FecCorrect[SurvInRep %in% c("Unknown", "Not Applicable")] <- NA)
+FecCorrect.glm <- glm(!FecCorrect ~ YearPublication, data = mpm_data, 
+                      family = "binomial")
+FecCorrect.perc <- round(mean(mpm_data$FecCorrect, na.rm = TRUE) * 100)
+FecCorrect.n <- sum(!is.na(mpm_data$FecCorrect))
+FecCorrect.P <- round(summary(FecCorrect.glm)$coef[2,4], 3)
+FecCorrect.trend <- if (FecCorrect.P > 0.05) {
+  "did not change"
+} else if (coef(FecCorrect.glm)[2] > 0) {
+  "increased"
+} else {
+  "decreased"
+}
+```
+We were able to unambiguously identify the components of the fecundity term in `r FecCorrect.n` studies.
+`r FecCorrect.perc`% of these studies failed to include an appropriate survival component in the reproduction terms.
+The frequency of these errors `r FecCorrect.trend` over time ($P =$ `r FecCorrect.P`; Fig. \@ref(fig:regplots)a).
 
 First reproduction
 
 Maturation
+
+```{r regplots, fig.cap=cap}
+p <- ggplot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect))) + 
+  geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
+  geom_smooth(method = "gam",  method.args = list(family = "binomial", k=3)) +
+  theme_classic() + xlim(2010.95, 2015.05) + xlab("Publication year") +
+  ylab("Frequency of erroneous reproduction term")
+print(p)
+cap <- 'Trends in matrix population model construction errors through time.'
+```
 
 # Discussion
 Summary of impacts

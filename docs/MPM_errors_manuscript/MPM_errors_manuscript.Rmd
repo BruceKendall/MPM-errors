@@ -321,42 +321,61 @@ data_file <- "Protocol_test_Kendall.xlsx"
 mpm_data <- as.tibble(read.xlsx(data_file, 1))
 ```
 
+```{r error_stats}
+error_stats <- function(errmodel) {
+  error.perc <- round(mean(errmodel$model[[1]]) * 100)
+  error.n <- length(errmodel$model[[1]])
+  error.P <- round(summary(errmodel)$coef[2,4], 3)
+  error.trend <- if (error.P > 0.05) {
+    "had no detectable trend"
+  } else if (coef(errmodel)[2] > 0) {
+    "increased"
+  } else {
+    "decreased"
+  }
+  return(list(perc = error.perc,
+              n = error.n,
+              P = error.P,
+              trend = error.trend))
+}
+```
 
 ```{r rep_in_fec}
+## Errors in fecunidity term
 mpm_data %<>% mutate(
   FecCorrect = (CensusType == "Pre" & SurvInRep == "Offspring") |
     (CensusType == "Post" & SurvInRep == "Parent")) 
 mpm_data <- within(mpm_data, 
                  FecCorrect[SurvInRep %in% c("Unknown", "Not Applicable")] <- NA)
-FecCorrect.glm <- glm(!FecCorrect ~ YearPublication, data = mpm_data, 
+FecErrors.glm <- glm(!FecCorrect ~ YearPublication, data = mpm_data, 
                       family = "binomial")
-FecCorrect.perc <- round(mean(mpm_data$FecCorrect, na.rm = TRUE) * 100)
-FecCorrect.n <- sum(!is.na(mpm_data$FecCorrect))
-FecCorrect.P <- round(summary(FecCorrect.glm)$coef[2,4], 3)
-FecCorrect.trend <- if (FecCorrect.P > 0.05) {
-  "did not change"
-} else if (coef(FecCorrect.glm)[2] > 0) {
-  "increased"
-} else {
-  "decreased"
-}
+
+FecErrors <- error_stats(FecErrors.glm)
+FecErrors$post <- (sum(
+    with(mpm_data, CensusType[!FecCorrect] == "Post"), na.rm = TRUE
+  ) / sum(!mpm_data$FecCorrect, na.rm = TRUE)) * 100
+
 ```
-We were able to unambiguously identify the components of the fecundity term in `r FecCorrect.n` studies.
-`r FecCorrect.perc`% of these studies failed to include an appropriate survival component in the reproduction terms.
-The frequency of these errors `r FecCorrect.trend` over time ($P =$ `r FecCorrect.P`; Fig. \@ref(fig:regplots)a).
+We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
+`r FecErrors$perc`% of these studies failed to include an appropriate survival component in the reproduction terms; `r FecErrors$post`% of these errors were in post-breeding census models.
+The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
 
 First reproduction
 
 Maturation
 
-```{r regplots, fig.cap=cap}
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time.'}
+## Make plots
+# Create a function for the plot
+# Have x label only for last, y label only for middle
 p <- ggplot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect))) + 
   geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
   geom_smooth(method = "gam",  method.args = list(family = "binomial", k=3)) +
   theme_classic() + xlim(2010.95, 2015.05) + xlab("Publication year") +
-  ylab("Frequency of erroneous reproduction term")
-print(p)
-cap <- 'Trends in matrix population model construction errors through time.'
+  ylab("Error frequency in reproduction term")
+
+library(ggpubr)
+ggarrange(p, p, p, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
 ```
 
 # Discussion

@@ -374,6 +374,26 @@ ReproWithMatErr.glm <- glm(!ReproWithMatLogical ~ YearPublication,
 ReproWithMatErrors <- error_stats(ReproWithMatErr.glm)
 ```
 
+```{r stage_duration}
+mpm_data_ls <- mpm_data %>%
+  filter(!LongStages %in% c("0", "None")) %>%
+  mutate(
+    GrowthTransition = recode(GrowthTransition,
+                              Cohort = "SAS",
+                              "1/T" = "FAS",
+                              "Caswell6.103" = "AAS")
+  ) %>% droplevels()
+
+mpm_data_ls2 <- mpm_data_ls %>%
+  filter(GrowthTransition != "Unknown") %>% 
+  mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled")) %>%
+  droplevels()
+
+MatDurErr.glm <- glm(!GTcorrect ~ YearPublication, 
+                           data = mpm_data_ls2, family = "binomial")
+MatDurErrors <- error_stats(MatDurErr.glm)
+
+```
 We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
 `r FecErrors$perc`% of these studies failed to include an appropriate survival component in the reproduction terms; `r FecErrors$post`% of these errors were in post-breeding census models.
 The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
@@ -382,6 +402,9 @@ The potential for missing the reproductive event associated with first reaching 
 Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify reproductive transitions, `r ReproWithMatErrors$perc`% made this error.
 The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
 
+`r nrow(mpm_data_ls)` studies included models having at least one stage class that was meant to last for multiple timesteps; we were able to unambiguously classify the rule defining the maturation rate out of the stage(s) in `r MatDurErrors$n` of them.
+Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value of $\lambda$ that would match an age-structured model with the target mean stage duration (Fig. \@ref(fig:matdist)).
+The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurErrors$P`; Fig. \@ref(fig:regplots)c).
 
 Maturation
 
@@ -397,6 +420,13 @@ p <- ggplot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect))) +
 
 library(ggpubr)
 ggarrange(p, p, p, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+```
+
+```{r matdist, fig.cap="Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep."}
+ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
+  geom_bar(aes(group=factor(0), y = ..prop..)) +
+  theme_classic() +
+  xlab("Maturation rule") + ylab("Frequency")
 ```
 
 # Discussion

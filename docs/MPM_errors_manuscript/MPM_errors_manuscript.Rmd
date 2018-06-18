@@ -341,7 +341,7 @@ error_stats <- function(errmodel) {
 ```
 
 ```{r rep_in_fec}
-## Errors in fecunidity term
+## Errors in fecundity term
 mpm_data %<>% mutate(
   FecCorrect = (CensusType == "Pre" & SurvInRep == "Offspring") |
     (CensusType == "Post" & SurvInRep == "Parent")) 
@@ -356,11 +356,32 @@ FecErrors$post <- (sum(
   ) / sum(!mpm_data$FecCorrect, na.rm = TRUE)) * 100
 
 ```
+
+```{r mat_age}
+### Errors in age at maturity
+mpm_data_post <- mpm_data %>% 
+  filter(CensusType == "Post") %>%
+  mutate(
+    ReproWithMatLogical = as.logical(recode(ReproWithMaturation, 
+                                          "Not Applicable" = "NA", 
+                                          Unknown = "NA", 
+                                          Yes = "TRUE", 
+                                          No = "FALSE")) 
+)
+
+ReproWithMatErr.glm <- glm(!ReproWithMatLogical ~ YearPublication, 
+                           data = mpm_data_post, family = "binomial")
+ReproWithMatErrors <- error_stats(ReproWithMatErr.glm)
+```
+
 We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
 `r FecErrors$perc`% of these studies failed to include an appropriate survival component in the reproduction terms; `r FecErrors$post`% of these errors were in post-breeding census models.
 The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
 
-First reproduction
+The potential for missing the reproductive event associated with first reaching reproductive age is only a feature of post-breeding census models.
+Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify reproductive transitions, `r ReproWithMatErrors$perc`% made this error.
+The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
+
 
 Maturation
 

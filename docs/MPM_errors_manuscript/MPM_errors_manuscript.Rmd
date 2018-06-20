@@ -535,26 +535,21 @@ ggplot(mpm_data_ls2, aes(GrowthTransition)) +
 ```
 
 # Discussion
-Summary of impacts
+*[This outline will be fleshed out in the final version!]*
 
-Summary of prevalence
+A.  Summary of impacts
+B.  Summary of prevalence
+C.  Why does this happen? Most texts are imcomplete (especially for stage-structured models) and/or have incosistent or confusing notation. Talk about @Caswell2001 as example. Also, these are "threshold concepts."
+D.  Recommendations for practitioners:  
+    1. Use prebreeding census whenever possible
+    2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda$ and generation time.")
+E.  Recommendations for experts:
+    1. Develop handbooks and training materials that are both comprehensive and clear to novices (reference threhshold concepts)
+    2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
 
-Why does this happen? Most texts are imcomplete (especially for stage-structured models) and/or have incosistent or confusing notation. Pick on Caswell as example. Also, these are "threshold concepts."
-
-Recommendations for practitioners:  
-
-1. Use prebreeding census whenever possible
-2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda$ and generation time.")
-
-Recommendations for experts:
-
-1. Develop handbooks and training materials that are both comprehensive and clear to novices (reference threhshold concepts)
-2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
-
-Revisiting prior results
-
-- Inidividual studies
-- Syntheses
+F.  Revisiting prior results
+    1. Inidividual studies
+    2. Syntheses
 
 
 

@@ -21,7 +21,7 @@ The primary tasks require examining each assigned publication from COMPADRE & CO
 1. Does the model in COMADRE or COMPADRE match the one in the source paper?
 1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages 22-29 and figures 2.1, 2.13, and 2.14 in @Caswell2001. Fig. 7.3 of @Mills2007 may also be helpful.
 2. What survival value(s) are included in the reproduction transitions?
-3. Do maturing individuals reproduce at the age of first reproduction?
+3. Does the age of first reproduction *in the model* match the age of first reproduction *as described by the life history*?
 4. Which classes (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
 
 Each of these conceptual questions has one or more variables to score, as detailed below. For each question, record both your response the `VariableName` field in the provided Excel file and, in the associated `VariableNameObs` field, the evidence supporting your conclusion.

@@ -504,20 +504,27 @@ The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r R
 Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value of $\lambda$ that would match an age-structured model with the target mean stage duration (Fig. \@ref(fig:matdist)).
 The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurErrors$P`; Fig. \@ref(fig:regplots)c).
 
-Maturation
 
-```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time.'}
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in reproduction term, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
 ## Make plots
 # Create a function for the plot
 # Have x label only for last, y label only for middle
-p <- ggplot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect))) + 
-  geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
-  geom_smooth(method = "gam",  method.args = list(family = "binomial", k=3)) +
-  theme_classic() + xlim(2010.95, 2015.05) + xlab("Publication year") +
-  ylab("Error frequency in reproduction term")
+ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "") {
+  ggplot(dataset, aesthetic) + 
+    geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
+    geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
+    theme_classic() + xlim(2010.95, 2015.05) + xlab(xlabel) +
+    ylab(ylabel)
+}
+p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
+p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+              ylabel = "Frequency of MPM construction errors")
+p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
+              xlabel = "Publication Year")
+
 
 library(ggpubr)
-ggarrange(p, p, p, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
 ```
 
 ```{r matdist, fig.cap="Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep."}

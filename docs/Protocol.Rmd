@@ -111,6 +111,14 @@ Possible values include:
 # Reproductive maturity
 This has three components:
 
+## `ClassFirstRep`
+What is the first reproductive class?
+Record the youngest class with a non-zero maternity, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
+
+Note that you should strive *not* use information in the matrix, as the matrix may be ambiguous or incorrectly represent the life history.
+
+> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
+
 ## `MeanAgeFirstRep`
 What is the mean age at first reproduction, as described in the life history? Determine this from either
 
@@ -123,14 +131,6 @@ What is the mean age at first reproduction, as described in the life history? De
 Note that you should *not* use information in the matrix, as the matrix may be ambiguous or incorrectly represent the life history.
 
 The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "Not Applicable". [See issue #6]
-
-## `ClassFirstRep`
-What is the first reproductive class?
-Record the youngest class with a non-zero maternity, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
-
-Note that you should strive *not* use information in the matrix, as the matrix may be ambiguous or incorrectly represent the life history.
-
-> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
 ## `ReproWithMaturation`
 Does the model include reproduction by maturing individuals?

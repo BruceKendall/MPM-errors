@@ -1,0 +1,48 @@
+---
+title: "Discussion items"
+author: "Bruce E. Kendall"
+date: "6/21/2018"
+output: pdf_document
+---
+
+# Section 2, Challenges in MPM construction
+
+**MF:** I think the paragraphs before 2.1 will need to be simplified in the final version. It is a bit heavy to begin with. Perhaps, it is ok for now. 
+
+"we will focus on this case [birth-pulse] in our analysis"  
+
+- **MF:** We just do not deal with the "birth-pulse" and "birth-flow" issues in this paper. For example, the lionfish is clearly a birth flow population. I suspect many of the examples in the database exhibit birth flow. 
+
+"This requires a variety of mathematical approximations to suitably transform continuous-time processes into a discrete-time representation, and gives a different view of the identity of individuals in a particular age or stage class. "  
+
+- **MF:** I think this is a bit ambiguous. Do you want to say different "age-identity" of individuals in a particular class? First, I thought you are talking about the identity as in a longitudinal study.  
+
+"MPMs assume that the population at time $t$ is a snapshot at a particular "census date." "  
+
+- **MF:** I think this is the most important sentence. I prefer beginning the section with this sentence. A population vector is equivalent to a static life table.  
+
+"the first age class represents all individuals between zero and one timestep old at time $t$"    
+
+- **MF:** Before we begin talking about "age", we need to define it.  We just need to state that the age in this paper begins when parent produces their offspring, which could be egg or live birth.
+
+    I think you are just thinking about terrestrial vertebrate studies here. In other discipline, age may be defined differently. For example, in fisheries, age can be age from the recruitment. For salmon, there could be two ages (river age and ocean age). For egg-laying organisms, age could be from hatching (not from the time of parents  laying eggs).  
+
+    I believe one of the major confusion among fish biologists is that age in MPM and age in recruitment models are defined differently.
+
+"Age-structured models follow a convention that makes sense for a continuously breeding species"
+
+- **MF:** I think the main issue is that researchers mistakenly think the subscript in the Leslie matrix is an age. Numbers used in subscripts are simply showing the location in a matrix and vector. Because there is no 0th element, there is no "0" in subscript. I think it may be easier for researchers dissociate age and subscript rather than think about how age and subscript are associated. 
+
+# Section 2.2. Matching the age at first reproduction to the species’ life history
+“age at [reproductive] maturity."
+
+- **MF:** I think maturity is not necessarily equivalent to reproduction. we could define maturity as the state of individuals that potentially allow them to reproduce in the next reproductive season. We can simply reduce the duration in the pre-mature stage especially if survival rate changes one time-step before the first reproduction. 
+
+" Embracing this transition [to assigning age to beginning of timestep]"
+
+- **MF:** This is one way (common way) of handling the problem. However, another way is to reduce the duration of juvenile stage. The reduction in the duration has a problem that the last juvenile stage has the same survival as adults. But it is a reasonable assumption in many cases (I would argue a majority of cases). The problem with letting juveniles to reproduce is that it will effectively decrease the time to reproduction. I expect it to have an impact (e.g. damping ratio and generation time) on organisms with delayed maturation . You may decide whether we discuss these issues or not, but I prefer writing in a way that the model with juvenile reproducing is ONE of the ways to handle the problem of adjusting the time of first reproduction.   
+
+"we impose a constraint that individuals in the last year of the juvenile stage have the same survival as adults"
+
+- **MF:** I am not sure. For example, if we are dealing with size dependent mortality (a large number of species), the survival should become closer to adults as they reach closer to maturity. 
+

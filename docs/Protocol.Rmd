@@ -21,7 +21,7 @@ The primary tasks require examining each assigned publication from COMPADRE & CO
 1. Does the model in COMADRE or COMPADRE match the one in the source paper?
 1. Is the model a pre-breeding census, a post-breeding census, or something else (e.g., an approximation of a birth-flow model, or birth-pulse at the middle of a timestep)? To better understand this question, review pages 22-29 and figures 2.1, 2.13, and 2.14 in @Caswell2001. Fig. 7.3 of @Mills2007 may also be helpful.
 2. What survival value(s) are included in the reproduction transitions?
-3. Do maturing individuals reproduce at the age of first reproduction?
+3. Does the age of first reproduction *in the model* match the age of first reproduction *as described by the life history*?
 4. Which classes (if any) represent a developmental stage with a mean development time greater than a timestep, and how are the maturation transitions calculated?
 
 Each of these conceptual questions has one or more variables to score, as detailed below. For each question, record both your response the `VariableName` field in the provided Excel file and, in the associated `VariableNameObs` field, the evidence supporting your conclusion.
@@ -36,13 +36,13 @@ If you find that you cannot make sense of the protocol or are not sure how it ap
 **Note:** If the model has only survival and growth, and no fecundities (i.e., the F matrix is all zero; e.g., @Buston2007), then enter `Not Applicable` for all columns assocated with sections 4-6.
 
 # Match between database and source
-Use the **Author,	Journal,	YearPublication,** and	**DOI.ISBN** fields to record the citation information exactly as it appears in the database. If the citation info in the database is incorrect (e.g., the doi has a typo or points to a different paper than is given by the rest of the citation information, or the model description and parameterization is actually in a different source than the one cited in the database), then use the appropriate **XXX.corr** field(s) to record the corrected information.
+Use the **Author,	Journal,	YearPublication,** and	**DOI.ISBN** fields to record the citation information exactly as it appears in the database. If the citation info in the database is incorrect (e.g., the doi has a typo or points to a different paper than is given by the rest of the citation information, or the model description and parameterization is actually in a different source than the one cited in the database), then use the appropriate **XXX.corr** field(s) to record the corrected information. If there are no changes, write "NoC" (for "No Correction") in the **XXX.corr** field(s).
 
 ## `MatrixModified`
-For each study that actually shows the matrix population model, check that the matrix in COMADRE or COMPADRE is the the same.  Options: "Yes" | "No"
+For each study that actually shows the matrix population model, check that the matrix in COMADRE or COMPADRE is the the same. If there are *any* differences between the matrix as presented in the publication and the matrix contained in COMADRE, choose "Yes." If there is no matrix presented in the paper, such that the COMADRE matrix was probably recreated by the compadrino, chose "No Matrix."  Options: "Yes" | "No" | "No Matrix"
 
 ## `MatrixModifiedObs`
-If "Yes" in MatrixModified, above, record what has been changed (e.g. element f3,2 has been adjusted for pre-breeding census; element u1,2 has bee adjusted for uneven state duration).
+If "Yes" in MatrixModified, above, record what has been changed (e.g. element f3,2 has been adjusted for pre-breeding census; element u1,2 has bee adjusted for uneven state duration). If "No Matrix" in MatrixModified, above, record the information in the paper that was a likely source for the COMADRE matrix (e.g., life table in Table 2; scalar pre-breeding census model in eq. 3 converted to 2x2 post-breeding census matrix in COMADRE).
 
 # Selecting a focal model from the study
 If a study reports mulitiple models, choose the one that is is most completetely described (i.e., allowing you to answer the most questions in the protocol), and indicate which entry in the COMADRE or COMPADRE database it refers to. Because the database does not currently have a unique ID associated with each model, this needs to be specified through one or more values of SpeciesAuthor,
@@ -111,8 +111,16 @@ Possible values include:
 # Reproductive maturity
 This has three components:
 
+## `ClassFirstRep`
+What is the first reproductive class?
+Record the youngest class with a non-zero maternity, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
+
+Note that you should strive *not* use information in the matrix, as the matrix may be ambiguous or incorrectly represent the life history.
+
+> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
+
 ## `MeanAgeFirstRep`
-What is the mean age at first reproduction? Determine this from either
+What is the mean age at first reproduction, as described in the life history? Determine this from either
 
 - Textual description of the life history in the publication. 
 
@@ -120,13 +128,9 @@ What is the mean age at first reproduction? Determine this from either
 
 - The age associated with the first non-zero maternity in the life table (e.g. xxxxx).
 
+Note that you should *not* use information in the matrix, as the matrix may be ambiguous or incorrectly represent the life history.
+
 The entry should be a number, in units of timesteps; if reproductive maturity is described solely in terms of stage, leave as "Not Applicable". [See issue #6]
-
-## `ClassFirstRep`
-What is the first reproductive class?
-Record the youngest class with a non-zero maternity, ideally determined from the life table [e.g., @Crowder_1994, Table 1] or the text description of the population. Record it as the name of the class that is used in COMADRE or COMPADRE. 
-
-> For example, `r citet("10.1577/M08-034.1")` state (p. 1071) "In our model, the juvenile stage is the period from the end of the first year to the mean age at first maturity (24 years; USFWS 2006), with the early and late juvenile stages being the first and second half of this period, respectively. The early and late adult stages are the first and second half of the adult period, respectively, which covers the period from mean age at first maturity to the maximum reproductive age...." Thus, the first reproductive class is early adult, which is coded in COMADRE as `Early adult`, which is what should be recorded.
 
 ## `ReproWithMaturation`
 Does the model include reproduction by maturing individuals?

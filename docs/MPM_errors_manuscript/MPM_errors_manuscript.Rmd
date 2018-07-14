@@ -374,7 +374,7 @@ These studies made all three of the errors described above; we singled them out 
 All three of these models had other minor errors, which we corrected (while retaining the three focal errors) to create "baseline" models. 
 We then constructed models that fixed one, two, or three of the focal errors to see how these errors affect the model projections and conclusions.
 
-A matrix population model for lionfish was constructed by Morris et al. (2011) to investigate the potential approaches for controlling the invasive species. 
+A matrix population model for lionfish was constructed by @Morris2011 to investigate the potential approaches for controlling the invasive species. 
 The modeled life history consists of three stages (larvae, juvenile, and adult), and time step of the model is one month. The original model was a post-breeding census model, but it did not include the survival of adults in the fertility rate. 
 The average duration of the juvenile stage was assumed to be 12 months in the model. 
 This meant they take 14 months for the first reproduction (one month in larvae stage, 12 months in juvenile stage, and one additional month in fertility rate) even though they start reproducing in 12 months. 
@@ -382,12 +382,12 @@ The authors used FAS model for calculating the transition rates for juveniles.
 We developed four stage-structured population models that gradually correct for some or all of these problems and one Leslie matrix (Table \@ref(tab:ModelList)). 
 Along with the original models, we used the six models to calculate $\lambda_1$, stable stage distribution, reproductive value, sensitivity and elasticity of $\lambda_1$ to stage-specific survival rate and fecundity, damping ratio, and generation time (Appendix 1). 
 
-For American alligator populations, Dunham et al. 2014 developed two stage-structured matrix population models to compare the status of northern and southern populations. 
+For American alligator populations, @Dunham2014 developed two stage-structured matrix population models to compare the status of northern and southern populations. 
 The original models consist of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model is one year.
 Similarly to the lionfish model, the alligator models are post-breeding census models, but the authors did not include the survival of adults in the fertility rate. 
 The first stage was egg stage, but it only lasted for three months; therefore, there was clear inconsistency in the time steps among stages. 
-Dunham et al. used AAS model to calculate transition rates for juvenile and subadult stages.  
-We developed two additional stage-structured models that corrects some or all of these problems and one Leslie matrix for each population (Table 1). 
+@Dunham2014 used AAS model to calculate transition rates for juvenile and subadult stages.
+We developed two additional stage-structured models that corrects some or all of these problems and one Leslie matrix for each population (Table \@ref(tab:ModelList)). 
 The four population models for each population were used to calculate the same quantities that we calculated with the lionfish models (Appendix 1). 
 
 

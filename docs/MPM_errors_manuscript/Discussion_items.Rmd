@@ -46,3 +46,6 @@ output: pdf_document
 
 - **MF:** I am not sure. For example, if we are dealing with size dependent mortality (a large number of species), the survival should become closer to adults as they reach closer to maturity. 
 
+"failing to have the reproductive transition out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding"
+
+- **MF** "can" or "may" or conditional statement like "unless the duration in juvenile stage is reduced" [this is related to the "embracing this apprach" comment above]

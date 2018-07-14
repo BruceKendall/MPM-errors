@@ -17,7 +17,16 @@ address:
   - code: TAMU Wildlife
     address: Department of Wildlife and Fisheries Sciences, Texas A&M University, College Station, TX 77843-2258, USA
 abstract: |
-  Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility transition element; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth transition rate out of a stage with a mean development time greater than the model time step. We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions. These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database [add sample sizes (MPMs, species, studies)]. The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle graph (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed within-stage age structure. These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
+  Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. 
+  However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
+  We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility transition element; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth transition rate out of a stage with a mean development time greater than the model time step. 
+  We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions. 
+  These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. 
+  To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database [add sample sizes (MPMs, species, studies)]. 
+  The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle graph (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
+  Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed within-stage age structure. 
+  These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
+  Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
 keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, Matrix population models
 bibliography: Bibliography.bib
@@ -373,7 +382,13 @@ The authors used FAS model for calculating the transition rates for juveniles.
 We developed four stage-structured population models that gradually correct for some or all of these problems and one Leslie matrix (Table \@ref(tab:ModelList)). 
 Along with the original models, we used the six models to calculate $\lambda_1$, stable stage distribution, reproductive value, sensitivity and elasticity of $\lambda_1$ to stage-specific survival rate and fecundity, damping ratio, and generation time (Appendix 1). 
 
-For American alligator populations, Dunham et al. 2014 developed two stage-structured matrix population models to compare the status of northern and southern populations. The original models consist of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model is one year. Similarly to the lionfish model, the alligator models are post-breeding census models, but the authors did not include the survival of adults in the fertility rate. The first stage was egg stage, but it only lasted for three months; therefore, there was clear inconsistency in the time steps among stages. Dunham et al. used AAS model to calculate transition rates for juvenile and subadult stages.  We developed two additional stage-structured models that corrects some or all of these problems and one Leslie matrix for each population (Table 1). The four population models for each population were used to calculate the same quantities that we calculated with the lionfish models (Appendix 1). 
+For American alligator populations, Dunham et al. 2014 developed two stage-structured matrix population models to compare the status of northern and southern populations. 
+The original models consist of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model is one year.
+Similarly to the lionfish model, the alligator models are post-breeding census models, but the authors did not include the survival of adults in the fertility rate. 
+The first stage was egg stage, but it only lasted for three months; therefore, there was clear inconsistency in the time steps among stages. 
+Dunham et al. used AAS model to calculate transition rates for juvenile and subadult stages.  
+We developed two additional stage-structured models that corrects some or all of these problems and one Leslie matrix for each population (Table 1). 
+The four population models for each population were used to calculate the same quantities that we calculated with the lionfish models (Appendix 1). 
 
 
 
@@ -463,18 +478,34 @@ Table: (\#tab:ModelList) List of models and description of changes made to the o
 
 
 ## Effects on asymptotic population growth rate ($\lambda_1$) 
-The original lionfish model (L1) had $\lambda_1$ of 1.125; this meant they grew by 12.5% each month (Figure S1). Even though they are invasive species and rapidly expanding. The population growth rate is unrealistically high. By reducing the average duration in juvenile stage (L2) and incorporating fertility rate on juvenile stage, the population growth rate increased further (L3). However, the use of SAS model to calculate the juvenile transition rate (L4) reduced $\lambda_1$ substantially. This is because for the duration of the juvenile stage (11 time steps on average), the survival rate is low. Incorporation of $\lambda_1$ in calculation of the transition rates (AAS models; L5) reduced $\lambda_1$ because $\lambda_1$>>1. This meant that there was an increase in number of individuals recruited into juvenile stage from larval stage; therefore, the actual age-distribution declines faster with age than the stable age distribution. The Leslie matrix (L6, which is expected to be least prone to the errors associated with the manipulations of parameters, and model L5 had the same $\lambda_1$.
+The original lionfish model (L1) had $\lambda_1$ of 1.125; this meant they grew by 12.5% each month (Figure S1). 
+Even though they are invasive species and rapidly expanding. 
+The population growth rate is unrealistically high. 
+By reducing the average duration in juvenile stage (L2) and incorporating fertility rate on juvenile stage, the population growth rate increased further (L3). 
+However, the use of SAS model to calculate the juvenile transition rate (L4) reduced $\lambda_1$ substantially. 
+This is because for the duration of the juvenile stage (11 time steps on average), the survival rate is low. 
+Incorporation of $\lambda_1$ in calculation of the transition rates (AAS models; L5) reduced $\lambda_1$ because $\lambda_1$>>1. 
+This meant that there was an increase in number of individuals recruited into juvenile stage from larval stage; therefore, the actual age-distribution declines faster with age than the stable age distribution. 
+The Leslie matrix (L6, which is expected to be least prone to the errors associated with the manipulations of parameters, and model L5 had the same $\lambda_1$.
 
-The original alligator models had $\lambda_1$ of 0.87 for the northern population and 1.02 for the northern population (Figure S8). In contrast to lionfish example, $\lambda_1$ was affected very little with the corrections. Changes in the fertility rate had very little effect because $\lambda_1$ was not sensitive to fertility rate. Changes in the transition rates for juvenile and subadult stages had little effect because, for the short durations in the stages (7 years in each stage and 3 years in each stage for northern and southern populations, respectively), they had relatively high survival rates (0.78 and 0.73 for juvenile and subadult stages of both populations). 
+The original alligator models had $\lambda_1$ of 0.87 for the northern population and 1.02 for the northern population (Figure S8). 
+In contrast to lionfish example, $\lambda_1$ was affected very little with the corrections. 
+Changes in the fertility rate had very little effect because $\lambda_1$ was not sensitive to fertility rate. 
+Changes in the transition rates for juvenile and subadult stages had little effect because, for the short durations in the stages (7 years in each stage and 3 years in each stage for northern and southern populations, respectively), they had relatively high survival rates (0.78 and 0.73 for juvenile and subadult stages of both populations). 
 
 
 ## Effects on sensitivity analysis of $\lambda_1$
-Similarly to the results on $\lambda_1$, sensitivity and elasticity of $\lambda_1$ to stage-specific survival and fecundity were affected more for lionfish than alligator. For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Figures S4 & S5). This implies that conservation strategy can be affected by the errors in developing a population matrix. 
+Similarly to the results on $\lambda_1$, sensitivity and elasticity of $\lambda_1$ to stage-specific survival and fecundity were affected more for lionfish than alligator. 
+For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Figures S4 & S5). 
+This implies that conservation strategy can be affected by the errors in developing a population matrix. 
 
-For lionfish models, changes in sensitivity and elasticity are less clear (Figures S11 & S12), but stable stage distribution (Figure S9) and reproductive values (Figure S10) are affected by the errors. These quantities are used for calculating sensitivity and elasticity of $\lambda_1$. For example, the original model substantially under-estimated the stable stage distribution and over-estimated the reproductive value of adults.
+For lionfish models, changes in sensitivity and elasticity are less clear (Figures S11 & S12), but stable stage distribution (Figure S9) and reproductive values (Figure S10) are affected by the errors. 
+These quantities are used for calculating sensitivity and elasticity of $\lambda_1$. 
+For example, the original model substantially under-estimated the stable stage distribution and over-estimated the reproductive value of adults.
 
 ## Effects on life history statistics
-Damping ratio is a measure of how long transient dynamics lasts in a system after a perturbation, and generation time is a measure of time scale of populations. These quantities are expected to be affected by converting the age-structured into stage-structured models.  
+Damping ratio is a measure of how long transient dynamics lasts in a system after a perturbation, and generation time is a measure of time scale of populations. 
+These quantities are expected to be affected by converting the age-structured into stage-structured models.  
 
 # Prevalence of construction errors in published MPMs
 ## Methods

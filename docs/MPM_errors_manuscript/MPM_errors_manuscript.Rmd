@@ -224,7 +224,7 @@ Embracing this transition requires overcoming cognitive dissonance---"juveniles"
 Pre-breeding census models do not cause this problem, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
 
 This is also not a challenge for post-breeding census models if we follow the convention of associating the age class with the age at the individual's next birthday.
-Then the reproduction by newly maturing individuals is $F_{x_m} = P_{x_m} b_{x_m}$ (we use $P$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
+Then the reproduction by newly maturing individuals is $F_{x_m} = \hat{\sigma}_{x_m} b_{x_m}$ (we use $\hat{\sigma}$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
 Indeed, this is a strong justification for the convention.
 However, this convention cannot be maintained when moving from age-structured to stage-structured models; since most animal MPMs are at least partially stage structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
 

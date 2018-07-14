@@ -504,8 +504,26 @@ These quantities are used for calculating sensitivity and elasticity of $\lambda
 For example, the original model substantially under-estimated the stable stage distribution and over-estimated the reproductive value of adults.
 
 ## Effects on life history statistics
-Damping ratio is a measure of how long transient dynamics lasts in a system after a perturbation, and generation time is a measure of time scale of populations. 
-These quantities are expected to be affected by converting the age-structured into stage-structured models.  
+Damping ratio is given by $\lambda_1/\left|\lambda_2\right|$, where $\lambda_1$  is the eigenvalue of the largest magnitude and $\lambda_2$  is that of the second largest, and measures how quickly transient dynamics dissipate over time. 
+For lionfish, $\lambda_1$  remained almost the same between L1 and L2, but the damping ratio changed between them indicating the reduced juvenile duration also reduced the magnitude of $\lambda_2$. 
+Between L5 and L6, $\lambda_1$ and stable stage distribution were almost the same, but there was reduction in damping ratio, indicating the conversion from age-structured (L6) to stage-structured (L5) models influenced the damping ratio. 
+Nevertheless, among all stage-structured model, L5 approximated damping ratio closest to that under L6. 
+
+The damping ratio of the alligator models between northern (A1-A4) and southern (A5-A8) populations changed differently. 
+For example, there were larger changes for southern population than northern population, indicating it is difficult to predict how the damping ratio is affected among stage-structured models. 
+Interestingly, the models with the most errors (A1 and A5) had the damping ratios closest to that of age structured models (A4 and A8, respectively). 
+However, this is probably because stage-structured model generally overestimate damping ratio because the number of types (age and stage classes) is reduced from age- to stage-structured models, allowing a population to converge quickly to the asymptotic dynamics. 
+However, the errors were introduced to A1 and A5 to increase the duration of pre-adult stages, which caused the damping ratio to be underestimated.
+The bias associated with stage-structured models and the introduced errors in constructing the stage-structured models probably cancelled each other. 
+
+In this study, we used the mean age of mothers to represent the generation time [@Bienvenu2015]. 
+For generation time calculations, the use of age-structured models over stage-structured models is generally recommended [@Fujiwara2017]. 
+There are also substantial variations among the stage-structured models.
+For example, generation time under L1-L3, which contain more errors, was substantially underestimated than that under L4-L5. 
+Generation time also varied among stage-structured models for alligator populations A1-A3 and A5-A7. 
+Although the same types of errors/approximations were incorporated in the models for northern (from A1 to A3) and southern populations (from A5 to A7), the changes in estimated generation time was not consistent between the two populations. 
+For example, it increased from A1 to A2 whereas it decreased from A5 to A6, suggesting simple predictions of how various errors introduced in constructing population matrix would affect the generation time are challenging. 
+
 
 # Prevalence of construction errors in published MPMs
 ## Methods

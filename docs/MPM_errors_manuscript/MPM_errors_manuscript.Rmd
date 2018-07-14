@@ -344,15 +344,18 @@ The second is the population growth rate, which determines the degree to which o
 This makes $\gamma$ non-trivial to calculate, as the resulting formula involves $\lambda$, which can only be calculated once the MPM has been constructed!
 The solution is an iterative approach: take an initial guess of $\lambda$, calculate $\gamma$ from the formula; calculate the dominant eigenvalue of the resulting matrix; use that as a new guess for $\lambda$; and repeat until the value of $\lambda$ stops changing.
 For someone used to programming, this is straighforward to implement; but non-modellers find this daunting, and we do not know of any programs that implement this algorithm, aside from some difficult-to-generalize Matlab code in @Morris2002a. **Check this out**
+We will refer to this as the "asymptotic age structure" (AAS) model.
 
 Thus, non-modellers will be tempted by easier-to-calculate formulas. 
 Some discover a predecessor to the above formula [@Crouse1987] that had been developed for the same population studied by @Crowder1994.
 This formula is complex-looking but straighforward to calculate, as it doesn't require iteration (in incorporates the within-cohort dynamics, but *assumes* that $\lambda = 1$).
+We will refer to this as the "stationary age structure" (SAS) model (where "stationary" means that the population is neither growing nor declining).
+
 An even simpler approach is to simply say that, if the stage duration is $T$ timesteps, then the fraction maturing is $1/T$. 
 This effectively assumes that the age distribution is perfectly flat.
 Its popularity probably stems not just from the fact that it is simple to calculate and explain, but because it is the first solution to the problem listed by @Caswell2001, who seems to endorse it. **Check Caswell's actual wording**
+We will refer to this as the "flat age structure" (FAS) model.
 
-We will refer to these as the "asymptotic age structure" (AAS) model, the "stationary age structure" (SAS) model (where "stationary" means that the population is neither growing nor declining), and the "flat age structure" (FAS) model.
 As mentioned above, only the AAS model will replicate $\lambda$ and its sensitivities from the fully age-structured model.
 
 # Consequences of incorrect MPM construction
@@ -631,7 +634,8 @@ F.  Revisiting prior results
     1. Inidividual studies
     2. Syntheses
 
-
+## Misc discussion items
+- Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
 
 # Acknowledgments {.unnumbered}
 This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol, and [list of compadrinos who actually worked on the project] for carrying out the model evaluations.

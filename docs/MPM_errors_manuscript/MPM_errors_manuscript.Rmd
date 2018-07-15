@@ -70,7 +70,7 @@ Our goal in this paper is to highlight these challenges (which are described in 
 We conclude with a discussion of why these MPM construction errors are so prevalent, and how we might improve future practice.
 
 # Challenges in MPM construction
-Matrix population models operate in discrete time, and as such are most naturally suited to species whose reproduction is concentrated in a short breeding season [so-called "birth-pulse" populations; @Caswell2001 *[did Caswell coin this phrase?]*]. 
+Matrix population models operate in discrete time, and as such are most naturally suited to species whose reproduction is concentrated in a short breeding season [so-called "birth-pulse" populations; @Caughley1967]. 
 Many animals and plants satisify this assumption, and we will focus on this case in our analysis. However, much of the theoretical development of MPMs was motivated by human demography, in which reproduction occurs throughout the year ("birth-flow" populations). 
 This may require a variety of mathematical approximations to suitably transform continuous-time processes into a discrete-time representation, and gives a different view of the identity of individuals in a particular age or stage class. 
 We will not treat the former here, but the latter is relevant. 

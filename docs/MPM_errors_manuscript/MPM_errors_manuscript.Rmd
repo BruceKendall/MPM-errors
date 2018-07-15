@@ -28,7 +28,7 @@ abstract: |
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
-keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, Matrix population models
+keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, Matrix population models, model construction, model validity
 bibliography: Bibliography.bib
 csl: ecological-modelling.csl
 output: 
@@ -503,8 +503,27 @@ For lionfish models, changes in sensitivity and elasticity are less clear (Figur
 These quantities are used for calculating sensitivity and elasticity of $\lambda_1$. 
 For example, the original model substantially under-estimated the stable stage distribution and over-estimated the reproductive value of adults.
 
-## Effects on life history statistics
-Damping ratio is given by $\lambda_1/\left|\lambda_2\right|$, where $\lambda_1$  is the eigenvalue of the largest magnitude and $\lambda_2$  is that of the second largest, and measures how quickly transient dynamics dissipate over time. 
+## Effects on estimated generation time
+A variety of life history statistics, such as generation time ($T$) and net reproductive rate ($R_0$), are key quantities in comparative studies of population demography.
+Since these quantities are commonly estimated by analyzing MPMs [e.g., @Salguero-Gomez2016a], it is critical to understand how sensitive these estimates are to errors in MPM construction.
+Here, we focus on generation time.
+Previous work suggests that age-structured models provide more reliable generation time estimates than do stage-structured models [@Fujiwara2017], but how this depends on potential errors in matrix construction has not been examined. 
+
+There are a variety of ways to define generation time in demographic studies (CITE - Caswell?).
+In this study, we used the mean age of mothers to represent the generation time [@Bienvenu2015]. 
+We found substantial variations among the stage-structured models.
+For the lionfish population, all of the stage-structured models substantially underestimated (by as much as 50%) the generation time relative to the age-structured model (Fig. S7). 
+However, the bias was greatest under models L1-L3, which contain the most errors. 
+For the alligator populations, the deviations of generation time estimates between the stage-structured mdoels and the age-structured models were more modest (Fig. S14).
+Although the same types of errors/approximations were incorporated in the models for northern (from A1 to A3) and southern populations (from A5 to A7), the changes in estimated generation time was not consistent between the two populations. 
+For example, it increased from A1 to A2 whereas it decreased from A5 to A6, suggesting simple predictions of how various errors introduced in constructing population matrix would affect the generation time are challenging. 
+
+## Effects on transient dynamics
+The asymptotic growth rate and its sensitivity to underlying parameters are relevant to a population's dynamics when the population is at the stable age or stage distribution.
+However, in real populations subject to environmental variability or perturbations of abundance, many applications depend on knowing about the population's transient dynamics when it is far from the stable distribution.
+There are a range of approaches to quantifying transient dynamics [@Stott2016]; here we focus on the one of the simplest, the damping ratio, which measures how quickly transient dynamics dissipate over time.
+The damping ratio is given by $\lambda_1/\left|\lambda_2\right|$, where $\lambda_1$  is the eigenvalue of the largest magnitude and $\lambda_2$  is that of the second largest. 
+
 For lionfish, $\lambda_1$  remained almost the same between L1 and L2, but the damping ratio changed between them indicating the reduced juvenile duration also reduced the magnitude of $\lambda_2$. 
 Between L5 and L6, $\lambda_1$ and stable stage distribution were almost the same, but there was reduction in damping ratio, indicating the conversion from age-structured (L6) to stage-structured (L5) models influenced the damping ratio. 
 Nevertheless, among all stage-structured model, L5 approximated damping ratio closest to that under L6. 
@@ -515,15 +534,6 @@ Interestingly, the models with the most errors (A1 and A5) had the damping ratio
 However, this is probably because stage-structured model generally overestimate damping ratio because the number of types (age and stage classes) is reduced from age- to stage-structured models, allowing a population to converge quickly to the asymptotic dynamics. 
 However, the errors were introduced to A1 and A5 to increase the duration of pre-adult stages, which caused the damping ratio to be underestimated.
 The bias associated with stage-structured models and the introduced errors in constructing the stage-structured models probably cancelled each other. 
-
-In this study, we used the mean age of mothers to represent the generation time [@Bienvenu2015]. 
-For generation time calculations, the use of age-structured models over stage-structured models is generally recommended [@Fujiwara2017]. 
-There are also substantial variations among the stage-structured models.
-For example, generation time under L1-L3, which contain more errors, was substantially underestimated than that under L4-L5. 
-Generation time also varied among stage-structured models for alligator populations A1-A3 and A5-A7. 
-Although the same types of errors/approximations were incorporated in the models for northern (from A1 to A3) and southern populations (from A5 to A7), the changes in estimated generation time was not consistent between the two populations. 
-For example, it increased from A1 to A2 whereas it decreased from A5 to A6, suggesting simple predictions of how various errors introduced in constructing population matrix would affect the generation time are challenging. 
-
 
 # Prevalence of construction errors in published MPMs
 ## Methods

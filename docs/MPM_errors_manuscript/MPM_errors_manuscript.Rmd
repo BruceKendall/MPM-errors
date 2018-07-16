@@ -362,7 +362,7 @@ We will refer to this as the "stationary age-within-stage structure" (SAS) model
 
 An even simpler approach is to simply say that, if the stage duration is $T$ timesteps, then the fraction maturing is $1/T$. 
 This effectively assumes that the age distribution is perfectly flat.
-Its popularity probably stems not just from the fact that it is simple to calculate and explain, but because it is the first solution to the problem listed by @Caswell2001, who seems to endorse it. **Check Caswell's actual wording**
+Its popularity probably stems not just from the fact that it is simple to calculate and explain, but because it is the first solution to the problem listed by @Caswell2001, who calls it "intuitive."
 We will refer to this as the "flat age-within-stage structure" (FAS) model.
 
 As mentioned above, only the AAS model will replicate $\lambda_1$ and its sensitivities from the fully age-structured model.
@@ -509,8 +509,8 @@ Since these quantities are commonly estimated by analyzing MPMs [e.g., @Salguero
 Here, we focus on generation time.
 Previous work suggests that age-structured models provide more reliable generation time estimates than do stage-structured models [@Fujiwara2017], but how this depends on potential errors in matrix construction has not been examined. 
 
-There are a variety of ways to define generation time in demographic studies (CITE - Caswell?).
-In this study, we used the mean age of mothers to represent the generation time [@Bienvenu2015]. 
+There are a variety of ways to define generation time in demographic studies [@Coale1972].
+In this study, we used the mean age of mothers to represent the generation time, applying formulas developed by @Bienvenu2015. 
 We found substantial variations among the stage-structured models.
 For the lionfish population, all of the stage-structured models substantially underestimated (by as much as 50%) the generation time relative to the age-structured model (Fig. S7). 
 However, the bias was greatest under models L1-L3, which contain the most errors. 

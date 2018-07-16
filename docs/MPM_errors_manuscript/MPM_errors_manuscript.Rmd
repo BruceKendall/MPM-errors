@@ -703,7 +703,7 @@ F.  Revisiting prior results
 - Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
 
 # Acknowledgments {.unnumbered}
-This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol, and [list of compadrinos who actually worked on the project] for carrying out the model evaluations.
+This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider and Jakob Voigt at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
 
 # References {#references .unnumbered}
 

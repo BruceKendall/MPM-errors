@@ -70,41 +70,21 @@ Our goal in this paper is to highlight these challenges (which are described in 
 We conclude with a discussion of why these MPM construction errors are so prevalent, and how we might improve future practice.
 
 # Challenges in MPM construction
-Matrix population models operate in discrete time, and as such are most naturally suited to species whose reproduction is concentrated in a short breeding season [so-called "birth-pulse" populations; @Caughley1967]. 
-Many animals and plants satisify this assumption, and we will focus on this case in our analysis. However, much of the theoretical development of MPMs was motivated by human demography, in which reproduction occurs throughout the year ("birth-flow" populations). 
-This may require a variety of mathematical approximations to suitably transform continuous-time processes into a discrete-time representation, and gives a different view of the identity of individuals in a particular age or stage class. 
-We will not treat the former here, but the latter is relevant. 
+We focus on animal models in which the demography is structured by age [Leslie matrices; @Leslie1945] or developmental stage [Lefkovitch matrices; @Lefkovitch1965]; plant and size structured models present additional complications (although two the issues presented here still apply).
+We also focus on species whose reproduction is concentrated in a short breeding season [so-called "birth-pulse" populations; @Caughley1967]. 
+Many animals and plants satisify this assumption, and this allows us to avoid the extra complications associated with using discrete-time models to represent a continuously breeding species. 
+Note that by "breeding season" we mean the season in which individuals are born or hatched, not the season during which their parents mate.
+Age starts counting from birth, so that a reproductively mature individual breeds on or about their birthday: e.g., if the age at first reproduction is 5 years, then an individual has its first offspring on its fifth birthday.
 
-MPMs assume that the population at time $t$ is a snapshot at a particular "census date." 
-The discretization of age into classes means that in a birth-flow population, the first age class represents all individuals between zero and one timestep old at time $t$, and thus we would describe it as "Age 0--1." 
-In contrast, in a birth-pulse population, all individuals in an age class are (more-or-less) exactly the same age. 
-If the census were taken immediately after the breeding season^[Defined as the season in which individuals are born, not the season during which their parents mate.] (a "post-breeding census"), the first age class would comprise newborn individuals, all of age zero, the second class would comprise individuals of age exactly one, etc.^[In principle, the census could occur at any time relative to the breeding season, and @Caswell2001 provides general formulas to account for this; but in practice the two cases described here encompass nearly all, if not all, published birth-pulse models.] 
-In contrast, if the census were taken immediately before the breeding season (a "pre-breeding census"), the youngest age class would be made up of individuals all with age exactly one. 
-But we often see birth-pulse models in which the age classes are given as a range---this is incorrect, and leads to ambiguity (does the class "Age 0--1" refer to newborns or to one-year-olds?) that can confuse the practitioner on how best to construct the model. 
-This nomenclature problem likely has two sources. First, many texts introduce birth-flow models first [e.g., the very first figure in @Caswell2001, illustrating the notion of discrete age classes, shows the classes as ages 0--1, 1--2, etc.]. Second, in colloquial use, age-associated terms often span an age range: for example, in ungulates the term "yearling" refers to any individual between the ages of one and two. 
-When that same term is applied to a class in a birth-pulse MPM, nontrivial cognitive effort is required to mentally redefine it (so that "Yearling" means age exactly one). 
-
-This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.
-An additional challenge is that most textbooks use inconsistent notation and subscripting conventions for age- and stage-structured models.
-Age-structured models follow a convention that makes sense for a continuously breeding species: an individual is assigned to an age class that is numbered with the individual's age at its *next* birthday (but note that this differs from colloquial use in most languages, where we identify a person's age with their *previous* birthday).
-When looking at a species with discrete breeding seasons, this convention is perfectly fine for a pre-breeding census model, as all individuals are just a tiny fraction of a timestep away from their next birthday, and an individual that is almost three years old will have characteristics almost indistinguishable from one that is exactly three years old. [RSG: "a bit too verbose"]
-In contrast, for a post-breeding census model, this convention would identify an individual that is just a tiny bit past its third birthday as a four-year-old.
-This means that "$x$-year-old survival" (often denoted $P_x$) refers to survival from age $x$ to age $x+1$ in a pre-breeding census model, but from age $x-1$ to age $x$ in a post-breeding census model.
-
-This is potentially confusing, but most practitioners do not move between these models so it is probably not a big issue.
-However, transitioning from an age-structured model (which is what all texbooks use for a detailed explanation of MPMs) to a stage-structured model creates major challenges, at least for post-breeding census models.
-This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
-The solution is for post-breeding census stage-structured models to assign individuals to the stage class they were in at their recent birthday (bearing in mind that the age is measured in time steps).
-This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILLS DOES HERE]
-Thus it is not obvious to a novice that the carefully explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
-
-To avoid the need to be pedantic when moving between age- and stage-structured models, we will apply the stage-structured convention to age-structured models.
-Thus, in a post-breeding census, individuals that have just been born are classified as "age zero" or "newborn," with a subscript of zero.
-This will make our exposition clearer, but it is important to note that our lifetables and age-structured models will therefor look different from most textbooks.
+MPMs project the population from one nominal census date to the next.
+While the census could in principle be at any time, in practice nearly all MPMs either census the population just before breeding ("prebreeding census") or just after breeding ("postbreeding census").
+In a prebreeding census, the youngest age class is made up of individuals all with age (nearly) one, which we designate as age one. 
+In a postbreeding census, the first age class would comprise newborn individuals, all of age zero, the second class would comprise individuals of age exactly one, etc.
+We refer to newborn individuals with a subscript of zero; as a result, our lifetables and postbreeding Leslie models will look different from most textbooks, which assign newborns to "age class one" and use a subscript of one.
 
 ## Ensuring that the fertility transition spans a full timestep
 In a life table (e.g., Table \ref{tab:lifetable}, age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
-But there is an important difference: survival (often denoted $P_x$ (most common, but has a different meaning in stage-structured models), $s_x$, or $\sigma_x$, where $x$ is the age or stage; we will use $\sigma_x$) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
+But there is an important difference: survival (which we donote $\sigma_x$ for Leslie models and $\sigma_i$ for Lefkovitch models, where $x$ is the age and $i$ is stage) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
 In contrast, the birth rate (typically denoted $b_x$ or $m_x$; we use the former) is instantaneous: it is the average number of offspring produced at time $t$ by an individual that is alive at time $t$. 
 It is tempting to draw a life-cycle diagram like the one in Fig. \@ref(fig:lifecycles)a (and we commonly see that in the literature). 
 While this works as a *conceptual* diagram, translating it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each transition element in the matrix must span a timestep, and $m_x$ does not accomplish that. 
@@ -699,8 +679,40 @@ F.  Revisiting prior results
     1. Inidividual studies
     2. Syntheses
 
+## Text about causes of confusion
+
+This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.
+An additional challenge is that most textbooks use inconsistent notation and subscripting conventions for age- and stage-structured models.
+Age-structured models follow a convention that makes sense for a continuously breeding species: an individual is assigned to an age class that is numbered with the individual's age at its *next* birthday (but note that this differs from colloquial use in most languages, where we identify a person's age with their *previous* birthday).
+When looking at a species with discrete breeding seasons, this convention is perfectly fine for a pre-breeding census model, as all individuals are just a tiny fraction of a timestep away from their next birthday, and an individual that is almost three years old will have characteristics almost indistinguishable from one that is exactly three years old. [RSG: "a bit too verbose"]
+In contrast, for a post-breeding census model, this convention would identify an individual that is just a tiny bit past its third birthday as a four-year-old.
+This means that "$x$-year-old survival" (often denoted $P_x$) refers to survival from age $x$ to age $x+1$ in a pre-breeding census model, but from age $x-1$ to age $x$ in a post-breeding census model.
+
+This is potentially confusing, but most practitioners do not move between these models so it is probably not a big issue.
+However, transitioning from an age-structured model (which is what all texbooks use for a detailed explanation of MPMs) to a stage-structured model creates major challenges, at least for post-breeding census models.
+This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
+The solution is for post-breeding census stage-structured models to assign individuals to the stage class they were in at their recent birthday (bearing in mind that the age is measured in time steps).
+This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILLS DOES HERE]
+Thus it is not obvious to a novice that the carefully explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
+
+## Text about birth-flow models
+However, much of the theoretical development of MPMs was motivated by human demography, in which reproduction occurs throughout the year ("birth-flow" populations). 
+This may require a variety of mathematical approximations to suitably transform continuous-time processes into a discrete-time representation, and gives a different view of the identity of individuals in a particular age or stage class. 
+We will not treat the former here, but the latter is relevant. 
+
+The discretization of age into classes means that in a birth-flow population, the first age class represents all individuals between zero and one timestep old at time $t$, and thus we would describe it as "Age 0--1." 
+
+But we often see birth-pulse models in which the age classes are given as a range---this is incorrect, and leads to ambiguity (does the class "Age 0--1" refer to newborns or to one-year-olds?) that can confuse the practitioner on how best to construct the model. 
+This nomenclature problem likely has two sources. First, many texts introduce birth-flow models first [e.g., the very first figure in @Caswell2001, illustrating the notion of discrete age classes, shows the classes as ages 0--1, 1--2, etc.]. 
+Second, in colloquial use, age-associated terms often span an age range: for example, in ungulates the term "yearling" refers to any individual between the ages of one and two. 
+When that same term is applied to a class in a birth-pulse MPM, nontrivial cognitive effort is required to mentally redefine it (so that "Yearling" means age exactly one). 
+
 ## Misc discussion items
 - Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
+- Mention other types of errors in MPM construction
+  - Inappropriate fecundity term (e.g., using birth-pulse for continuously breeding species)
+  - Issues with size, esp. using observed transitions between size classes
+  - Issues with seeds/seed banks
 
 # Acknowledgments {.unnumbered}
 This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider and Jakob Voigt at the Max Planck Institute for Demographic Research for carrying out the model evaluations.

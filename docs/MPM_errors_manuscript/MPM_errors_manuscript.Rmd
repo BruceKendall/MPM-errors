@@ -19,11 +19,11 @@ address:
 abstract: |
   Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. 
   However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
-  We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility transition element; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth transition rate out of a stage with a mean development time greater than the model time step. 
+  We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility coefficient; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth rate out of a stage with a mean development time greater than the model time step. 
   We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions. 
   These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. 
   To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database [add sample sizes (MPMs, species, studies)]. 
-  The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle graph (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
+  The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
   Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed within-stage age structure. 
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
@@ -82,12 +82,12 @@ In a prebreeding census, the youngest age class is made up of individuals all wi
 In a postbreeding census, the first age class would comprise newborn individuals, all of age zero, the second class would comprise individuals of age exactly one, etc.
 We refer to newborn individuals with a subscript of zero; as a result, our lifetables and postbreeding Leslie models will look different from most textbooks, which assign newborns to "age class one" and use a subscript of one.
 
-## Ensuring that the fertility transition spans a full timestep
+## Ensuring that the fertility coefficient spans a full timestep
 In a life table (e.g., Table \ref{tab:lifetable}, age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
 But there is an important difference: survival (which we donote $\sigma_x$ for Leslie models and $\sigma_i$ for Lefkovitch models, where $x$ is the age and $i$ is stage) represents the fraction of individuals in class $x$ that survive for a full timestep, from time $t$ to time $t+1$. 
 In contrast, the birth rate (typically denoted $b_x$ or $m_x$; we use the former) is instantaneous: it is the average number of offspring produced at time $t$ by an individual that is alive at time $t$. 
 It is tempting to draw a life cycle graph like the one in Fig. \@ref(fig:lifecycles)a (and we commonly see that in the literature). 
-While this works as a *conceptual* diagram, translating it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each transition element in the matrix must span a timestep, and $m_x$ does not accomplish that. 
+While this works as a *conceptual* diagram, translating it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each element in the matrix must span a timestep, and $m_x$ does not accomplish that. 
 ```{r lifetable, results='markup', echo=FALSE}
 ### Make and display a sample life table
 sample_life_table <- data.frame(
@@ -115,7 +115,7 @@ knitr::kable(sample_life_table, escape = FALSE,
              different from those in many textbooks.")
 ```
 
-```{r lifecycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent the life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the reproductive transitions must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is Age 1 and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that Age 2 individuals will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
+```{r lifecycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent the life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is Age 1 and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that Age 2 individuals will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
 class_names <- c("Age 0", "Age 1", "Age 2", "Adult")
 op <- par(mfrow = c(2,2), mar = c(0.1, 0.1, 1.6, 0.1))
@@ -197,23 +197,23 @@ par(op)
 ```
 
 To get the timestep in there, $b_x$ needs to be multiplied by a survival term---either that of the parent or of the offspring. 
-For a pre-breeding census model, the reproductive transition is $F_x = b_x \sigma_0$: the parent, in class $x$, produces $b_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $\sigma_0$ (Fig. \@ref(fig:lifecycles)b). 
-For an annual timestep, the transition $F_x$ represents the number of one-year-olds next year produced by an individual in class $x$ this year. 
+For a pre-breeding census model, the fertility coefficient is $F_x = b_x \sigma_0$: the parent, in class $x$, produces $b_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $\sigma_0$ (Fig. \@ref(fig:lifecycles)b). 
+For an annual timestep, $F_x$ represents the number of one-year-olds next year produced by an individual in class $x$ this year. 
 
 In a post-breeding census, the parent (which will have just reproduced if it is already an adult) must survive for a timestep, aging by a timestep and possibly maturing into a new class, and then reproduces with a birth rate appropriate to its class at the end of the timestep. 
-If we use $x'$ to denote the parent's class at time $t+1$, then the transition rate is $F_x = \sigma_x b_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) next year produced next year by an individual that was in class $x$ this year. 
+If we use $x'$ to denote the parent's class at time $t+1$, then the fertility coefficient is $F_x = \sigma_x b_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) next year produced next year by an individual that was in class $x$ this year. 
 Properly accounting for $x'$ is a separate challenge that we address in the next subsection.
 
 
 ## Matching the age at first reproduction to the species' life history
 In an age-structured population, the lowest age with a non-zero birth rate represents the *age at first reproduction*; we will call that age $x_m$, for "age at [reproductive] maturity." 
 In a post-breeding census model, the individuals who are age $x_m$ at the end of the timestep, and have just reproduced for the first time, were age $x_m - 1$ at the beginning of the timestep. 
-This creates a reproductive transition from age class $x_m - 1$ to age class zero---the lower of the two reproductive transitions in Fig. \@ref(fig:lifecycles)d. 
-Embracing this transition requires overcoming cognitive dissonance---"juveniles" are reproducing!---and failure to do so results in models like that in Fig. \@ref(fig:lifecycles)c.
+This creates a fertility arrow from age class $x_m - 1$ to age class zero---the lower of the two fertility arrow in Fig. \@ref(fig:lifecycles)d. 
+Embracing this fertility coefficient requires overcoming cognitive dissonance---"juveniles" are reproducing!---and failure to do so results in models like that in Fig. \@ref(fig:lifecycles)c.
 Pre-breeding census models do not cause this problem, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
 
 This is also not a challenge for post-breeding census models if we follow the convention of associating the age class with the age at the individual's next birthday.
-Then the reproduction by newly maturing individuals is $F_{x_m} = \hat{\sigma}_{x_m} b_{x_m}$ (we use $\hat{\sigma}$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
+Then the fertility of newly maturing individuals is $F_{x_m} = \hat{\sigma}_{x_m} b_{x_m}$ (we use $\hat{\sigma}$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
 Indeed, this is a strong justification for the convention.
 However, this convention cannot be maintained when moving from age-structured to stage-structured models; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
 
@@ -222,11 +222,11 @@ Within the juvenile class, some individuals remain juveniles in the next timeste
 If $\gamma_j$ is the fraction surviving individuals that mature ("grow") at the end of the timestep, then the Juvenile--Juvenile transition is given by $P_j = \sigma_j (1-\gamma_j)$ and the Juvenile--Adult transition is given by $G_j = \sigma_j \gamma_j$. 
 This is true for both pre-breeding and post-breeding census models.
 However, for the latter, the individuals that made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
-Thus we need a reproductive transition leading out of the juvenile class---$F_j = G_j b_a$---which again seems to defy common sense.
+Thus we need a fertility coefficient leading out of the juvenile class---$F_j = G_j b_a$---which again seems to defy common sense.
 There is no way to finesse this in the way that has been done in age-structured models: if we classify individuals by their stage at their next birthday, so that the maturing individuals are called "adults," then we impose a constraint that individuals in the last year of the juvenile stage have the same survival as adults, which often isn't accurate.
 There are further obstacles to any attempted finesse in more complicated models in which individuals can "mature" into more than one subsequent class.
 
-```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent stage structured life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the reproductive transitions must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
+```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent stage structured life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
 class_names <- c("Newborn", "Juvenile", "Adult")
 op <- par(mfrow = c(2,2), mar = c(0.1, 0.1, 1.6, 0.1))
@@ -307,7 +307,7 @@ plotmat(mat4, name = class_names, pos = pos, curve = curves,
 par(op)
 ```
 
-In both stage- and age-structured models, failing to have the reproductive transition out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
+In both stage- and age-structured models, failing to have the fertility coefficient out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 The final challenge is associated with estimating $\gamma_x$, the fraction of individuals maturing out of stage $x$.
@@ -621,11 +621,11 @@ MatDurErrors <- error_stats(MatDurErr.glm)
 
 ```
 We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
-`r FecErrors$perc`% of these studies failed to include an appropriate survival component in the reproduction terms; `r FecErrors$post`% of these errors were in post-breeding census models.
+`r FecErrors$perc`% of these studies failed to include an appropriate survival component in the fertility coefficients; `r FecErrors$post`% of these errors were in post-breeding census models.
 The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
 
 The potential for missing the reproductive event associated with first reaching reproductive age is only a feature of post-breeding census models.
-Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify reproductive transitions, `r ReproWithMatErrors$perc`% made this error.
+Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify fertility coefficients, `r ReproWithMatErrors$perc`% made this error.
 The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
 
 `r nrow(mpm_data_ls)` studies included models having at least one stage class that was meant to last for multiple timesteps; we were able to unambiguously classify the rule defining the maturation rate out of the stage(s) in `r MatDurErrors$n` of them.
@@ -633,7 +633,7 @@ Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value 
 The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurErrors$P`; Fig. \@ref(fig:regplots)c).
 
 
-```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in reproduction term, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
 ## Make plots
 # Create a function for the plot
 # Have x label only for last, y label only for middle

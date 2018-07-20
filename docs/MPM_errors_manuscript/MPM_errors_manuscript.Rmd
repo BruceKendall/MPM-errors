@@ -323,7 +323,7 @@ In both stage- and age-structured models, failing to have the fertility coeffici
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 The final challenge is associated with estimating $\gamma_x$, the fraction of individuals maturing out of stage $x$.
-With longitudinal data on individuals, one can simply derive this from the observations, for example, using multistate capture-mark-recapture models (CITE, although this is not guaranteed to be robust; see Discussion).
+With repeated observations of marked individuals, one can simply derive this from the observations, for example, using multistate capture-mark-recapture models (CITE, although this is not guaranteed to be robust; see Discussion).
 However, in many cases, the goal is to combine information on stage-specific survival, often variously collected, with knowledge about the stage duration (the number of timesteps that individuals remain in a stage before maturing).
 If stage durations are fixed (e.g., all individuals mature after two years as juveniles), then the goal is to create a "stage-for-age" model (e.g., Ebert) where the mean stage duration in the model equals the fixed stage duration in the life history.
 Even where real stage durations are somewhat variable, if there is a well-defined mean stage duration, then we can still aspire to have the modeled mean stage duration match the actual mean stage duration.
@@ -352,12 +352,19 @@ Some discover a predecessor to the above Crowder et al. approach that appears in
 This formula is complex-looking but straighforward to calculate, as it doesn't require iteration (in incorporates the within-cohort dynamics, but *assumes* that $\lambda_1 = 1$).
 We will refer to this as the "stationary age-within-stage structure" (SAS) model (where "stationary" means that the population is neither growing nor declining).
 
-An even simpler approach is to simply say that, if the stage duration is $T$ timesteps, then the fraction maturing is $1/T$. 
-This effectively assumes that the age distribution is perfectly flat.
+An even simpler approach is to simply say that, if the desired duration of stage $i$ is $T_i$ timesteps, then the fraction maturing is $1/T_i$. 
+This effectively assumes that the age distribution is perfectly flat, which will only be true under asymptotic conditions if $\sigma_i / \lambda_1 = 1$.
 Its popularity probably stems not just from the fact that it is simple to calculate and explain, but because it is the first solution to the problem listed by @Caswell2001, who calls it "intuitive."
 We will refer to this as the "flat age-within-stage structure" (FAS) model.
 
+A rather different approach to estimating $\gamma_i$ does not explicitly attempt to match the mean stage duration, but instead merely estimates $\gamma_i$ as the observed fraction of surviving individuals in the stage that mature to the next stage.
+As long as the modelled age-within-stage distribution remains the same as it was during the observation period, then the model will get the mean stage duration correct.
+However, whereas the observed fraction maturing will change as the age-within-stage distribution changes in the actual population, changes in the modeled age-within-stage distribution will not be reflected in changing maturation fraction.
+We will refer to this as the "observed age-within-stage structure" (OAS) model.
+
 As mentioned above, only the AAS model will replicate $\lambda_1$ and its sensitivities from the fully age-structured model.
+Of course, a final approach, if the stage durations really are fixed, is to "unroll" the stage, replacing the single stage class with $T_i$ age classes with identical survival coeffiecients (or, if the assumption of homogenous survival within the stage was an approximation, with actual age-specific survival coefficients).
+After analysis, the age classes can be collapsed back to their stage to generate a stage structure or sensitivity analyses that are stage-specific rather than age-specific.
 
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda_1$), sensitivity analysis of $\lambda_1$ to changes in underlying vital rates, and life history statistics such as generation time. 

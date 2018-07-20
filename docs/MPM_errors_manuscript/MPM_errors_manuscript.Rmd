@@ -209,26 +209,34 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 
 ## Matching the age at first reproduction to the species' life history
 In an age-structured population, the lowest age with a non-zero birth rate represents the *age at first reproduction*; we will call that age $x_m$, for "age at [reproductive] maturity." 
-In a post-breeding census model, the individuals who are age $x_m$ at the end of the timestep, and have just reproduced for the first time, were age $x_m - 1$ at the beginning of the timestep. 
-This creates a fertility arrow from age class $x_m - 1$ to age class zero---the lower of the two fertility arrow in Fig. \@ref(fig:lifecycles)d. 
-Embracing this fertility coefficient requires overcoming cognitive dissonance---"juveniles" are reproducing!---and failure to do so results in models like that in Fig. \@ref(fig:lifecycles)c.
-Pre-breeding census models do not cause this problem, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
+In a prebreeding census model (Fig. \@ref(fig:lifecycles)b), this does not present a conceptual challange, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
+However, in a post-breeding census model, the individuals who are age $x_m$ at the end of the timestep, and have just reproduced for the first time, were age $x_m - 1$ at the beginning of the timestep. 
+A model that has the first fertility coefficient associated with age $x_m$ (Fig. \@ref(fig:lifecycles)c) results in the modelled age at first reproduction being $x_m + 1$, a year delay relative to the actual life history.
+The solution is to add a fertility coefficient linking age class $x_m - 1$ to age class zero---the lower of the two fertility arrows in Fig. \@ref(fig:lifecycles)d. 
+Embracing this fertility coefficient requires overcoming cognitive dissonance---"juveniles" are reproducing!---and we have found that novices actively resist this.
 
-This is also not a challenge for post-breeding census models if we follow the convention of associating the age class with the age at the individual's next birthday.
-Then the fertility of newly maturing individuals is $F_{x_m} = \hat{\sigma}_{x_m} b_{x_m}$ (we use $\hat{\sigma}$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above); the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
-Indeed, this is a strong justification for the convention.
-However, this convention cannot be maintained when moving from age-structured to stage-structured models; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
 
+An alternative approach for postbreeding census Leslie models is to change the indexing scheme, associating $x$ with the individual's age at the *end* of the timestep (rather than the age at the beginning of the timestep, as we have done above).
+Then the individuals who will mature and reproduce before the next census are called age $x_m$, and their fertility is $F_{x_m} = \hat{\sigma}_{x_m} b_{x_m}$ (we use $\hat{\sigma}$ for survival to clarify that it is a differently indexed parameter from $\sigma$ as used above).
+Thus, the cognitive dissonance is finessed by "hiding" the fact that these individuals started the timestep as juveniles.
+Indeed, many textbooks use this indexing convention.
+However, this alternative indexing convention cannot be maintained when moving from age-structured to stage-structured models, as not all individuals that start the timestep as juveniles will end it as adults.
+
+So let us look at stage-structured models.
 The simplest stage-structured model has newborns, a nonreproductive juvenile class that spans multiple timesteps, and reproductive adults (Fig. \@ref(fig:SScycles)).
 Within the juvenile class, some individuals remain juveniles in the next timestep (should they survive), whereas others mature into adults.
 If $\gamma_J$ is the fraction surviving individuals that mature ("grow") at the end of the timestep, then the Juvenile--Juvenile transition is given by $P_J = \sigma_J (1-\gamma_J)$ and the Juvenile--Adult transition is given by $G_J = \sigma_J \gamma_J$. 
-This is true for both pre-breeding and post-breeding census models.
-However, for the latter, the individuals that made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
-Thus we need a fertility coefficient leading out of the juvenile class---$F_J = G_J b_A$---which again seems to defy common sense.
-There is no way to finesse this in the way that has been done in age-structured models: if we classify individuals by their stage at their next birthday, so that the maturing individuals are called "adults," then we impose a constraint that individuals in the last year of the juvenile stage have the same survival as adults, which often isn't accurate.
-There are further obstacles to any attempted finesse in more complicated models in which individuals can "mature" into more than one subsequent class.
+We will treat the estimation of $\gamma_J$ in the next section.
+As in age-structured models, the fertility coefficient needs to include a survival term, so Fig. \@ref(fig:SScycles)a is incorrect.
+In a prebreeding census model, the adult birth rate must be multiplied by newborn survival, and newborns removed from the stage vector (Fig. \@ref(fig:SScycles)b), whereas in a postbreeding census model, the birth rate must be multiplied by the parent's suvival (Figs. \@ref(fig:SScycles)c-d).
 
-
+If the criterion for being classed as "adult" is that the individual can reproduce, then just-matured adults should have non-zero fertility. 
+In the prebreeding census model (Fig. \@ref(fig:SScycles)b), the individuals that have just matured (made the transition from Juvenile to Adult) will reproduce at the beginning of the next timestep.
+However, in the "inutuitive" postbreeding census model (Fig. \@ref(fig:SScycles)c), the individuals that just matured won't reproduce until the end of the next timestep, a full timestep after their transition to adulthood. 
+In reality, the individuals that just made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
+To represent this we need a fertility coefficient leading out of the juvenile class---$F_J = G_J b_A$ (Fig. \@ref(fig:SScycles)d)---which again seems to defy common sense.
+Although this is the texbook solution, there a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
+However, none of these are as straightforward as the re-indexing gambit for age structured models: they introduce changes such as giving the maturing juveniles adult survival rather than juvenile survival (which might or might not be desireable), or shortening the "juvenile" stage duration to account for the extra stage.
 
 ```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent stage structured life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
@@ -311,7 +319,7 @@ plotmat(mat4, name = class_names, pos = pos, curve = curves,
 par(op)
 ```
 
-In both stage- and age-structured models, failing to have the fertility coefficient out of the last juvenile class in post-breeding census models will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
+In both stage- and age-structured models, failing to have the fertility coefficient out of the last juvenile class in postbreeding census models (or having another workaround to the problem) will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
 The final challenge is associated with estimating $\gamma_x$, the fraction of individuals maturing out of stage $x$.
@@ -696,8 +704,9 @@ This is potentially confusing, but most practitioners do not move between these 
 However, transitioning from an age-structured model (which is what all texbooks use for a detailed explanation of MPMs) to a stage-structured model creates major challenges, at least for post-breeding census models.
 This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
 The solution is for post-breeding census stage-structured models to assign individuals to the stage class they were in at their recent birthday (bearing in mind that the age is measured in time steps).
-This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILLS DOES HERE]
+; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.This is perfectly sensible, but *most textbooks make this transition without comment.* [CHECK WHAT MILLS DOES HERE]
 Thus it is not obvious to a novice that the carefully explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
+; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
 
 ## Text about birth-flow models
 However, much of the theoretical development of MPMs was motivated by human demography, in which reproduction occurs throughout the year ("birth-flow" populations). 

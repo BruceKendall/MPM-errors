@@ -24,7 +24,7 @@ abstract: |
   These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. 
   To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database [add sample sizes (MPMs, species, studies)]. 
   The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
-  Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed within-stage age structure. 
+  Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed age-within-stage structure. 
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
@@ -111,11 +111,11 @@ knitr::kable(sample_life_table, escape = FALSE,
 ```
 
 
-In a life table (e.g., Table \ref{tab:lifetable}, age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
+In a life table (e.g., Table \ref{tab:lifetable}), age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
 But there is an important difference: survival (which we donote $\sigma_x$ for Leslie models and $\sigma_i$ for Lefkovitch models, where $x$ is the age and $i$ is stage) represents the fraction of individuals in a class ($x$ or $i$) that survive for a full timestep, from time $t$ to time $t+1$. 
 In contrast, the birth rate (which we denote $b_x$ for age-structured demography and $b_i$ for stage-structured demography) is instantaneous: it is the average number of offspring produced at time $t$ by an individual that is alive at time $t$. 
 It is tempting to draw a life cycle graph like the one in Fig. \@ref(fig:lifecycles)a (and we commonly see that in the literature). 
-While this works as a *conceptual* diagram, translating it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each element in the matrix must span a timestep, and $m_x$ does not accomplish that. 
+While this works as a *conceptual* diagram, translating it directly into an MPM by coverting each arrow in the graph into a matrix element is incorrect: each element in the matrix must span a timestep, and $b_x$ does not accomplish that. 
 
 ```{r lifecycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (or might not) represent the life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is Age 1 and the adult birth rate is multiplied by newborn survival. (c) A post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that Age 2 individuals will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
@@ -203,7 +203,7 @@ For a pre-breeding census model, the fertility coefficient is $F_x = b_x \sigma_
 For an annual timestep, $F_x$ represents the number of one-year-olds next year produced by an individual of age $x$ this year. 
 
 In a post-breeding census, the parent (which will have just reproduced if it is already an adult) must survive for a timestep, aging by a timestep and possibly maturing into a new class, and then reproduces with a birth rate appropriate to its class at the end of the timestep. 
-If we use $x'$ to denote the parent's class at time $t+1$, then the fertility coefficient is $F_x = \sigma_x b_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) next year produced next year by an individual that was in class $x$ this year. 
+If we use $x'$ to denote the parent's class at time $t+1$, then the fertility coefficient is $F_x = \sigma_x b_{x'}$ (Fig. \@ref(fig:lifecycles)d). For an annual timestep, $F_x$ is the number of zero-year-olds (newborns) produced next year by an individual that was in class $x$ this year. 
 Properly accounting for $x'$ is a separate challenge that we address in the next subsection.
 
 

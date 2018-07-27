@@ -690,11 +690,12 @@ library(ggpubr)
 ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
 ```
 
-```{r matdist, fig.cap="Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. [LGF: use white bars] [RSG: need to explain the categories on x axis]"}
+```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table XXX for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
 ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
-  geom_bar(aes(group=factor(0), y = ..prop..)) +
+  geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
   theme_classic() +
-  xlab("Maturation rule") + ylab("Frequency")
+  xlab("Maturation rule") + ylab("Frequency") +
+  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS", "Other"))
 ```
 
 # Discussion

@@ -568,7 +568,7 @@ Statistical analysis: means, trends through time
 library(xlsx)
 library(magrittr)
 library(tidyverse)
-data_file <- "Protocol_test_Kendall.xlsx"
+data_file <- "MPM_errors_in_lit.xlsx"
 mpm_data <- as.tibble(read.xlsx(data_file, 1))
 ```
 
@@ -666,8 +666,8 @@ ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "") {
   ggplot(dataset, aesthetic) + 
     geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
     geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
-    theme_classic() + xlim(2010.95, 2015.05) + xlab(xlabel) +
-    ylab(ylabel)
+    theme_classic()  + xlab(xlabel) +
+    ylab(ylabel) # + xlim(2010.95, 2015.05)
 }
 p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
 p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),

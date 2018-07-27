@@ -547,19 +547,29 @@ Using version 2.01 of the database, we subset the data to studies of nonhuman an
 This left 65 studies published prior to the year 2000, and roughly twice that number published from 2000 to 2018. 
 We retained all of the 20th century studies and took a random sample of 60 of the 21st century studies. 
 Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
+Some of the studies did not actually contain MPMs (the models in COMPADRE were constructed by the COMPADRE staff based on information in the cited paper); we eliminated these.
 
 Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix 2). 
-This protocol was applied by NNN members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.
+This protocol was applied by 3 members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.
 After initial training, consistency was ensured by having all members of the team, as well as the lead author of this paper, independently apply the protocol to the same set of papers until all were getting consistent results.
 If a question didn't apply (e.g., if it was not a stage-structure model), the answer was coded "NA;" if the answer could not be determined from the information in the publication, it was coded as "unknown."
 
-Questions related to fertility
+We coded a model as a postbreeding census if the first age or stage class appeared to be newborn (e.g., eggs, neonates) or a small fraction of a timestep old (e.g., hatchlings, larvae, fledglings).
+We coded a model as a prebreeding census if the first age or stage class appeared to be one timestep old (e.g., yearlings, juveniles, 1-year-olds).
+While a number of other breeding models are possible, in practice nearly all models fell into one of these categories.
 
-Questions related to first reproduction
+We examined the MPM to determine whether the fertility coefficients contained survival terms, and if so, whether they were appropriate to the model type.
+If the appropriate survival term was not present, we coded the model as "incorrect."
 
-Questions related to maturation
+To identify the the first reproductive stage or age class that was reproductive, we examined quantitative (e.g., a life table) or qualitative (e.g., text description of the life history) information about the species, as presented in the study.
+For postbreeding census models, we then asked whether the individuals maturing into that reproductive class had a nonzero fertility coefficient.
+Models lacking this fertility coefficient were coded as "incorrect."
 
-Statistical analysis: means, trends through time
+For stage-structured models in which there was a target mean stage duration, we examined textual model descriptions and symbolic representations of the model to determine whether it was constructed using the AAS, SAS, FAS, or OAS formulations, or whether the stages were "unrolled" into a Leslie matrix formulation.
+We examined the frequency of all furmulations, and coded AAS and unrolled models as "correct" from the perspective of calculating the asymptotic growth rate, $\lambda_1$.
+
+For each of the three classes of errors, we calculated the overall percentage of relevant studies (i.e., studies that had a structure potentially subject to the error, and for which we could clearly determine how the model was constructed) that made that error.
+We also used logistic regression of error classification against publication year to examine whether these errors had become more or less frequent over time.
 
 ## Results
 *Note: The data collection by the Compadrinos is ongoing. Here we report an analysis based on data collected for the initial feasibility study for the project. The publications are recent and haphazardly chosen, but for this preliminary review we have analyzed and presented these data in the same form that we plan for the final dataset.*

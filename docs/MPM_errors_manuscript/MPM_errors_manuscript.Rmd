@@ -483,6 +483,22 @@ Table: (\#tab:ModelList) List of models and description of changes made to the o
 
 
 ## Effects on asymptotic population growth rate ($\lambda_1$) 
+The failure to include survival terms in the fertility coefficients will make those coefficients too large (since survival is less than one).
+This will lead to an overestimate of $\lambda_1$.
+This error most often occurs in postbreeding census models, and will be approximately
+$$
+\mathcal{E}_{\text{surv}}(\lambda_1) \approx \sum_x \left(1 - \sigma_x \right) F_x S_{F_x},
+$$
+where $S_{F_x}$ is the sensitivity of $\lambda_1$ to the fertility coefficient $F_x$.
+Thus, if the survival terms are close to one (as they often are for adults) and the sensitivity of the asymptotic growth rate to survival is small [as it often is; e.g., @Caswell2001, Figs. 9.2 and 9.3 shows sensitivity to fertility having values no more than 0.2, and often much lower], then this error should generally be fairly small.
+
+The failure to allow individuals to reproduce when they first reach reproductive age will have two consequences: $R_0$, the net reproductive rate, will be reduced slightly; and the mean generation time, $T_G$, will be increased by a timestep.
+Both effects contribute to an underestimate of $\lambda_1$; the error is approximately
+$$
+\mathcal{E}_{\text{mature}}(\lambda_1) \approx 
+$$
+
+
 The original lionfish model (L1) had $\lambda_1$ of 1.125; this meant they grew by 12.5% each month (Figure S1). 
 Even though they are invasive species and rapidly expanding. 
 The population growth rate is unrealistically high. 

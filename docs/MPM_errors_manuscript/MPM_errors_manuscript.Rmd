@@ -524,6 +524,10 @@ Changes in the transition rates for juvenile and subadult stages had little effe
 
 
 ## Effects on sensitivity analysis of $\lambda_1$
+Calculating the sensitivity (or elasticity) of $\lambda_1$ to changes in matrix elements or underlying demographic parameters is often the primary goal of constructing and MPM, especially for management applications or studies of life history theory.
+Predicting the effects of MPM construction errors requires information about the second derivative of $\lambda_1$ with respect to model parameters, the theory of which has not been much developed. [CHECK CASWELL SECTION ON THIS]
+One unambiguous effect is that failing to include survival terms in the fertility coefficients will lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
+
 Similarly to the results on $\lambda_1$, sensitivity and elasticity of $\lambda_1$ to stage-specific survival and fecundity were affected more for lionfish than alligator. 
 For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Figures S4 & S5). 
 This implies that conservation strategy can be affected by the errors in developing a population matrix. 

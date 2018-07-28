@@ -540,7 +540,9 @@ For example, the original model substantially under-estimated the stable stage d
 A variety of life history statistics, such as generation time ($T$) and net reproductive rate ($R_0$), are key quantities in comparative studies of population demography.
 Since these quantities are commonly estimated by analyzing MPMs [e.g., @Salguero-Gomez2016a], it is critical to understand how sensitive these estimates are to errors in MPM construction.
 Here, we focus on generation time.
-Previous work suggests that age-structured models provide more reliable generation time estimates than do stage-structured models [@Fujiwara2017], but how this depends on potential errors in matrix construction has not been examined. 
+It is not obvious that leaving survival out of the fertility coefficients should have much impact on generation time (although it will lead to an overestimate of $R_0$).
+Failing to allow maturing individuals to reproduce will delay the entire reproductive schedule by a timestep, resulting in roughly a one-timestep overestimate of generation time.
+Previous work suggests that age-structured models provide more reliable generation time estimates than do the corresponding stage-for-age models [@Fujiwara2017], although the estimates were fairly accurate when the assumption of homogenous demography within a stage was satisfied (as we have done here). 
 
 There are a variety of ways to define generation time in demographic studies [@Coale1972].
 In this study, we used the mean age of mothers to represent the generation time, applying formulas developed by @Bienvenu2015. 

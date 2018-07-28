@@ -495,9 +495,12 @@ Thus, if the survival terms are close to one (as they often are for adults) and 
 The failure to allow individuals to reproduce when they first reach reproductive age will have two consequences: $R_0$, the net reproductive rate, will be reduced slightly; and the mean generation time, $T_G$, will be increased by a timestep.
 Both effects contribute to an underestimate of $\lambda_1$; the error is approximately
 $$
-\mathcal{E}_{\text{mature}}(\lambda_1) \approx 
+\mathcal{E}_{\text{mature}}(\lambda_1) \approx R_0^{1/T_G} - 
+\left(\sigma_A R_0 \right)^{1/(T_G+1)},
 $$
+where $\sigma_A$ is the one timestep survival of the newly matured class. This doesn't simplify easily, but it is clearly largest when the generation time is short or $R_0$ is large.
 
+If the stage durations are fixed, such that a Leslie matrix model, with all age classes within the stage having the same survival, is the best model, then only the AAS stage-structured model will give the correct $\lambda_1$ in general. The SAS model will be correct only if $\lambda_1 = 1$; if $\lambda_1 >1$, then the maturation fraction will be too large and $\lambda_1$ will be overestimated; the opposite will be true if $\lambda_1 < 1$. Thus the SAS model will bias $\lambda_1$ away from one. The FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i/T_i$ [CHECK]. If there is more than one multi-timestep stage, with different critical values of $\lambda_1$, the outcome is unclear.
 
 The original lionfish model (L1) had $\lambda_1$ of 1.125; this meant they grew by 12.5% each month (Figure S1). 
 Even though they are invasive species and rapidly expanding. 

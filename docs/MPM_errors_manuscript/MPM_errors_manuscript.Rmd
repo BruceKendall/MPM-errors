@@ -500,7 +500,12 @@ $$
 $$
 where $\sigma_A$ is the one timestep survival of the newly matured class. This doesn't simplify easily, but it is clearly largest when the generation time is short or $R_0$ is large.
 
-If the stage durations are fixed, such that a Leslie matrix model, with all age classes within the stage having the same survival, is the best model, then only the AAS stage-structured model will give the correct $\lambda_1$ in general. The SAS model will be correct only if $\lambda_1 = 1$; if $\lambda_1 >1$, then the maturation fraction will be too large and $\lambda_1$ will be overestimated; the opposite will be true if $\lambda_1 < 1$. Thus the SAS model will bias $\lambda_1$ away from one. The FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i/T_i$ [CHECK]. If there is more than one multi-timestep stage, with different critical values of $\lambda_1$, the outcome is unclear.
+If the stage durations are fixed, such that a Leslie matrix model, with all age classes within the stage having the same survival, is the best model, then only the AAS stage-structured model will give the correct $\lambda_1$ in general. 
+The SAS model will be correct only if $\lambda_1 = 1$; if $\lambda_1 >1$, then the maturation fraction will be too large and $\lambda_1$ will be overestimated; the opposite will be true if $\lambda_1 < 1$. 
+Thus the SAS model will bias $\lambda_1$ away from one. 
+The FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i/T_i$ [CHECK]. 
+If there is more than one multi-timestep stage, with different critical values of $\lambda_1$, then the effects of the FAS model are unclear.
+The impact of using the observed transition rates is likely to be highly variable, depending on the nature of the deviations between the age structure when the population was observed and the asyptotic age structure.
 
 The original lionfish model (L1) had $\lambda_1$ of 1.125; this meant they grew by 12.5% each month (Figure S1). 
 Even though they are invasive species and rapidly expanding. 
@@ -508,7 +513,7 @@ The population growth rate is unrealistically high.
 By reducing the average duration in juvenile stage (L2) and incorporating fertility rate on juvenile stage, the population growth rate increased further (L3). 
 However, the use of SAS model to calculate the juvenile transition rate (L4) reduced $\lambda_1$ substantially. 
 This is because for the duration of the juvenile stage (11 time steps on average), the survival rate is low. 
-Incorporation of $\lambda_1$ in calculation of the transition rates (AAS models; L5) reduced $\lambda_1$ because $\lambda_1$>>1. 
+Incorporation of $\lambda_1$ in calculation of the transition rates (AAS models; L5) reduced $\lambda_1$ because $\lambda_1 \gg 1$. 
 This meant that there was an increase in number of individuals recruited into juvenile stage from larval stage; therefore, the actual age-distribution declines faster with age than the stable age distribution. 
 The Leslie matrix (L6, which is expected to be least prone to the errors associated with the manipulations of parameters, and model L5 had the same $\lambda_1$.
 

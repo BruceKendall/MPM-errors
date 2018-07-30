@@ -558,6 +558,8 @@ The asymptotic growth rate and its sensitivity to underlying parameters are rele
 However, in real populations subject to environmental variability or perturbations of abundance, many applications depend on knowing about the population's transient dynamics when it is far from the stable distribution.
 There are a range of approaches to quantifying transient dynamics [@Stott2016]; here we focus on the one of the simplest, the damping ratio, which measures how quickly transient dynamics dissipate over time.
 The damping ratio is given by $\lambda_1/\left|\lambda_2\right|$, where $\lambda_1$  is the eigenvalue of the largest magnitude and $\lambda_2$  is that of the second largest. 
+In general, we expect that stage-structured modles will have higher damping ratios than the equivalent age-structured models, as the effects of maturation time delays are reduced.
+However, we have no theoretical basis for predicting the effects of MPM construction errors on transient dynamics.
 
 For lionfish, $\lambda_1$  remained almost the same between L1 and L2, but the damping ratio changed between them indicating the reduced juvenile duration also reduced the magnitude of $\lambda_2$. 
 Between L5 and L6, $\lambda_1$ and stable stage distribution were almost the same, but there was reduction in damping ratio, indicating the conversion from age-structured (L6) to stage-structured (L5) models influenced the damping ratio. 

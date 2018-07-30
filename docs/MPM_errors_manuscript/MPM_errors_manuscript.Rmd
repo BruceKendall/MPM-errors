@@ -569,8 +569,10 @@ Changes in the transition rates for juvenile and subadult stages had little effe
 
 ## Effects on sensitivity analysis of $\lambda_1$
 Calculating the sensitivity (or elasticity) of $\lambda_1$ to changes in matrix elements or underlying demographic parameters is often the primary goal of constructing and MPM, especially for management applications or studies of life history theory.
-Predicting the effects of MPM construction errors requires information about the second derivative of $\lambda_1$ with respect to model parameters, the theory of which has not been much developed. [CHECK CASWELL SECTION ON THIS]
-One unambiguous effect is that failing to include survival terms in the fertility coefficients will lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
+Predicting the effects of MPM construction errors requires information about the second derivative of $\lambda_1$ with respect to model parameters [@Caswell1996], the theory of which seems not to have been much developed. 
+In  a Lefkovitch model, the second derivative of $\lambda_1$ with respect to diagonal matrix elements is positive, and with respect to off-diagonal elements seems to be generally negative [@McCarthy2008].
+This suggests that overestimates of the maturation rate should reduce the sensitivity of $\lambda_1$ to both stasis and growth terms, thus reducing the sensitivity of $\lambda_1$ to survival.
+In addition, failing to include survival terms in the fertility coefficients will necessarily lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
 
 Similarly to the results on $\lambda_1$, sensitivity and elasticity of $\lambda_1$ to stage-specific survival and fecundity were affected more for lionfish than alligator. 
 For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Figures S4 & S5). 
@@ -623,7 +625,7 @@ Using version 2.01 of the database, we subset the data to studies of nonhuman an
 This left 65 studies published prior to the year 2000, and roughly twice that number published from 2000 to 2018. 
 We retained all of the 20th century studies and took a random sample of 60 of the 21st century studies. 
 Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
-Some of the studies did not actually contain MPMs (the models in COMPADRE were constructed by the COMPADRE staff based on information in the cited paper); we eliminated these.
+Some of the studies did not actually contain MPMs (the models in the COMADRE database were constructed by the COMADRE digitization team based on information in the cited paper); we eliminated these.
 
 Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix 2). 
 This protocol was applied by 3 members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.

@@ -397,7 +397,7 @@ The four population models for each population were used to calculate the same q
 
 
 
-Table: (\#tab:ModelList) List of models and description of changes made to the original models.
+Table: (\#tab:ModelList) List of models and description of changes made to the original models. **[Do we need this? Can we revise the text in a way that doesn't need to reference the model abbreviations?]**
 
  ---------------------------------------------------------------------------------------------------------------------------------
   Population                      Model   Description
@@ -479,7 +479,15 @@ Table: (\#tab:ModelList) List of models and description of changes made to the o
                                           
   ---------------------------------------------------------------------------------------------------------------------------------
 
+**MASAMI: I'm not sure what the best way to present the simulation results is. I think the two main points we want to show are: (1) the relative impacts of the three types of errors; (2) that some of the biases introduced by these errors seem to depend on details of the life history (e.g., adult survival) and population dynamics (e.g., $\lambda$). I don't think that either of the two extremes of presentation (showing all the results for all the models, or giving brief text summaries of the species-specific patterns) will be most effective.**
 
+**One approach might be to do some strategic comparisons. E.g., for the lionfish (which I think has the most dramatic effects), show the difference between the original model and the "correct" Leslie model, and then show the effects of each error by itself (e.g., Leslie model with mising survival in fertility coefficient, Leslie model with missing reproduction by maturing juveniles, stage structured model with FAS maturation but correct fertility coeffients). One question would be which model to use as the baseline "incorrect" model, since we are also correcting some things (e.g., juvenile stage duration) that are not being explicitly addressed by the paper---my thought would be to start with the model that has these things corrected, but am open to discussion.**
+
+**Then we could use the alligator models to show how the magnitudes (both absolute and relative to one another) and directions of the biases shift when we look to a different life history, and how these biases might be sensitive to parameter differences even within a life history.**
+
+**Because the aligator uses a "better" maturation model (SAS rather than FAS), the effects of the maturation model are not directly comparable. We could either just say this; or, if we wanted to be comprehensive, we could construct some fictional models (SAS for lionfish; FAS for alligators).**
+
+**Anyhow, I'm open to ideas on this!**
 
 
 ## Effects on asymptotic population growth rate ($\lambda_1$) 

@@ -41,6 +41,21 @@ layout: "12pt, 1p"
 linenumbers: true
 tables: true
 journal: "Ecological Modelling"
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage[table]{xcolor}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
 ---
 
 ```{r knitr_options, echo=FALSE, message=FALSE}
@@ -338,7 +353,28 @@ Nevertheless, the primary analyses performed on most published MPMs are to calcu
 For these calculations, there is one (and only one) recipe to create a stage-structured model that will generate the same results as the equivalent age-structured model with fixed stage durations. [LOOK FOR EVIDENCE OF THIS]
 As best we can tell, it was first introduced by @Caswell1989, although its first application to an ecological populaton may have been by @Crowder1994. 
 
-**MAKE TABLE WITH FORMULAS AND ASSUMPTIONS OF THE MODELS**
+```{r matmodels, results='markup', echo=FALSE}
+library(magrittr)
+library(kableExtra)
+### Show details of maturation models
+model_table <- data.frame(
+  Model = c("Asymptotic age-within-stage structure (AAS)",
+            "Stationary age-within-stage structure (SAS)",
+            "Flat age-within-stage structure (FAS)"),
+  Formula = c("$\\displaystyle \\frac{\\left(\\sigma_i / \\lambda_1\\right)^{T_i - 1}}{\\sum_{j=0}^{T_i - 1} \\left(\\sigma_i / \\lambda_1\\right)^j}$",
+              "$\\displaystyle \\frac{\\sigma_i^{T_i - 1}}{\\sum_{j=0}^{T_i - 1} \\sigma_i^j}$",
+              "$1/T_i$"))
+
+names(model_table) <- c("Maturation model", 
+                              "Fraction maturing from stage $i$ ($\\gamma_i$)")
+knitr::kable(model_table, escape = FALSE, 
+             booktabs = TRUE,  align = c("l", "l"), format = "latex",
+             caption = "Three commonly used models for calculating $\\gamma_i$, the
+             fraction of individuals maturing from stage $i$, when the stage is meant
+             to have a fixed stage duration $T_i$.") %>%
+  column_spec(1, width = "6cm") %>%
+  column_spec(2, width = "4cm")
+```
 
 The basic idea is that $\gamma$ represents the fraction of individuals in the stage that have spent enough time in the stage to mature. 
 This, in turn, depends on the (implicit) age structure within the stage.
@@ -347,18 +383,18 @@ This is exactly the condition under which $\lambda_1$, the asymptotic growth rat
 Under these conditions, there are two factors that affect the age distribution within the stage, and hence the fraction of individuals of an appropriate age to mature.
 The first is the stage-specific mortality, which determines how a cohort shrinks as it ages.
 The second is the asymptotic growth rate, which determines the degree to which one year's entering cohort is larger or smaller than the previous one under the stable age or stage distrubution.
-This makes $\gamma$ non-trivial to calculate, as the resulting formula involves $\lambda_1$, which can only be calculated once the MPM has been constructed and calibrated on data!
+This makes $\gamma$ non-trivial to calculate, as the resulting formula (Table \@ref(tab:matmodels)) involves $\lambda_1$, which can only be calculated once the MPM has been constructed and calibrated on data!
 The solution is an iterative approach: take an initial guess of $\lambda_1$, calculate $\gamma$ from the formula; calculate the dominant eigenvalue of the resulting matrix; use that as a new guess for $\lambda_1$; and repeat until the value of $\lambda_1$ stops changing.
 We will refer to this as the "asymptotic age-within-stage structure" (AAS) model.
 
 The iterative nature of the AAS model may be daunting to non-modellers, especially those trained before the emergence of quantitative ecology using R.
 Such researchers may be tempted by easier-to-calculate formulas. 
-Some discover a predecessor to the above Crowder et al. approach that appears in @Crouse1987.
+Some discover a predecessor to the above Crowder et al. approach that appears in @Crouse1987 (Table \@ref(tab:matmodels)).
 This formula is complex-looking but straighforward to calculate, as it doesn't require iteration (it incorporates the within-cohort dynamics, but *assumes* that $\lambda_1 = 1$).
 We will refer to this as the "stationary age-within-stage structure" (SAS) model (where "stationary" means that the population is neither growing nor declining).
 
 An even simpler approach is to say that, if the desired duration of stage $i$ is $T_i$ timesteps, then the fraction maturing is $1/T_i$ (@Caswell2001). 
-This relationship between the mean residence time (stage duration) and the fraction departing (maturing) is true for a simple Markovian departure process (REFERENCE - any stochastic process book will work). 
+This relationship between the mean residence time (stage duration) and the fraction departing (maturing) is true for a simple Markovian departure process (REFERENCE - any stochastic process book will work **[MASAMI: Can you pick one?]**). 
 However, for the population process, different number of individuals are entering into the stage as a population may be growing or declining and individuals can also die before maturing. 
 Consequently, this particular relationship between the mean duration and fraction maturing is correct under asymptotic conditions if $\sigma_i / \lambda_1 = 1$.
 We will refer to this as the "flat age-within-stage structure" (FAS) model.

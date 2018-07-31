@@ -796,6 +796,11 @@ F.  Revisiting prior results
     1. Inidividual studies
     2. Syntheses
 
+## C. Why are these errors so common?
+Why do these errors occur? 
+The specific errors probably have different sources, but our experience working with students and non-modellers suggests that prime culprits are inconsistent terminology and notation, a lack of clear guidance on maturation rates, and a "threshold concept" (CITE) associated with postbreeding census models.
+
+The failure to include a survival component in the fertility coefficient is most surprising, as all textbooks make clear statements about the need for this. We suspect that the causes are threefold. First, different texts use different words to describe the birth rate ($b_x$) and the fertility coefficient ($F_x$)---"fertility," "fecundity," and "reproduction" are used to represent $F_x$ in different texts, and the terms have different scientific meanings in human demography and various fields of animal ecology. In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it more with $b_x$.
 ## Text about causes of confusion
 
 This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.

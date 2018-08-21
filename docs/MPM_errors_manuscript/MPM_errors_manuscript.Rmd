@@ -685,10 +685,20 @@ The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurE
 
 
 # Discussion
-*[This outline will be fleshed out in the final version!]*
 
-A.  Summary of impacts
-B.  Summary of prevalence
+We have described and analyzed three errors that are sometimes made when constructing animal matrix population models.
+These errors, involving the fertility coefficients and the maturation rates, cause the MPM to misrepresent the intended life history of the species.
+Based on our analysis of the COMADRE animal matrix model database [@Salguero-Gomez2016], we find that these errors are quite common: XX% of published models have at least one error, and YY% contain all three. [WRITE CODE TO GENERATE THESE]
+Furthermore, there is no evidence that these errors are becoming less frequent through time.
+
+These errors affect the value of quantities commonly calculated from MPMs, such as asymptotic growth rate and stage structure, elasticity analysis, generation time, and characteristics of transient dynamics.
+We can make a few generalizations about these effects.
+First, the two types of errors in the fertility coefficients have opposite effects on estimates of $\lambda_1$, the asymptotic population growth rate.
+Second, incorrect specification of the maturation rate seems to have the largest impact on these statistics.
+Third, even a stage-structured model that correctly matches the mean time to maturity gives incorrect transient dynamics and generation time if the age at maturation is actually fixed.
+Finally, most (but not all) of these errors are larger if $\lambda_1$ is far from one.
+However, in many cases we cannot yet predict either the direction or magnitude of biases introduced by the MPM construction errors.
+While a more complete understanding of these biases might be derived by analyzining more models, spanning a range of life histories, ecological understanding and management decisions would be better served by constructing the models correctly in the first place.
 
 Why do these errors occur? 
 The specific errors probably have different sources, but our experience working with students and non-modelers suggests that some confusion arises from inconsistent terminology and notation, and a lack of clear guidance on maturation rates.
@@ -702,7 +712,7 @@ She goes on to point out that a threshold concept
 
 The failure to include a survival component in the fertility coefficient is most surprising, as all textbooks make clear statements about the need for this. We suspect that the causes are threefold. 
 First, different texts use different words to describe the birth rate ($b_x$) and the fertility coefficient ($F_x$)---"fertility," "fecundity," and "reproduction" are used to represent $F_x$ in different texts, and the terms have different scientific meanings in human demography and various fields of animal ecology. 
-In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it more with $b_x$.
+In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it with $b_x$ rather than $F_x$.
 The use of a linguistically vague common language word to refer to a precisely defined model element creates the condition for nonmodellers to redefine the model element to match their understanding of the word, even when the textbook says otherwise.
 Second, the visual similarity between the conceptual life cycle graph (Figs. \@ref(fig:lifecycles)a, \@ref(fig:SScycles)a) and the life cycle graph that actually corresponds to the matrix may make it easy to forget to take the extra step of correctly formulating the fertility arrows.
 Finally, many nonmodellers seem to struggle to grasp the importance of having every transition in the MPM represent the same timestep.

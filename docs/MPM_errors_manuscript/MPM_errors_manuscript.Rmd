@@ -726,10 +726,18 @@ The poor choice of maturation model is probably most easily understood.
 Most textbooks do not treat this issue, and those that do [e.g., @Caswell2001; @Ebert1998] tend to be more mathematical than many nonmodelers may be comfortable with. 
 Furthermore, they do not include clear guidance on which approach is most suitable for a given modeling objective.
 
+How can the prevalence of these errors in MPM construction be reduced in the future?
+We have two pieces of advice to biologists seeking to construct an MPM for their species.
+First, we recommend that the model be constructed using the prebreeding framework.
+This reduces the likelihood of missing a survival term in the fecundity coefficient (as the newborn survival has to be put somewhere), and eliminates the nonintuitive fertility coefficients associated with transitions into reproductive classes.
+If a postbreeding census model is desired (e.g., so that model output can be compared with data that includes newborns), then the prebreeding census model can be used to check the accuracy of the postbreeding census model (e.g., $\lambda_1$ should be identical for the two matrices), or emerging tools such as the `pre_to_post` function in the **mpmtools** R package [@Kendall2018a] can be used to do the conversion automatically.
 
-D.  Recommendations for practitioners:  
-    1. Use prebreeding census whenever possible
-    2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda_1$ and generation time.")
+Second, we recommend that, when the stage durations are fixed (all individuals mature at the same age), the stage be "unrolled" into a Leslie matrix model.
+This creates a model that makes correct projections under both transient and asymptotic states, and can be used both for projecting the population and for calculating life history statistics.
+This also allows the demographic rates to vary with age within a stage (e.g., for species such as fish with size-dependent demography), avoiding further pitfalls highlighted by @Fujiwara2017.
+We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).
+
+
 E.  Recommendations for experts:
     1. Develop handbooks and training materials that are both comprehensive and clear to novices (noting that issues related to threshold concepts cannot be solve simply by clearing up notation)
     2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs

@@ -637,6 +637,40 @@ MatDurErr.glm <- glm(!GTcorrect ~ YearPublication,
 MatDurErrors <- error_stats(MatDurErr.glm)
 
 ```
+
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
+## Make plots
+# Create a function for the plot
+# Have x label only for last, y label only for middle
+ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "") {
+  jit <- 0.1
+  xmin <- min(dataset$YearPublication) - jit
+  xmax <- max(dataset$YearPublication) + jit
+  ggplot(dataset, aesthetic) + 
+    geom_jitter(width = jit, height = 0, shape = "|", size = 2) +
+    geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
+    theme_classic()  + xlab(xlabel) +
+    ylab(ylabel)  + xlim(xmin, xmax)
+}
+p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
+p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+              ylabel = "Frequency of MPM construction errors")
+p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
+              xlabel = "Publication Year")
+
+
+library(ggpubr)
+ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+```
+
+```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table 2 for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
+ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
+  geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
+  theme_classic() +
+  xlab("Maturation rule") + ylab("Frequency") +
+  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS", "Other"))
+```
+
 We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
 `r FecErrors$perc`% of these studies failed to include an appropriate survival component in the fertility coefficients; `r FecErrors$post`% of these errors were in post-breeding census models.
 The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
@@ -650,54 +684,12 @@ Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value 
 The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurErrors$P`; Fig. \@ref(fig:regplots)c).
 
 
-```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
-## Make plots
-# Create a function for the plot
-# Have x label only for last, y label only for middle
-ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "") {
-  ggplot(dataset, aesthetic) + 
-    geom_jitter(width = 0.05, height = 0, shape = "|", size = 2) +
-    geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
-    theme_classic()  + xlab(xlabel) +
-    ylab(ylabel) # + xlim(2010.95, 2015.05)
-}
-p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
-p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
-              ylabel = "Frequency of MPM construction errors")
-p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
-              xlabel = "Publication Year")
-
-
-library(ggpubr)
-ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
-```
-
-```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table XXX for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
-ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
-  geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
-  theme_classic() +
-  xlab("Maturation rule") + ylab("Frequency") +
-  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS", "Other"))
-```
-
 # Discussion
 *[This outline will be fleshed out in the final version!]*
 
 A.  Summary of impacts
 B.  Summary of prevalence
-C.  Why does this happen? Most texts are incomplete (especially for stage-structured models) and/or have inconsistent or confusing notation. Talk about @Caswell2001 as example. Also, these are "threshold concepts."
-D.  Recommendations for practitioners:  
-    1. Use prebreeding census whenever possible
-    2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda_1$ and generation time.")
-E.  Recommendations for experts:
-    1. Develop handbooks and training materials that are both comprehensive and clear to novices (noting that issues related to threshold concepts cannot be solve simply by clearing up notation)
-    2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
 
-F.  Revisiting prior results
-    1. Individual studies
-    2. Syntheses
-
-## C. Why are these errors so common?
 Why do these errors occur? 
 The specific errors probably have different sources, but our experience working with students and non-modelers suggests that some confusion arises from inconsistent terminology and notation, and a lack of clear guidance on maturation rates.
 However, a relatively new development in educational theory, the idea of the "threshold concept" [@Meyer2006], provides some useful insights as to why the correct construction of MPMs seems to be so challenging.
@@ -724,6 +716,27 @@ The poor choice of maturation model is probably most easily understood.
 Most textbooks do not treat this issue, and those that do [e.g., @Caswell2001; @Ebert1998] tend to be more mathematical than many nonmodelers may be comfortable with. 
 Furthermore, they do not include clear guidance on which approach is most suitable for a given modeling objective.
 
+
+D.  Recommendations for practitioners:  
+    1. Use prebreeding census whenever possible
+    2. Unroll developmental stages (address sensitivity analysis challenges raised by Fujiwara and Diaz-Lopez, p. 2: "The inclusion of a large number of age-classes for long-lived organisms can make the interpretation of the sensitivity and elasticity analyses complicated because individuals in multiple age classes are often practically identical but separated in an age-structured model. Consequently, when long-lived organisms are studied, it is common to convert age-specific vital rates into stage-specific vital rates, and to use stage-structured population matrices for calculating $\lambda_1$ and generation time.")
+E.  Recommendations for experts:
+    1. Develop handbooks and training materials that are both comprehensive and clear to novices (noting that issues related to threshold concepts cannot be solve simply by clearing up notation)
+    2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
+
+F.  Revisiting prior results
+    1. Individual studies
+    2. Syntheses
+
+**Misc discussion items**
+
+- Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
+- Mention other types of errors in MPM construction
+  - Inappropriate fecundity term (e.g., using birth-pulse for continuously breeding species)
+  - Issues with size, esp. using observed transitions between size classes
+  - Issues with seeds/seed banks
+
+# Bits of saved text
 ## Text about causes of confusion
 
 This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.
@@ -753,12 +766,6 @@ This nomenclature problem likely has two sources. First, many texts introduce bi
 Second, in colloquial use, age-associated terms often span an age range: for example, in ungulates the term "yearling" refers to any individual between the ages of one and two. 
 When that same term is applied to a class in a birth-pulse MPM, nontrivial cognitive effort is required to mentally redefine it (so that "Yearling" means age exactly one). 
 
-## Misc discussion items
-- Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
-- Mention other types of errors in MPM construction
-  - Inappropriate fecundity term (e.g., using birth-pulse for continuously breeding species)
-  - Issues with size, esp. using observed transitions between size classes
-  - Issues with seeds/seed banks
 
 # Acknowledgments {.unnumbered}
 This work was supported by [funding support to the compadrinos], a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider and Jakob Voigt at the Max Planck Institute for Demographic Research for carrying out the model evaluations.

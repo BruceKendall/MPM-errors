@@ -395,7 +395,7 @@ This formula is complex-looking but straightforward to calculate, as it doesn't 
 We will refer to this as the "stationary age-within-stage structure" (SAS) model (where "stationary" means that the population is neither growing nor declining).
 
 An even simpler approach is to say that, if the desired duration of stage $i$ is $T_i$ timesteps, then the fraction maturing is $1/T_i$ (@Caswell2001). 
-This relationship between the mean residence time (stage duration) and the fraction departing (maturing) is true for a simple Markovian departure process (REFERENCE - any stochastic process book will work **[MASAMI: Can you pick one?, Gallager, R.G. 1995 Discrete Stochastic Processes, Kluwer Academic Publishers, Norwell, Massachusetts ]**). 
+This relationship between the mean residence time (stage duration) and the fraction departing (maturing) is true for a simple Markovian departure process [e.g., @Gallager1995]. 
 However, for the population process, different number of individuals are entering into the stage as a population may be growing or declining and individuals can also die before maturing. 
 Consequently, this particular relationship between the mean duration and fraction maturing is correct under asymptotic conditions if $\sigma_i / \lambda_1 = 1$.
 We will refer to this as the "flat age-within-stage structure" (FAS) model.
@@ -444,9 +444,16 @@ $$
 where $S_{F_x}$ is the sensitivity of $\lambda_1$ to the fertility coefficient $F_x$.
 Thus, if the survival terms are close to one (as they often are for adults) and the sensitivity of the asymptotic growth rate to survival is small [as it often is; e.g., @Caswell2001, Figs. 9.2 and 9.3 shows sensitivity to fertility having values no more than 0.2, and often much lower], then this error should generally be fairly small.
 
-The fertility coefficients in both lionfish and alligator models in the original papers omitted the survival of adults. The effects of these errors can be observed by comparing the age-structured matrices with and without the correction (Supplementary Material). The first set of age-structured matrices (L6, A4, and A10) were converted from the original stage-structured matrices, which were missing the survival rate of adults. Another set of age-structured models (L8, A6, and A12) included corrected fertility coefficients with corresponding survival rates multiplied to the original fertility. When the survival rate was missing in the fertility coefficient, asymptotic population growth rate was always overestimated (Figure S1 and S8), adult stable stage distribution was underestimated (Figure S2 and S9), and adult reproductive value was overestimated (Figures S8 and S16). The reduced adult stable stage distribution and increased adult stable stage distribution resulted from the fact the models mistakenly assumed more offspring were born, inflating the number of younger individuals. 
+The fertility coefficients in both lionfish and alligator models in the original papers omitted the survival of adults. 
+The effects of these errors can be observed by comparing the age-structured matrices with and without the correction (Supplementary Material). 
+The first set of age-structured matrices (L6, A4, and A10) were converted from the original stage-structured matrices, which were missing the survival rate of adults. 
+Another set of age-structured models (L8, A6, and A12) included corrected fertility coefficients with corresponding survival rates multiplied to the original fertility. 
+When the survival rate was missing in the fertility coefficient, asymptotic population growth rate was always overestimated (Figure S1 and S8), adult stable stage distribution was underestimated (Figure S2 and S9), and adult reproductive value was overestimated (Figures S8 and S16). 
+The reduced adult stable stage distribution and increased adult stable stage distribution resulted from the fact the models mistakenly assumed more offspring were born, inflating the number of younger individuals. 
 
-For both lionfish and alligator populations, the survival rate over the time step of a model was high (0.95 per month for lionfish and 0.83 per year for alligator). Therefore, the effects were relatively minor. However, when we deal with organisms with low adult survival rate or when the time step is extended (e.g. time step is changed to 1 year in the lionfish model), a fertility coefficient could be substantially inflated without adult survival rate being included, causing biases in demographic statistics. 
+For both lionfish and alligator populations, the survival rate over the time step of a model was high (0.95 per month for lionfish and 0.83 per year for alligator). 
+Therefore, the effects were relatively minor. 
+However, when we deal with organisms with low adult survival rate or when the time step is extended (e.g. time step is changed to 1 year in the lionfish model), a fertility coefficient could be substantially inflated without adult survival rate being included, causing biases in demographic statistics. 
 
 
 ## Failure to allow individuals to reproduce when they first reach reproductive age
@@ -466,7 +473,8 @@ In all cases, the missing fertility coefficient caused the underestimation of as
 
 The effects of the missing fertility coefficient depend on the life history strategy of organisms. 
 For example, the effects were greater for the southern alligator population than northern alligator population because the duration from egg to adult stages was longer for northern population, causing less number of individuals to transition into adult stage each year, and the fecundity was lower for the northern population, causing less number of individuals to be born from each parent. 
-Both of these would cause the reproduction in the first year to be smaller, reducing the effects of the missing fertility coefficient to be small. The effects of the missing fertility coefficient is expected to be large for species for which the contribution of offspring from individuals reproducing the first time is large. 
+Both of these would cause the reproduction in the first year to be smaller, reducing the effects of the missing fertility coefficient to be small. 
+The effects of the missing fertility coefficient is expected to be large for species for which the contribution of offspring from individuals reproducing the first time is large. 
 
 ## Failure to use AAS model for transition rate calculation
 
@@ -478,7 +486,8 @@ If there is more than one multi-timestep stage, with different critical values o
 The impact of using the observed transition rates is likely to be highly variable, depending on the nature of the deviations between the age structure when the population was observed and the asymptotic age structure.
 
 Use of different maturation models (Table 2) has substantial effects on demographic statistics, and these effects can be observed by comparing FAS model (L3), SAS model (L4), AAS model (L5), and age-structured model (L8) for lionfish populations. 
-The asymptotic population growth rate was substantially overestimated under FAS and SAS models compared with the AAS and age-structured models (Figure S1), with latter two having the same growth rate estimate. Although stable stage distributions of adults under the four models appear similar (Figure S2), stable stage distributions of juveniles were underestimated with FAS and SAS models compared with the age structured models (Figure S2), suggesting the stable stage distribution of the larval stage was overestimated under the two stage-structured models. 
+The asymptotic population growth rate was substantially overestimated under FAS and SAS models compared with the AAS and age-structured models (Figure S1), with latter two having the same growth rate estimate. 
+Although stable stage distributions of adults under the four models appear similar (Figure S2), stable stage distributions of juveniles were underestimated with FAS and SAS models compared with the age structured models (Figure S2), suggesting the stable stage distribution of the larval stage was overestimated under the two stage-structured models. 
 The reproductive value of adults were substantially underestimated with FAS and SAS models compared with AAS or the age-structured models.
 
 The original models for alligator populations used SAS model (A2 and A8 for the northern and southern populations after correcting other problems). 
@@ -491,7 +500,8 @@ When the asymptotic growth rate is less than 1, SAS model also underestimated ad
 The opposite effects are observed when the asymptotic growth rate was greater than 1. 
 
 ## Effects on sensitivity, elasticity, damping ratio, and generation time
-The three common errors in constructing matrix population models can affect population growth rate, stable stage distribution, and reproductive value, which are the three basic statistics associated with a population matrix. Calculating the sensitivity (or elasticity) of $\lambda_1$ to changes in matrix elements or underlying demographic parameters is often the primary goal of constructing and MPM, especially for management applications or studies of life history theory. 
+The three common errors in constructing matrix population models can affect population growth rate, stable stage distribution, and reproductive value, which are the three basic statistics associated with a population matrix. 
+Calculating the sensitivity (or elasticity) of $\lambda_1$ to changes in matrix elements or underlying demographic parameters is often the primary goal of constructing and MPM, especially for management applications or studies of life history theory. 
 Because the sensitivity and elasticity of the population growth rates to population parameters are functions of these basic statistics, they are also affected by the errors. 
 Predicting the effects of MPM construction errors requires information about the second derivative of $\lambda_1$ with respect to model parameters [@Caswell1996], the theory of which seems not to have been much developed. 
 In a Lefkovitch model, the second derivative of $\lambda_1$ with respect to diagonal matrix elements is positive, and with respect to off-diagonal elements seems to be generally negative [@McCarthy2008]. 

@@ -737,10 +737,15 @@ This creates a model that makes correct projections under both transient and asy
 This also allows the demographic rates to vary with age within a stage (e.g., for species such as fish with size-dependent demography), avoiding further pitfalls highlighted by @Fujiwara2017.
 We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).
 
+Experts can also help, by developing handbooks and training materials that are both comprehensive and clear to non-modelers, who are experts in biology and ecology but novices at modeling.
+The comprehensiveness requires, in part, a thorough treatment of stage-structured models (which are not described as completely as age-structured models in many texts), as well as a comprehensive discussion of the consequences of various choices of when the census should occur in the model.
+The clarity certainly requires clear and consistent notation and terminology, as well as attention to the knowledge level of the audience, but that will probably not be sufficient.
+Educational research suggests that when students arrive with misconceptions, clear and accessible expositions of correct principles do not lead to learning, as the students do not pay sufficient attention to recognize the difference between the exposition and their prior belief; better learning occurs when they are first presented with the misconception and then led to an understanding of why it is wrong [@Muller2008; @Muller2008a].
+The biologically-based intuitions that underly incorrect formulations of MPMs may have the strength of scientific misconceptions, in which case the training material will need to actively uproot them before a better understanding of the model requirements can be learned.
 
-E.  Recommendations for experts:
-    1. Develop handbooks and training materials that are both comprehensive and clear to novices (noting that issues related to threshold concepts cannot be solve simply by clearing up notation)
-    2. Develop software tools to help guide practitioners through the process of translating demographic information in to MPMs
+Experts must also address the fact that many creators of animal MPMs are not comfortable with even the simple programmng required to calculate quantities like the AAS development coefficient.
+While there are tools for easing the *analysis* an MPM once the matrix has been constructed [e.g., @Stubben2007], little is available to help non-programmers *construct* complex MPMs.
+A set of such tools, in a software environment with which many ecologists are familiar, such as R, would be helpful, especially in connection with a tutorial.
 
 F.  Revisiting prior results
     1. Individual studies

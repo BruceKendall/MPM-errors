@@ -747,17 +747,33 @@ Experts must also address the fact that many creators of animal MPMs are not com
 While there are tools for easing the *analysis* an MPM once the matrix has been constructed [e.g., @Stubben2007], little is available to help non-programmers *construct* complex MPMs.
 A set of such tools, in a software environment with which many ecologists are familiar, such as R, would be helpful, especially in connection with a tutorial.
 
+We have focused here on three particularly common errors in MPM construction. 
+However, other problematic errors may occur.
+For example, nearly all animal MPMs are presented as birth-pulse models, but in some cases reproduction is continuous over all or a significant fraction of the model timestep.
+The lionfish model analyzed here illustrates this: lionfish are described as laying a batch of eggs every 3 days, but by building a birth-pulse model with a one-month timestep, @Morris2011 fail to account for the fact that the total monthly egg production is reduced by parental mortality during the timestep, or by the fact that age classes comprise a range of ages.
+Both of these issues are addressed by formulas for birth-flow models.
+Another challenge arises when demography is heterogeneous within a stage class, as when individuals grow continuously through life and survial and birth rates are size dependent.
+@Fujiwara2017 have studied this and provide new recommendations for how best to calculate "average" demographic rates within a heterogenous stage class.
+
+Plant MPMs, while prone to qualitatively similar types of errors, differ in detail.
+In almost all cases, "newborns" are seeds; in many species, newly produced seeds have the potential to transition to two qualitativly different stages (seedlings and seed bank) in the following timestep.
+If the fertility coefficient has seed production without subsequent seed survival (and potential germination) then this creates the same error as we have described here.
+@Caswell2001, in correcting his earlier teasel model [@Werner1977] illustrates this issue; but he focuses not on the missing survival term but on the fact that the error "introduced an unrealistic delay of 1 year in the process of reproduction."
+In our experience, it is often difficult to determine whether a plant MPM has made this error, as the minimum time to germination is usually not described in the publication.
+Most plant MPMs have at least some classes that are defined by size rather than stage.
+This creates a couple of challenges.
+First, an individual in a given size class can often transition to multiple other size classes, skipping a size class or even shrinking.
+In a postbreeding census model, this creates the need for complex fertility coefficients with a component for each of those transitions.
+In addition, transition rates between size classes are usually estimated from the observed number of transitions; but the latter depend on the distributions of size within each size class (analagous to the distribution of age within stage discussed in the current paper), which in turn depend on the recent history of population fluctuations.
+The general solution for the latter problem is to avoid size classes altogether and instead use an integral projection model [@Ellner2016a]; but the creation of IPMs requires some programming skill.
+
 F.  Revisiting prior results
     1. Individual studies
     2. Syntheses
 
 **Misc discussion items**
 
-- Paragraph about how AAS, SAS, and FAS models are related to each other [MF].
-- Mention other types of errors in MPM construction
-  - Inappropriate fecundity term (e.g., using birth-pulse for continuously breeding species)
-  - Issues with size, esp. using observed transitions between size classes
-  - Issues with seeds/seed banks
+- Paragraph about how AAS, SAS, and FAS models are related to each other [MF]. **Masami: do we still need this, or are your concerns covered by the new table?**
 
 # Bits of saved text
 ## Text about causes of confusion

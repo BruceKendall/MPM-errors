@@ -402,7 +402,7 @@ Consequently, this particular relationship between the mean duration and fractio
 We will refer to this as the "flat age-within-stage structure" (FAS) model.
 
 A rather different approach to estimating $\gamma_i$ does not explicitly attempt to match the mean stage duration, but instead merely estimates $\gamma_i$ as the observed fraction of surviving individuals in the stage that mature to the next stage.
-This requires repeated observations of marked individuals, and might make use of tools such as multistate capture-mark-recapture models (CITE).
+This requires repeated observations of marked individuals, and might make use of tools such as multistate capture-mark-recapture models [e.g., @Fujiwara2001a].
 As long as the modeled age-within-stage distribution remains the same as it was during the observation period, then the model will get the mean stage duration correct.
 However, whereas the observed fraction maturing will change as the age-within-stage distribution changes in the actual population, changes in the modeled age-within-stage distribution will not be reflected in changing maturation fraction.
 We will refer to this as the "observed age-within-stage structure" (OAS) model.

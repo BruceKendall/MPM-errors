@@ -21,10 +21,9 @@ abstract: |
   However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
   We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility coefficient; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth rate out of a stage with a mean development time greater than the model time step. 
   We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions, using lionfish and American alligator models as examples. 
-  These MPM construction issues are treated extensively in textbooks, so their existence in current literature is surprising. 
   To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database **[add sample sizes (MPMs, species, studies)]**. 
   The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
-  Of the studies where stages may last longer than one time step, 25% constructed the maturation rate using inappropriate formulas, and 37% used methods that were either undescribed or would generate the correct development time only if the population remained at the observed age-within-stage structure. 
+  Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas for estimating the asymptotic population growth rate or its sensitivity to demographic parameters. 
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
@@ -74,31 +73,31 @@ One might then ask, do these MPMs reliably reproduce the life histories they are
 
 It is important to remember that MPMs are approximations, both because they still abstract away much biological detail and because demographic measurements are imprecise. 
 There are a variety of subtleties in constructing such models, especially when breeding is spread across a substantial fraction of the year or when there is substantial heterogeneity among individuals within an age or stage class; much theoretical work has gone into making MPMs more complex to account for this, and we are starting to better understand the effects of these phenomena on simple models [e.g., @Fujiwara2017]. 
-But even setting aside these issues, we might hope that, if we assume that a simple life history description (e.g., as embodied in an age- or stage-structured life table) is a useful description of the population, then the constructed MPM should accurately reproduce that description. 
+But even setting aside these issues, we might hope that, if we assume that a simple life history description (e.g., as embodied in a life table or set of stage-based life-history parameters) is a useful description of the population, then the constructed MPM should accurately reproduce that description. 
 If it does not, then we are introducing additional errors into the analysis above and beyond the inherent approximations of modeling.
 
-One of us (BEK) has spent two decades teaching MPMs to applied masters students. 
+One of us (Kendall) has spent two decades teaching MPMs to applied masters students. 
 This experience has revealed several aspects of MPM construction that are particularly challenging to modelling novices, and thus might be similarly challenging to biologists who do not regularly create mathematical models of their system. 
-Furthermore, the students, when assigned to analyze a published model, have uncovered a surprising number of published MPMs that have failed to meet these challenges. 
-At one level, the errors made by these novices are "simply" accounting issues, but students exhibit a strong resistance to accepting the correct formulations.
+At one level, the errors made by these novices are "simply" accounting issues, but some students exhibit a strong attachment to the incorrect formulations.
 We suspect that this difficulty, for both students and researchers, is partly rooted in the contrast between the often-loose way that terms are used to describe biological populations and the very precise meanings of terms in MPMs (together with some genuine linguistic ambiguity that plagues the field).
 However, somme of these issues may represent "threshold concepts" [@Cousin2006] which, seeming to violate common-sense intuition, are not easily learned through self-study of a textbook.
 
+We have not infrequently encountered published MPMs that embody many the same mistakes made by Kendall's students.
 Our goal in this paper is to highlight these challenges (which are described in the next section), quantify their impacts on the outputs of MPMs, and document their prevalence in the peer-reviewed literature. 
 We conclude with a discussion of why these MPM construction errors are so prevalent, and how we might improve future practice.
 
 # Challenges in MPM construction
-We focus on animal models in which the demography is structured by age [Leslie matrices; @Leslie1945] or developmental stage [Lefkovitch matrices; @Lefkovitch1965]; plant and size structured models present additional challenges, which would further complicate our presentation.
+We focus on animal population models in which the demography is structured by age [Leslie matrices; @Leslie1945] or developmental stage [Lefkovitch matrices; @Lefkovitch1965]; plant and size structured models present additional challenges, which would further complicate our presentation.
 We also focus on species whose reproduction is concentrated in a short breeding season [so-called "birth-pulse" populations; @Caughley1967]. 
 Many animal species satisfy this assumption, and this allows us to avoid the extra complications associated with using discrete-time models to represent a continuously breeding species. 
 Note that by "breeding season" we mean the season in which individuals are born or hatched, not the season during which their parents mate.
 Age starts counting from birth, so that a reproductively mature individual breeds on or about their birthday: e.g., if the age at first reproduction is 5 years, then an individual has its first offspring on its fifth birthday.
 
 MPMs project the population from one nominal census date to the next.
-While the census could in principle be at any time, in practice nearly all MPMs either census the population just before breeding ("prebreeding census") or just after breeding ("postbreeding census").
+While the census could, in principle, be at any time, in practice many MPMs either census the population just before breeding ("prebreeding census") or just after breeding ("postbreeding census").
 In a prebreeding census, the youngest age class is made up of individuals all with age nearly one, which we designate as age one. 
 In a postbreeding census, the first age class would comprise newborn individuals, all of age zero, the second class would comprise individuals of age exactly one, etc.
-We refer to newborn individuals with a subscript of zero; as a result, our lifetables and postbreeding Leslie models will look different from most textbooks, which assign newborns to "age class one" and use a subscript of one.
+We refer to newborn individuals with a subscript of zero; as a result, our postbreeding Leslie models will look different from most textbooks, which assign newborns to "age class one" and use a subscript of one.
 
 ## Ensuring that the fertility coefficient spans a full timestep
 ```{r lifetable, results='markup', echo=FALSE}
@@ -117,10 +116,11 @@ names(sample_life_table) <- c("Age in years ($x$)",
                               "Stage")
 knitr::kable(sample_life_table, escape = FALSE,
              booktabs = TRUE,  align = c("c", "c", "c", "c"),
-             caption = "A sample life table for a species that
+             caption = "A sample table of demographic parameters 
+             for a species that
              reaches sexual maturity at age 3 (adult stage). 
              Adults continue to survive and
-             reproduce indefinitely with the same survival 
+             reproduce at successive ages with the same survival 
              and birth rates.
              Note that, because we are using the 
              stage-structured convention for assigning age 
@@ -129,13 +129,13 @@ knitr::kable(sample_life_table, escape = FALSE,
 ```
 
 
-In a life table (e.g., Table \ref{tab:lifetable}), age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
+In a table of demographic parameters (e.g., Table \ref{tab:lifetable}), age specific survival and birth rates look as if they should make equivalent contributions to a population model. 
 But there is an important difference: survival (which we denote $\sigma_x$ for Leslie models and $\sigma_i$ for Lefkovitch models, where $x$ is the age and $i$ is the stage) represents the fraction of individuals in a class ($x$ or $i$) that survive for a full timestep, from time $t$ to time $t+1$. 
 In contrast, the birth rate (which we denote $b_x$ for age-structured demography and $b_i$ for stage-structured demography) is an almost instantaneous event: it is the average number of offspring produced at time $t$ by an individual that is alive at time $t$. 
 It is tempting to draw a life cycle graph like the one in Fig. \@ref(fig:lifecycles)a (commonly seen in the literature). 
 While this works as a *conceptual* diagram, translating it directly into an MPM by converting each arrow in the graph into a matrix element is incorrect: each element in the matrix must span a timestep, and $b_x$ does not accomplish that. 
 
-```{r lifecycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (correctly or incorrectly) represent the life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is Age 1 and the adult birth rate is multiplied by newborn survival. (c) An "intuitive" post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that Age 2 individuals will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
+```{r lifecycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (correctly or incorrectly) represent the demographic parameters in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefore include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is Age 1 and the adult birth rate is multiplied by newborn survival. (c) An "intuitive" post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that Age 2 individuals will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
 class_names <- c("Age 0", "Age 1", "Age 2", "Adult")
 op <- par(mfrow = c(2,2), mar = c(0.1, 0.1, 1.6, 0.1))
@@ -227,12 +227,12 @@ Properly accounting for $x'$ is a separate challenge that we address in the next
 
 
 ## Matching the age at first reproduction to the species' life history
-In both stage- and age-structured models, failing to have the fertility coefficient out of the last juvenile class in postbreeding census models (or having another workaround to the problem) will lead to a one-year delay in the age at first breeding, relative to the life history that the model is meant to represent.
 
 In an age-structured population, the lowest age with a non-zero birth rate represents the *age at first reproduction*; we will call that age $x_m$, for "age at [reproductive] maturity." 
 In a prebreeding census model (Fig. \@ref(fig:lifecycles)b), this does not present a conceptual challenge, as the newly matured, about-to-reproduce-for-the-first-time individuals are already classified as age $x_m$, matching intuition.
 However, in a post-breeding census model, the individuals who are age $x_m$ at the end of the timestep, and have just reproduced for the first time, were age $x_m - 1$ at the beginning of the timestep. 
-A model that has the first fertility coefficient associated with age $x_m$ (Fig. \@ref(fig:lifecycles)c) results in the modeled age at first reproduction being $x_m + 1$, a year delay relative to the actual life history.
+A model that has the first non-zero fertility coefficient associated with age $x_m$ instead of $x_m - 1$ (Fig. \@ref(fig:lifecycles)c) results in the modeled age at first reproduction being $x_m + 1$, a year delay relative to the actual life history.
+
 The solution is to add a fertility coefficient linking age class $x_m - 1$ to age class zero---the lower of the two fertility arrows in Fig. \@ref(fig:lifecycles)d. 
 Embracing this fertility coefficient requires overcoming cognitive dissonance---"juveniles" are reproducing!---and we have found that students---and perhaps other nonmodellers---actively resist this.
 
@@ -246,7 +246,7 @@ However, this alternative indexing convention cannot be maintained when moving f
 So let us look at stage-structured models.
 The simplest stage-structured model has newborns, a nonreproductive juvenile class that spans multiple timesteps, and reproductive adults (Fig. \@ref(fig:SScycles)).
 Within the juvenile class, some individuals remain juveniles in the next timestep (should they survive), whereas others mature into adults.
-If $\gamma_J$ is the fraction surviving individuals that mature ("grow") at the end of the timestep, then the Juvenile--Juvenile transition is given by $P_J = \sigma_J (1-\gamma_J)$ and the Juvenile--Adult transition is given by $G_J = \sigma_J \gamma_J$. 
+If $\gamma_J$ is the fraction of surviving individuals that mature ("grow") at the end of the timestep, then the Juvenile--Juvenile transition is given by $P_J = \sigma_J (1-\gamma_J)$ and the Juvenile--Adult transition is given by $G_J = \sigma_J \gamma_J$. 
 We will treat the estimation of $\gamma_J$ in the next section.
 As in age-structured models, the fertility coefficient needs to include a survival term, so Fig. \@ref(fig:SScycles)a is incorrect.
 In a prebreeding census model, the adult birth rate must be multiplied by newborn survival, and newborns removed from the stage vector (Fig. \@ref(fig:SScycles)b), whereas in a postbreeding census model, the birth rate must be multiplied by the parent's survival (Figs. \@ref(fig:SScycles)c-d).
@@ -260,7 +260,7 @@ This is particularly well illustrated in Fig. 7.3 of @Mills2007.
 Although this is the textbook solution, there a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
 However, these methods introduce additional complications such as giving the maturing juveniles adult survival rather than juvenile survival (which might or might not be desirable), or shortening the "juvenile" stage duration to account for the extra stage.
 
-```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (correctly or incorrectly) represent stage structured life table in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) An "intuitive" post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
+```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (correctly or incorrectly) represent stage structured demographic parameters in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefor include a survival term. (b) A pre-breeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) An "intuitive" post-breeding census representation, in which the adult burth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct post-breeding census representation.'}
 library(diagram)
 class_names <- c("Newborn", "Juvenile", "Adult")
 op <- par(mfrow = c(2,2), mar = c(0.1, 0.1, 1.6, 0.1))
@@ -414,24 +414,24 @@ After analysis, the age classes can be collapsed back to their stage to generate
 
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda_1$), sensitivity analysis of $\lambda_1$ to changes in underlying vital rates, and life history statistics such as generation time. 
-We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011] and a pair of American alligator (*Alligator mississippiensis*) models that project rapidly declining and nearly constant population dynamics, respectively [@Dunham2014]. 
+We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011] and a pair of American alligator (*Alligator mississippiensis*) models that project rapidly declining and nearly constant population dynamics [@Dunham2014]. 
 These studies made all three of the errors described above; we singled them out not because they are particularly egregious (many other studies make these errors) but because the authors did an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
-We started with the original matrices as "baseline" models, and constructed models that fixed one, two, or three of the focal errors to see how these errors affect the model projections and conclusions.
+We started with the original matrices as "baseline" models, and constructed models that fixed various subsets of the focal errors to see how these errors affect the model projections and conclusions.
 
 A matrix population model for lionfish was constructed by @Morris2011 to investigate the potential approaches for controlling this invasive species. 
-The modeled life history consists of three stages (larvae, juvenile, and adult), and time step of the model was one month. The original model was a post-breeding census model, but it did not include the survival of adults in the fertility rate. 
+The modeled life history consisted of three stages (larvae, juvenile, and adult), and time step of the model was one month. The original model was a post-breeding census model, but it did not include the survival of adults in the fertility rate. 
 The average duration of the juvenile stage was assumed to be 12 months in the model, and the fertility coefficient for juveniles was set to zero. 
 This meant that the modeled lionfish take 14 months to reach first reproduction (one month in larval stage, 12 months in juvenile stage, and one additional month in fertility rate), in contrast to the target reproductive age of 12 months. 
 The authors used the FAS model for calculating the transition rates for juveniles. 
 We developed four stage-structured population models that gradually correct for some or all of these problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients (Supplementary Material). 
 We used the eight models to calculate $\lambda_1$, stable stage distribution, reproductive value, sensitivity and elasticity of $\lambda_1$ to stage-specific survival rate and fecundity, damping ratio, and generation time (Supplementary Material). 
 
-For American alligator populations, @Dunham2014 developed two stage-structured matrix population models to compare the status of northern and southern populations, which differed in stage durations and birth rates. 
-The original models consist of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model was one year.
+For the American alligator populations, @Dunham2014 developed two stage-structured matrix population models to compare the status of northern and southern populations, which differed in stage durations and birth rates. 
+The original models consisted of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model was one year.
 Similarly to the lionfish model, the alligator models were post-breeding census models, but the authors did not include the survival of adults in the fertility rate. 
 The first stage was egg stage, but it only lasted for three months; therefore, there was clear inconsistency in the time steps among stages. 
 @Dunham2014 used the AAS model to calculate transition rates for juvenile and subadult stages.
-We developed two additional stage-structured models that corrects some or all of these problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients, for each population. 
+We developed two additional stage-structured models that correct some or all of these problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients, for each population. 
 The six population models for each population were used to calculate the same quantities that we calculated with the lionfish models (Supplementary Material). 
 
 
@@ -444,14 +444,14 @@ $$
 \mathcal{E}_{\text{surv}}(\lambda_1) \approx \sum_x \left(1 - \sigma_x \right) F_x S_{F_x},
 $$
 where $S_{F_x}$ is the sensitivity of $\lambda_1$ to the fertility coefficient $F_x$.
-Thus, if the survival terms are close to one (as they often are for adults) and the sensitivity of the asymptotic growth rate to survival is small [as it often is; e.g., @Caswell2001, Figs. 9.2 and 9.3 shows sensitivity to fertility having values no more than 0.2, and often much lower], then this error should generally be fairly small.
+Thus, if the survival terms are close to one (as they often are for adults) and the sensitivity of the asymptotic growth rate to survival is small (as it often is), then this error should generally be fairly small.
 
 The fertility coefficients in both lionfish and alligator models in the original papers omitted the survival of adults. 
 The effects of these errors can be observed by comparing the age-structured matrices with and without the correction (Supplementary Material). 
 The first set of age-structured matrices (L6, A4, and A10) were converted from the original stage-structured matrices, which were missing the survival rate of adults. 
 Another set of age-structured models (L8, A6, and A12) included corrected fertility coefficients with corresponding survival rates multiplied to the original fertility. 
 When the survival rate was missing in the fertility coefficient, asymptotic population growth rate was always overestimated (Figure S1 and S8), adult stable stage distribution was underestimated (Figure S2 and S9), and adult reproductive value was overestimated (Figures S8 and S16). 
-The reduced adult stable stage distribution and increased adult stable stage distribution resulted from the fact the models mistakenly assumed more offspring were born, inflating the number of younger individuals. 
+The reduced adult stable stage distribution and increased adult reproductive value resulted from the fact the models mistakenly assumed more offspring were born, inflating the number of younger individuals. 
 
 For both lionfish and alligator populations, the survival rate over the time step of a model was high (0.95 per month for lionfish and 0.83 per year for alligator). 
 Therefore, the effects were relatively minor. 
@@ -483,8 +483,8 @@ The effects of the missing fertility coefficient is expected to be large for spe
 If the stage durations are fixed, such that a Leslie matrix model, with all age classes within the stage having the same survival, is the best model, then only the AAS stage-structured model will give the approximately correct $\lambda_1$ in general. 
 The SAS model will be correct only if $\lambda_1 = 1$; if $\lambda_1 >1$, then the maturation fraction will be too large and $\lambda_1$ will be overestimated; the opposite will be true if $\lambda_1 < 1$. 
 Thus the SAS model will bias $\lambda_1$ away from one. 
-The FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i$. 
-If there is more than one multi-timestep stage, with different critical values of $\lambda_1$, then the effects of the FAS model are unclear.
+The the bias from FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i$. 
+Thus, if there is more than one multi-timestep stage with different values of $\sigma_i$, and $\lambda_1$ is intermediate between these values, then the direction of bias introduced by the FAS model is unpredictable.
 The impact of using the observed transition rates is likely to be highly variable, depending on the nature of the deviations between the age structure when the population was observed and the asymptotic age structure.
 
 The use of different maturation models (Table 2) has substantial effects on demographic statistics, and these effects can be observed by comparing the FAS (L3), SAS (L4), AAS (L5), and age-structured (L8) models for lionfish populations. 
@@ -496,10 +496,10 @@ The original models for alligator populations used the SAS model (A2 and A8 for 
 Therefore, we compared it with the AAS model (A3 and A9 for the northern and southern populations, respectively) and the age-structured model (A6 and A12 for the northern and southern populations, respectively). 
 Similarly to the lionfish models, the AAS and age-structured models gave the same asymptotic population growth rate. 
 However, the SAS models underestimated the population growth rate for the northern population, and overestimated it for the southern populations. 
-This results from the fact the estimated population growth rate was below 1 for the northern population and above 1 for the southern population. 
-In other words, the SAS model would magnify the deviation in asymptotic population growth rate from 1. 
-When the asymptotic growth rate is less than 1, the SAS model also underestimated the adult stable stage distribution (Figure S9) and overestimated the adult reproductive value (Figure S10). 
-The opposite effects are observed when the asymptotic growth rate was greater than 1. 
+This resulted from the fact the estimated population growth rate was below 1 for the northern population and above 1 for the southern population. 
+In other words, the SAS model magnified the deviation in asymptotic population growth rate from 1, as predicted by the theory above. 
+When the asymptotic growth rate was less than 1, the SAS model also underestimated the adult stable stage distribution (Figure S9) and overestimated the adult reproductive value (Figure S10). 
+The opposite effects were observed when the asymptotic growth rate was greater than 1. 
 
 ## Effects on sensitivity, elasticity, damping ratio, and generation time
 As described above, the three common errors in constructing matrix population models can affect the population growth rate, stable stage distribution, and reproductive value, which are the three basic statistics associated with a population matrix. 
@@ -514,7 +514,7 @@ This implies that conservation strategy can be affected by the errors in develop
 
 There are a variety of ways to define generation time in demographic studies [@Coale1972]. 
 In this study, we used the mean age of mothers to represent the generation time, applying formulas developed by @Bienvenu2015, which is a function of elasticity and fertility coefficients. 
-Therefore, any bias associated with these two quantities affect the estimated generation time (Figures S7 and S16). 
+Therefore, any bias associated with these two quantities affects the estimated generation time (Figures S7 and S16). 
 We found substantial and variable impacts of MPM construction errors on the estimated generation time.
 In addition, the estimated generation time tends to be biased with stage-structured models [@Fujiwara2017].
 These results suggest that the calculation of generation time needs to be done carefully. 
@@ -549,7 +549,7 @@ To identify the the first reproductive stage or age class, we examined quantitat
 For postbreeding census models, we then asked whether the individuals maturing into that reproductive class had a nonzero fertility coefficient.
 Models lacking this fertility coefficient were coded as "incorrect."
 
-For stage-structured models in which there was a target mean stage duration, we examined textual model descriptions and symbolic representations of the model to determine whether it was constructed using the AAS, SAS, FAS, or OAS formulations, or whether the stages were "unrolled" into a Leslie matrix formulation.
+For stage-structured models in which there was a target mean stage duration, we examined textual model descriptions and symbolic representations of the model to determine whether it was constructed using the AAS, SAS, FAS, or OAS formulations, or whether the stages were "unrolled" into a Leslie matrix formulation, with the implicit age-within-stage being made explicit.
 We examined the frequency of all formulations, and coded AAS and unrolled models as "correct" from the perspective of calculating the asymptotic growth rate, $\lambda_1$.
 
 For each of the three classes of errors, we calculated the overall percentage of relevant studies (i.e., studies that had a structure potentially subject to the error, and for which we could clearly determine how the model was constructed) that made that error.
@@ -722,32 +722,25 @@ Furthermore, there is no evidence that these errors are becoming less frequent t
 These errors affect the value of quantities commonly calculated from MPMs, such as asymptotic growth rate and stage structure, elasticity analysis, generation time, and characteristics of transient dynamics.
 We can make a few generalizations about these effects.
 First, the two types of errors in the fertility coefficients have opposite effects on estimates of $\lambda_1$, the asymptotic population growth rate.
-Second, incorrect specification of the maturation rate seems to have the largest impact on these statistics.
-Third, even a stage-structured model that correctly matches the mean time to maturity gives incorrect transient dynamics and generation time if the age at maturation is actually fixed.
+Second, incorrect specification of the maturation rate tends to have a larger impact on these statistics than do the other errors.
+Third, when the age at maturation is fixed (so that a Leslie model is the most appropriate representation) even a stage-structured model that correctly matches the mean time to maturity gives incorrect transient dynamics and generation time.
 Finally, most (but not all) of these errors are larger if $\lambda_1$ is far from one.
 However, in many cases we cannot yet predict either the direction or magnitude of biases introduced by the MPM construction errors.
 While a more complete understanding of these biases might be derived by analyzing more models, spanning a range of life histories, ecological understanding and management decisions would be better served by constructing the models correctly in the first place.
 
+
 Why do these errors occur? 
-The specific errors probably have different sources, but our experience working with students and non-modelers suggests that some confusion arises from inconsistent terminology and notation, and a lack of clear guidance on maturation rates.
-However, a relatively new development in educational theory, the idea of the "threshold concept" [@Meyer2006], provides some useful insights as to why the correct construction of MPMs seems to be so challenging.
-In a succinct overview of the concept, @Cousin2006 points out that key features of a threshold concept are that it "is transformative because it involves an ontological as well as a conceptual shift [and] is integrative in that it exposes the hidden interrelatedness of phenomenon."
-She goes on to point out that a threshold concept
-
-> is likely to involve forms of ‘troublesome knowledge’; David Perkins defines this as ‘that which appears counter-intuitive, alien (emanating from another culture or discourse), or seemingly incoherent’ [in @Meyer2003a, p.7]. From this view, mastery of a threshold concept can be inhibited by the prevalence of a ‘common sense’ or intuitive understanding of it. Getting students to reverse their intuitive understandings is also troublesome because the reversal can involve an uncomfortable, emotional repositioning.    
-
-\noindent Several issues related to translating biological understanding to models seem to fit this description.
-
 The failure to include a survival component in the fertility coefficient is most surprising, as all textbooks make clear statements about the need for this. We suspect that the causes are threefold. 
 First, different texts use different words to describe the birth rate ($b_x$) and the fertility coefficient ($F_x$)---"fertility," "fecundity," and "reproduction" are used to represent $F_x$ in different texts, and the terms have different scientific meanings in human demography and various fields of animal ecology. 
-In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it with $b_x$ rather than $F_x$.
+In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it with $b_x$ rather than $F_x$ (in contrast, demographers refer to this as "fecundity").
 The use of a linguistically vague common language word to refer to a precisely defined model element creates the condition for nonmodellers to redefine the model element to match their understanding of the word, even when the textbook says otherwise.
 Second, the visual similarity between the conceptual life cycle graph (Figs. \@ref(fig:lifecycles)a, \@ref(fig:SScycles)a) and the life cycle graph that actually corresponds to the matrix may make it easy to forget to take the extra step of correctly formulating the fertility arrows.
 Finally, many nonmodellers seem to struggle to grasp the importance of having every transition in the MPM represent the same timestep.
 This may be a threshold concept, although students find it more to be unnecessary rather than counter-intuitive.
 
-The failure to include reproduction when an individual first matures, which is solely found in postbreeding census models, is related to a true threshold concept: the counter-intuitive need to assign positive fertility coefficients to some juveniles.
-This is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
+The need to include reproduction when an individual first matures, which is solely found in postbreeding census models, appears to be what education scholars call a "threshold concept:" an understanding that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition [@Meyer2006; @Cousin2006].
+Here, the challenge is the intuition that no juveniles should have positive fertility coefficients.
+The challenge is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
 However, when these textbooks move to a (usually much briefer) description of stage-structured models, where this solution does not work, they generally switch notation without comment [a notable exception is @Mills2007, who calls newborns "$N_{\text{zero}}$" for all models, and provides a very clear graphical depiction of both age-structured and stage-structured models].
 
 The poor choice of maturation model is probably most easily understood.
@@ -765,9 +758,13 @@ This creates a model that makes correct projections under both transient and asy
 This also allows the demographic rates to vary with age within a stage (e.g., for species such as fish with size-dependent demography), avoiding further pitfalls highlighted by @Fujiwara2017.
 We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).
 
+When the stage durations are not fixed, a more advanced solution is to develop a model that incorporates both age and stage (@Caswell2018).
+In this case, an accurate characterization of the distrubution of stage durations can be critical for many analytical outcomes, as described by @deValpine2014 for continuous-time models.
+However, estimating the parameter of such distributions can be challenging [see, e.g., the derivation of parameters for time to next breeding in sea turtles by @Ebert1998].
+
 Experts can also help, by developing handbooks and training materials that are both comprehensive and clear to non-modelers, who are experts in biology and ecology but novices at modeling.
 The comprehensiveness requires, in part, a thorough treatment of stage-structured models (which are not described as completely as age-structured models in many texts), as well as a comprehensive discussion of the consequences of various choices of when the census should occur in the model.
-The clarity certainly requires clear and consistent notation and terminology, as well as attention to the knowledge level of the audience, but that will probably not be sufficient.
+The clarity certainly requires consistent notation and terminology, as well as attention to the knowledge level of the audience, but that will probably not be sufficient.
 Educational research suggests that when students arrive with misconceptions, clear and accessible expositions of correct principles do not lead to learning, as the students do not pay sufficient attention to recognize the difference between the exposition and their prior belief; better learning occurs when they are first presented with the misconception and then led to an understanding of why it is wrong [@Muller2008; @Muller2008a].
 The biologically-based intuitions that underlay incorrect formulations of MPMs may have the strength of scientific misconceptions, in which case the training material will need to actively uproot them before a better understanding of the model requirements can be learned.
 
@@ -796,47 +793,14 @@ Second, transition rates between size classes are usually estimated from the obs
 The general solution for the latter problem is to avoid discrete size classes altogether and instead use an integral projection model [@Ellner2016a]; but the creation of IPMs requires nontrivial programming skill.
 
 In conclusion, we have found that errors in constructing animal population models are widespread, that these errors can have substantial quantitative (e.g., mis-estimation of the asymptotic growth rate, $\lambda_1$) and qualitative (e.g., mis-ranking the elasticity of $\lambda_1$ to various vital rates) consequences for the conclusions reached by the MPM analysis.
-In cases where scientific results or management decisions are affected by these conclusions, updating and re-analyzing the models would be valuable.
+This is bad news, and shows that we cannot count on peer review to ensure correct model construction.
+In some cases, the scientific conclustions or management recommendations supported by those models may be flawed.
 Furthermore, comparative studies that use the COMADRE database to obtain a "representative sample" of animal demography [e.g., @Paniw2018] will be subject to extra "noise" (that may bias parameter estimates) unless erroneous models are corrected or excluded from the analysis.
-Our analysis of MPMs shows that we cannot count on peer review to ensure correct model construction, so that scientists interested in a rigorous comparative analysis of animal demography need to critically examine each contributing study, and either exclude or update incorrectly formulated models.
-
-**Misc discussion items**
-
-- Paragraph about how AAS, SAS, and FAS models are related to each other [MF]. **Masami: do we still need this, or are your concerns covered by the new table?**
-
-# Bits of saved text
-## Text about causes of confusion
-
-This nomenclatural ambiguity plays a role in all three of the "accounting errors" that follow.
-An additional challenge is that most textbooks use inconsistent notation and subscripting conventions for age- and stage-structured models.
-Age-structured models follow a convention that makes sense for a continuously breeding species: an individual is assigned to an age class that is numbered with the individual's age at its *next* birthday (but note that this differs from colloquial use in most languages, where we identify a person's age with their *previous* birthday).
-When looking at a species with discrete breeding seasons, this convention is perfectly fine for a pre-breeding census model, as all individuals are just a tiny fraction of a timestep away from their next birthday, and an individual that is almost three years old will have characteristics almost indistinguishable from one that is exactly three years old. [RSG: "a bit too verbose"]
-In contrast, for a post-breeding census model, this convention would identify an individual that is just a tiny bit past its third birthday as a four-year-old.
-This means that "$x$-year-old survival" (often denoted $P_x$) refers to survival from age $x$ to age $x+1$ in a pre-breeding census model, but from age $x-1$ to age $x$ in a post-breeding census model.
-
-This is potentially confusing, but most practitioners do not move between these models so it is probably not a big issue.
-However, transitioning from an age-structured model (which is what all textbooks use for a detailed explanation of MPMs) to a stage-structured model creates major challenges, at least for post-breeding census models.
-This is because, whereas an individual that was $x$ years old at its recent birthday will be exactly $x+1$ years old at its next birthday, and can be unambiguously identified as "age class $x+1$," an individual that was in stage $x$ at its recent birthday might be in any of a number of stages at its next birthday, preventing the application of the age-structure convention.
-The solution is for post-breeding census stage-structured models to assign individuals to the stage class they were in at their recent birthday (bearing in mind that the age is measured in time steps).
-; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.This is perfectly sensible, but *most textbooks make this transition without comment.* [MILLS ACTUALLY USES N_zero IN AGE-STRUCTURED EXAMPLE, SO AVOIDS PROBLEM AS WE DO]
-Thus it is not obvious to a novice that the carefully explained conventions of age-structured models no longer apply; we suspect that this contributes to some of the common errors described below.
-; since most animal MPMs are at least partially stage-structured, we suspect that textbooks' failure to force a confrontation with this cognitive dissonance in the conceptually simpler age-structured models leaves practitioners unprepared to face it (or even recognize its necessity) in stage-structured models.
-
-## Text about birth-flow models
-However, much of the theoretical development of MPMs was motivated by human demography, in which reproduction occurs throughout the year ("birth-flow" populations). 
-This may require a variety of mathematical approximations to suitably transform continuous-time processes into a discrete-time representation, and gives a different view of the identity of individuals in a particular age or stage class. 
-We will not treat the former here, but the latter is relevant. 
-
-The discretization of age into classes means that in a birth-flow population, the first age class represents all individuals between zero and one timestep old at time $t$, and thus we would describe it as "Age 0--1." 
-
-But we often see birth-pulse models in which the age classes are given as a range---this is incorrect, and leads to ambiguity (does the class "Age 0--1" refer to newborns or to one-year-olds?) that can confuse the practitioner on how best to construct the model. 
-This nomenclature problem likely has two sources. First, many texts introduce birth-flow models first [e.g., the very first figure in @Caswell2001, illustrating the notion of discrete age classes, shows the classes as ages 0--1, 1--2, etc.]. 
-Second, in colloquial use, age-associated terms often span an age range: for example, in ungulates the term "yearling" refers to any individual between the ages of one and two. 
-When that same term is applied to a class in a birth-pulse MPM, nontrivial cognitive effort is required to mentally redefine it (so that "Yearling" means age exactly one). 
+Fortunately, publications often contain enough life history information to allow the model to be revised to more closely match the species' biology, allowing the conclusions of particular studies to be updated and comprehensive databases to be improved.
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by the Max Planck Institute for Demographic Research, a UCSB Faculty Senate grant to BEK, and [funding support to Masami & Jasmin]. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider and Jakob Voigt at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider, Jakob Voigt and Sören XXX at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
 
 # References {#references .unnumbered}
 

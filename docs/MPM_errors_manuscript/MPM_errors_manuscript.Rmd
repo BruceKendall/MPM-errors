@@ -535,7 +535,7 @@ We retained all of the 20th century studies and took a random sample of 60 of th
 Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
 Some of the studies did not actually contain MPMs (the models in the COMADRE database were constructed by the COMADRE digitization team based on information in the cited paper); we eliminated these.
 
-Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix 2). 
+Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix B). 
 This protocol was applied by 3 members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.
 After initial training, consistency was ensured by having all members of the team, as well as the lead author of this paper, independently apply the protocol to the same set of papers until all were getting consistent results.
 If a question didn't apply (e.g., if it was not a stage-structure model), the answer was coded "NA;" if the answer could not be determined from the information in the publication, it was coded as "unknown."

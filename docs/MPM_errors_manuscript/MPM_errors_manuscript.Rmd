@@ -343,16 +343,17 @@ par(op)
 
 
 ## Ensuring that the mean time in each developmental stage matches the species' life history
-The final challenge is associated with estimating $\gamma_x$, the fraction of individuals maturing out of stage $i$.
+The final challenge is associated with estimating $\gamma_x$, the fraction of individuals growing (e.g., maturing) out of stage $i$.
 In many cases, the goal is to combine information on stage-specific survival, often variously collected, with knowledge about the stage duration (the number of timesteps that individuals remain in a stage before maturing).
 If stage durations are fixed (e.g., all individuals mature after two years as juveniles, as in Table \ref{tab:lifetable}), then the goal is to create a "stage-from-age" model [e.g., @Ebert1998, Ch. 8] where the mean stage duration in the model equals the fixed stage duration in the life history.
 If the real stage durations are variable, then the goal is to create a model where the mean stage duration in the model equals the mean stage duration in the life history (in principle, the model should also match the variance in stage duration, but this seems never to be done in practice).
 
 
 @Caswell2001 has a section of his book describing various ways of doing calculating $\gamma_i$ to attain a specified stage duration, $T_i$.
+Depending on the species' life history, the stage duration might be fixed (all individuals mature after exactly $T_i$ time steps in the stage) or variable (there is a distribution of times to complete the stage), in which case the mean stage duration needs to be calculated (this is not entirely straightforward, a topic we do not take up here).
 When the life history contains fixed stage durations, there is no single "best" approach, as the stage-structured model will never match the age-structured model completely.
 Nevertheless, the primary analyses performed on most published MPMs are to calculate the asymptotic growth rate ($\lambda_1$) and the sensitivity of $\lambda_1$ to underlying demographic parameters. 
-For these calculations, there is one (and only one) recipe to create a stage-structured model that will, for any life history, generate the same results (at least to a very close approximation; we have not found theory on this) as the equivalent age-structured model with fixed stage durations. 
+For these calculations, there is one (and only one) recipe to create a stage-structured model that will, for any life history, generate the same results (at least to a very close approximation; we have not found theory on this) as the equivalent age-structured model with $T_i$ age classes having the demography of stage $i$. 
 As best we can tell, it was first introduced by @Caswell1989, although its first application to an ecological population may have been by @Crowder1994. 
 
 ```{r matmodels, results='markup', echo=FALSE}
@@ -380,11 +381,11 @@ knitr::kable(model_table, escape = FALSE,
 
 The basic idea is that $\gamma_i$ represents the fraction of individuals in the stage that have spent enough time in the stage to mature. 
 This, in turn, depends on the (implicit) age structure within the stage.
-In general, this age structure could have any form, depending on the recent history of the population; the one case in it is well defined is when the population is at the stable age/stage distribution.
-This is exactly the condition under which $\lambda_1$, the asymptotic growth rate, is the population growth rate.
-Under these conditions, there are two factors that affect the age distribution within the stage, and hence the fraction of individuals of an appropriate age to mature.
-The first is the stage-specific mortality, which determines how a cohort shrinks as it ages.
-The second is the asymptotic growth rate, which determines the degree to which one year's entering cohort is larger or smaller than the previous one under the stable age or stage distribution.
+In general, this age structure could have any form, depending on the recent history of the population; the one well-defined case is when the population is at the stable age/stage distribution.
+This is exactly the condition under which $\lambda_1$, the asymptotic growth rate, is the observed population growth rate, $\lambda(t)$.
+Under this condition, there are two factors that affect the age distribution within the stage, and hence the fraction of individuals of an appropriate age to mature.
+The first is the stage-specific mortality, which determines how a cohort shrinks as it ages within the stage.
+The second is the asymptotic growth rate, which determines the degree to which a cohort entering from the previous stage in one year is larger or smaller than that of the previous year under the stable age or stage distribution.
 This makes $\gamma_i$ non-trivial to calculate, as the resulting formula (Table \@ref(tab:matmodels)) involves $\lambda_1$, which can only be calculated once the MPM has been constructed and calibrated on data!
 The solution is an iterative approach: take an initial guess of $\lambda_1$, calculate $\gamma_i$ from the formula; calculate the dominant eigenvalue of the resulting matrix; use that as a new guess for $\lambda_1$; and repeat until the value of $\lambda_1$ stops changing.
 We will refer to this as the "asymptotic age-within-stage structure" (AAS) model.
@@ -405,10 +406,11 @@ We will refer to this as the "flat age-within-stage structure" (FAS) model.
 A rather different approach to estimating $\gamma_i$ does not explicitly attempt to match the mean stage duration, but instead merely estimates $\gamma_i$ as the observed fraction of surviving individuals in the stage that mature to the next stage.
 This requires repeated observations of marked individuals (capture histories), and might make use of tools such as multistate capture-mark-recapture models [e.g., @Fujiwara2001a].
 As long as the modeled age-within-stage distribution remains the same as it was in the population during the observation period, then the model will get the mean stage duration correct.
-However, estimated $\gamma_i$ may be biased if the age-within-stage distribution changes unless it is estimated accounting for the age within stage of individuals. 
+However, the estimated $\gamma_i$ may be biased if the age-within-stage distribution changes unless the estimation process accounts for the age within stage of individuals. 
+In particular, if $\gamma_i$ is estimated by calculating the fraction of individuals in stage $i$ that were observed to mature in a given year, the resulting model will accurately estimate $\lambda_1$ only if the observed population happened to be at the stable age structure.
 We will refer to this as the "observed age-within-stage structure" (OAS) model.
 
-Among AAS, SAS, and FAS models, only the AAS model will replicate $\lambda_1$ and its sensitivities from the fully age-structured model.
+Among the AAS, SAS, and FAS models, only the AAS model will replicate $\lambda_1$ and its sensitivities from the fully age-structured model.
 Of course, a final approach, if the stage durations really are fixed, is to "unroll" the stage, replacing the single stage class with $T_i$ age classes with identical survival coefficients (or, if the assumption of homogeneous survival within the stage was an approximation, with actual age-specific survival coefficients).
 After analysis, the age classes can be collapsed back to their stage to generate a stage structure or sensitivity analyses that are stage-specific rather than age-specific.
 
@@ -800,7 +802,7 @@ Fortunately, publications often contain enough life history information to allow
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider, Jakob Voigt and Sören XXX at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider, Jakob Voigt and Sören Wiesner at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
 
 # References {#references .unnumbered}
 

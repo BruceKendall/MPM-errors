@@ -728,16 +728,8 @@ Finally, most (but not all) of these errors are larger if $\lambda_1$ is far fro
 However, in many cases we cannot yet predict either the direction or magnitude of biases introduced by the MPM construction errors.
 While a more complete understanding of these biases might be derived by analyzing more models, spanning a range of life histories, ecological understanding and management decisions would be better served by constructing the models correctly in the first place.
 
+
 Why do these errors occur? 
-The specific errors probably have different sources, but our experience working with students and non-modelers suggests that some confusion arises from inconsistent terminology and notation, and a lack of clear guidance on maturation rates.
-However, a relatively new development in educational theory, the idea of the "threshold concept" [@Meyer2006], provides some useful insights as to why the correct construction of MPMs seems to be so challenging.
-In a succinct overview of the concept, @Cousin2006 points out that key features of a threshold concept are that it "is transformative because it involves an ontological as well as a conceptual shift [and] is integrative in that it exposes the hidden interrelatedness of phenomenon."
-She goes on to point out that a threshold concept
-
-> is likely to involve forms of ‘troublesome knowledge’; David Perkins defines this as ‘that which appears counter-intuitive, alien (emanating from another culture or discourse), or seemingly incoherent’ [in @Meyer2003a, p.7]. From this view, mastery of a threshold concept can be inhibited by the prevalence of a ‘common sense’ or intuitive understanding of it. Getting students to reverse their intuitive understandings is also troublesome because the reversal can involve an uncomfortable, emotional repositioning.    
-
-\noindent Several issues related to translating biological understanding to models seem to fit this description.
-
 The failure to include a survival component in the fertility coefficient is most surprising, as all textbooks make clear statements about the need for this. We suspect that the causes are threefold. 
 First, different texts use different words to describe the birth rate ($b_x$) and the fertility coefficient ($F_x$)---"fertility," "fecundity," and "reproduction" are used to represent $F_x$ in different texts, and the terms have different scientific meanings in human demography and various fields of animal ecology. 
 In particular, many animal ecologists use the term "fertility" to refer to the potential to have offspring, and so associate it with $b_x$ rather than $F_x$ (in contrast, demographers refer to this as "fecundity").
@@ -746,8 +738,9 @@ Second, the visual similarity between the conceptual life cycle graph (Figs. \@r
 Finally, many nonmodellers seem to struggle to grasp the importance of having every transition in the MPM represent the same timestep.
 This may be a threshold concept, although students find it more to be unnecessary rather than counter-intuitive.
 
-The failure to include reproduction when an individual first matures, which is solely found in postbreeding census models, is related to a true threshold concept: the counter-intuitive need to assign positive fertility coefficients to some juveniles.
-This is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
+The need to include reproduction when an individual first matures, which is solely found in postbreeding census models, appears to be what education scholars call a "threshold concept:" an understanding that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition [@Meyer2006; @Cousin2006].
+Here, the challenge is the intuition that no juveniles should have positive fertility coefficients.
+The challenge is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
 However, when these textbooks move to a (usually much briefer) description of stage-structured models, where this solution does not work, they generally switch notation without comment [a notable exception is @Mills2007, who calls newborns "$N_{\text{zero}}$" for all models, and provides a very clear graphical depiction of both age-structured and stage-structured models].
 
 The poor choice of maturation model is probably most easily understood.
@@ -807,7 +800,7 @@ Fortunately, publications often contain enough life history information to allow
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider and Jakob Voigt at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider, Jakob Voigt and Sören XXX at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
 
 # References {#references .unnumbered}
 

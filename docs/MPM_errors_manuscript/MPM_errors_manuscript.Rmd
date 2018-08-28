@@ -27,7 +27,7 @@ abstract: |
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
-keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, Matrix population models, model construction, model validity
+keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, matrix population models, model construction, model validity
 bibliography: Bibliography.bib
 csl: ecological-modelling.csl
 output: 

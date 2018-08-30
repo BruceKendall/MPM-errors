@@ -19,7 +19,7 @@ address:
 abstract: |
   Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. 
   However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
-  We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility coefficient; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth rate out of a stage with a mean development time greater than the model time step. 
+  We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility coefficient; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth rate out of a stage class. 
   We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions, using lionfish and American alligator models as examples. 
   To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database **[add sample sizes (MPMs, species, studies)]**. 
   The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 

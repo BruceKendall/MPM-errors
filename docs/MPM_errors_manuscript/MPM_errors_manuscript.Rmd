@@ -38,7 +38,7 @@ abstract: |
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
-keywords: COMADRE animal matrix database, Lefkovitch matrix, Leslie matrix, matrix population models, model construction, model validity
+keywords: COMADRE Animal Matrix Database, Lefkovitch matrix, Leslie matrix, matrix population models, model construction, model validity
 bibliography: Bibliography.bib
 csl: ecological-modelling.csl
 output: 
@@ -70,7 +70,7 @@ header-includes:
 
 ```{r knitr_options, echo=FALSE, message=FALSE}
 show_code <- FALSE
-cache <- TRUE
+cache <- FALSE
 knitr::opts_chunk$set(echo = show_code, message = show_code, warning = show_code,
                       comment = NA, cache = cache)
 ```
@@ -575,7 +575,7 @@ We also used logistic regression of error classification against publication yea
 library(xlsx)
 library(magrittr)
 library(tidyverse)
-data_file <- "MPM_errors_in_lit.xlsx"
+data_file <- "../../reports/MPM_errors_results.xlsx"
 mpm_data <- as.tibble(read.xlsx(data_file, 1))
 ```
 
@@ -596,6 +596,12 @@ error_stats <- function(errmodel) {
               P = error.P,
               trend = error.trend))
 }
+```
+
+```{r remove_no_matrix}
+num_no_matrix <- sum(mpm_data$MatrixModified == "No Matrix", na.rm = TRUE)
+num_data <- nrow(mpm_data)
+mpm_data %<>% filter(MatrixModified != "No Matrix")
 ```
 
 ```{r rep_in_fec}
@@ -634,7 +640,7 @@ ReproWithMatErrors <- error_stats(ReproWithMatErr.glm)
 
 ```{r stage_duration}
 mpm_data_ls <- mpm_data %>%
-  filter(!LongStages %in% c("0", "None")) %>%
+  filter(!LongStages %in% c("0", "None", "No T")) %>%
   mutate(
     GrowthTransition = recode(GrowthTransition,
                               Cohort = "SAS",
@@ -670,7 +676,8 @@ mpm_data_ls3 <- mpm_data %>%
   mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled"))
 
 alldata <- full_join(mpm_data, mpm_data_post)
-alldata %<>% left_join(mpm_data_ls3, by = c("CompadrinoName", "EntryDate", "ValidatedBy", "ValidationDate", "Authors", "Journal", "YearPublication", "DOI.ISBN", "AdditionalSource", "Authors.corr", "Journal.corr", "YearPublication.corr", "DOI.ISBN.corr", "SourceCorrectionObs", "MatrixModified", "MatrixModifiedObs", "MatrixIDfield", "MatrixIDvalue", "MatrixIDfield2", "MatrixIDvalue2", "CensusType", "CensusTypeObs", "SurvInRep", "SurvInRepObs", "MeanAgeFirstRep", "MeanAgeFirstRepObs", "StageFirstRep", "StageFirstRepObs", "ReproWithMaturation", "ReproWithMaturationObs", "LongStages", "LongStagesObs", "MeanStageDuration", "MeanStageDurationObs", "VarStateDuration", "VarStateDurationObs", "GrowthTransitionObs", "GeneralObs", "FecCorrect"))
+# alldata %<>% left_join(mpm_data_ls3, by = c("CompadrinoName", "EntryDate", "ValidatedBy", "ValidationDate", "Authors", "Journal", "YearPublication", "DOI.ISBN", "AdditionalSource", "Authors.corr", "Journal.corr", "YearPublication.corr", "DOI.ISBN.corr", "SourceCorrectionObs", "MatrixModified", "MatrixModifiedObs", "MatrixIDfield", "MatrixIDvalue", "MatrixIDfield2", "MatrixIDvalue2", "CensusType", "CensusTypeObs", "SurvInRep", "SurvInRepObs", "MeanAgeFirstRep", "MeanAgeFirstRepObs", "StageFirstRep", "StageFirstRepObs", "ReproWithMaturation", "ReproWithMaturationObs", "LongStages", "LongStagesObs", "MeanStageDuration", "MeanStageDurationObs", "VarStateDuration", "VarStateDurationObs", "GrowthTransitionObs", "GeneralObs", "FecCorrect"))
+alldata <- left_join(alldata, mpm_data_ls3, by = c("DOI.ISBN", "FecCorrect"))
 alldata <- alldata[c("FecCorrect", "ReproWithMatLogical", "GTcorrect")]
 alldata[is.na(alldata)] <- TRUE
 alldata %<>% mutate(err_num = (1 - FecCorrect) + (1 - ReproWithMatLogical) +
@@ -711,6 +718,13 @@ ggplot(mpm_data_ls2, aes(GrowthTransition)) +
   xlab("Maturation rule") + ylab("Frequency") +
   scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS", "Other"))
 ```
+
+The COMADRE Animal Matrix Database advertises itself as a repository of peer-reviewed published MPMs [@Salguero-Gomez2016].
+Fine print in the user's guide [@COMADRE2017] reveals that, in some cases, the matrix does not actually appear in the cited paper, but was provided to the database as a personal communication.
+However, in the course of assessing articles from the database, we found many examples where the original publication did not construct an MPM.
+Instead, it appears that the database collators constructed MPMs from published demographic data, such as life tables.
+Since our goal was to assess the model construction accuracy of authors, not the database maintainers, we excluded these studies from our analysis.
+This removed `r num_no_matrix` studies, leaving `r num_data - num_no_matrix` for us to analyze.
 
 We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
 `r FecErrors$perc`% of these studies failed to include an appropriate survival component in the fertility coefficients; `r FecErrors$post`% of these errors were in post-breeding census models.

@@ -11,11 +11,22 @@ author:
   - name: Jasmin Diaz-Lopez
     email: jasmindiazlopez@tamu.edu
     affiliation: TAMU Wildlife
+  - name: Sandra Schneider
+    email: sschneider@demogr.mpg.de
+    affiliation: MPIDR
+  - name: Jakob Voigt
+    email: voigt@demogr.mpg.de
+    affiliation: MPIDR
+  - name: Sören Wiesner
+    email: wiesner@demogr.mpg.de
+    affiliation: MPIDR
 address:
   - code: UCSB Bren
     address: Bren School of Environmental Science & Management, University of California Santa Barbara, Santa Barbara, CA 93106-5131, USA
   - code: TAMU Wildlife
     address: Department of Wildlife and Fisheries Sciences, Texas A&M University, College Station, TX 77843-2258, USA
+  - code: MPIDR
+    address: Max Planck Institute for Demographic Research, Konrad-Zuse-Straße 1, 18057 Rostock, Germany
 abstract: |
   Matrix population models (MPMs) are powerful tools for translating demographic and life history information into a form that can be used to address a wide range of research topics, such as projecting population dynamics, evaluating stressor impacts on populations, and studying life history evolution. 
   However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
@@ -80,7 +91,7 @@ One of us (Kendall) has spent two decades teaching MPMs to applied masters stude
 This experience has revealed several aspects of MPM construction that are particularly challenging to modelling novices, and thus might be similarly challenging to biologists who do not regularly create mathematical models of their system. 
 At one level, the errors made by these novices are "simply" accounting issues, but some students exhibit a strong attachment to the incorrect formulations.
 We suspect that this difficulty, for both students and researchers, is partly rooted in the contrast between the often-loose way that terms are used to describe biological populations and the very precise meanings of terms in MPMs (together with some genuine linguistic ambiguity that plagues the field).
-However, somme of these issues may represent "threshold concepts" [@Cousin2006] which, seeming to violate common-sense intuition, are not easily learned through self-study of a textbook.
+However, some of these issues may represent "threshold concepts" [@Cousin2006] which, seeming to violate common-sense intuition, are not easily learned through self-study of a textbook.
 
 We have not infrequently encountered published MPMs that embody many the same mistakes made by Kendall's students.
 Our goal in this paper is to highlight these challenges (which are described in the next section), quantify their impacts on the outputs of MPMs, and document their prevalence in the peer-reviewed literature. 
@@ -803,7 +814,7 @@ Fortunately, publications often contain enough life history information to allow
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, Gordon Fox and Dmitrii Logofet for feedback on the manuscript, and Sandra Schneider, Jakob Voigt and Sören Wiesner at the Max Planck Institute for Demographic Research for carrying out the model evaluations.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, and Gordon Fox and Dmitrii Logofet for feedback on the manuscript.
 
 # References {#references .unnumbered}
 

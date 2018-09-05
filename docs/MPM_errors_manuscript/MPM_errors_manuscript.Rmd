@@ -569,7 +569,6 @@ For each of the three classes of errors, we calculated the overall percentage of
 We also used logistic regression of error classification against publication year to examine whether these errors had become more or less frequent over time.
 
 ## Results
-*Note: The data collection by the Compadrinos is ongoing. Here we report an analysis based on data collected for the initial feasibility study for the project.*
 
 ```{r get_data}
 library(xlsx)
@@ -645,8 +644,24 @@ mpm_data_ls <- mpm_data %>%
     GrowthTransition = recode(GrowthTransition,
                               Cohort = "SAS",
                               "1/T" = "FAS",
-                              "Caswell6.103" = "AAS")
+                              "Caswell6.103" = "AAS",
+                              "Crouse" = "SAS")
   ) %>% droplevels()
+
+num_stage_dur_orig <- nrow(mpm_data_ls)
+
+# Read in the supplemental data
+mpm_data2 <- as.tibble(read.xlsx("Protocol_test_Kendall.xlsx", 1))
+mpm_data2 %<>% filter(!LongStages %in% c("0", "None", "No T")) %>%
+  mutate(
+    GrowthTransition = recode(GrowthTransition,
+                              Cohort = "SAS",
+                              "1/T" = "FAS",
+                              "Caswell6.103" = "AAS",
+                              "Crouse" = "SAS")
+  ) %>% droplevels()
+
+mpm_data_ls %<>% full_join(mpm_data2, by = c("CompadrinoName", "Authors", "Journal", "YearPublication", "DOI.ISBN",  "LongStages", "LongStagesObs", "MeanStageDuration", "VarStateDuration", "VarStateDurationObs", "GrowthTransition", "GrowthTransitionObs", "GeneralObs"))
 
 mpm_data_ls2 <- mpm_data_ls %>%
   filter(GrowthTransition != "Unknown") %>% 
@@ -686,29 +701,42 @@ error_perc <- 100 * table(alldata$err_num)/FecErrors$n
 error_perc[1] <- 100 - sum(error_perc[-1])
 ```
 
-```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models. (c) Frequency of errors in mean stage duration, among studies with stage classes having mean stage durations > 1 timestep.'}
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models.'}
 ## Make plots
 # Create a function for the plot
 # Have x label only for last, y label only for middle
-ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "") {
-  jit <- 0.1
-  xmin <- min(dataset$YearPublication) - jit
-  xmax <- max(dataset$YearPublication) + jit
+ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "", xrange = NULL) {
+  jit <- 0.2
+  if (is.null(xrange)) {
+    xmin <- min(dataset$YearPublication) - jit
+    xmax <- max(dataset$YearPublication) + jit
+  } else {
+    xmin <- xrange[1] - jit
+    xmax <- xrange[2] + jit
+  }
   ggplot(dataset, aesthetic) + 
     geom_jitter(width = jit, height = 0, shape = "|", size = 2) +
     geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
     theme_classic()  + xlab(xlabel) +
     ylab(ylabel)  + xlim(xmin, xmax)
 }
-p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
-p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
-              ylabel = "Frequency of MPM construction errors")
-p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
-              xlabel = "Publication Year")
-
+# p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
+# p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+#               ylabel = "Frequency of MPM construction errors")
+# p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
+#               xlabel = "Publication Year")
 
 library(ggpubr)
-ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+# ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+
+
+p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)),
+              xrange = c(1985, 2016))
+p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+              xrange = c(1985, 2016))
+
+pp <- ggarrange(p1, p2, ncol = 1, nrow = 2, labels = "auto", label.x = 0.95)
+annotate_figure(pp, left = "Frequency of MPM construction errors")
 ```
 
 ```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table 2 for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
@@ -716,7 +744,7 @@ ggplot(mpm_data_ls2, aes(GrowthTransition)) +
   geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
   theme_classic() +
   xlab("Maturation rule") + ylab("Frequency") +
-  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS", "Other"))
+  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS"))
 ```
 
 The COMADRE Animal Matrix Database advertises itself as a repository of peer-reviewed published MPMs [@Salguero-Gomez2016].
@@ -734,9 +762,11 @@ The potential for missing the reproductive event associated with first reaching 
 Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify fertility coefficients, `r ReproWithMatErrors$perc`% made this error.
 The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
 
-`r nrow(mpm_data_ls)` studies included models having at least one stage class that was meant to last for multiple timesteps; we were able to unambiguously classify the rule defining the maturation rate out of the stage(s) in `r MatDurErrors$n` of them.
+In our random sample, only `r num_stage_dur_orig` studies included models having at least one stage class that was meant to last for multiple timesteps.
+To obtain a reasonable sample size, we augmented this with the haphazard sample we had used to develop the evaluation protocol, which focused on stage structured models published since 2010.
+This led to `r MatDurErrors$n` in which we were able to unambiguously classify the rule defining the maturation rate out of the stage(s); however, the date range was too narrow to evaluate trends through time.
 Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value of $\lambda_1$ that would match an age-structured model with the target mean stage duration (Fig. \@ref(fig:matdist)).
-The frequency of these errors `r MatDurErrors$trend` over time ($P =$ `r MatDurErrors$P`; Fig. \@ref(fig:regplots)c).
+
 
 
 # Discussion

@@ -32,9 +32,9 @@ abstract: |
   However, the reliability of such studies depends on the MPM being constructed in a way that accurately reflects the species’ life history. 
   We highlight three errors commonly encountered in published MPMs: (1) failing to include survival in the fertility coefficient; (2) introducing a one-year delay in age at first reproduction; and (3) incorrectly calculating the growth rate out of a stage class. 
   We review the sources of such errors and provide new analyses revealing the impact of such errors on model predictions, using lionfish and American alligator models as examples. 
-  To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database **[add sample sizes (MPMs, species, studies)]**. 
-  The first two errors were found in 41% and 42%, respectively, of the published studies; all were in models that used a “post-breeding census” representation of the life cycle (in which newborns [eggs, neonates, fledglings, etc.] are explicitly included). 
-  Of the studies where stages may last longer than one time step, 25% constructed the growth rate using inappropriate formulas for estimating the asymptotic population growth rate or its sensitivity to demographic parameters. 
+  To quantify the prevalence of such errors we examined and scored the original publications underlying the models in the COMADRE Animal Matrix Database. 
+  The first two errors were found in 34% and 62%, respectively, of the published studies; nearly all were in models that used a “post-breeding census” representation of the life cycle (in which newborns---eggs, neonates, fledglings, etc.---are explicitly included). 
+  Of the studies where stages may last longer than one time step, 53% constructed the growth rate using inappropriate formulas for estimating the asymptotic population growth rate or its sensitivity to demographic parameters. 
   These results suggest that further efforts may be required to educate biologists on the construction of MPMs, perhaps in concert with the development of new software tools. 
   Furthermore, the conclusions of many studies that are based on MPMs may need to be re-examined, and synthetic studies using the COMADRE Database need to be accompanied by careful examination of the underlying studies.
 
@@ -675,8 +675,8 @@ MatDurErrors <- error_stats(MatDurErr.glm)
 ```
 
 ```{r combined_errors}
-L <- list(mpm_data, mpm_data_post, mpm_data_ls2)
-alldata <- Reduce(full_join, L)
+#L <- list(mpm_data, mpm_data_post, mpm_data_ls2)
+#alldata <- Reduce(full_join, L)
 
 # Re calculate long stages to avoid droplevels
 mpm_data_ls3 <- mpm_data %>%
@@ -692,11 +692,13 @@ mpm_data_ls3 <- mpm_data %>%
 
 alldata <- full_join(mpm_data, mpm_data_post)
 # alldata %<>% left_join(mpm_data_ls3, by = c("CompadrinoName", "EntryDate", "ValidatedBy", "ValidationDate", "Authors", "Journal", "YearPublication", "DOI.ISBN", "AdditionalSource", "Authors.corr", "Journal.corr", "YearPublication.corr", "DOI.ISBN.corr", "SourceCorrectionObs", "MatrixModified", "MatrixModifiedObs", "MatrixIDfield", "MatrixIDvalue", "MatrixIDfield2", "MatrixIDvalue2", "CensusType", "CensusTypeObs", "SurvInRep", "SurvInRepObs", "MeanAgeFirstRep", "MeanAgeFirstRepObs", "StageFirstRep", "StageFirstRepObs", "ReproWithMaturation", "ReproWithMaturationObs", "LongStages", "LongStagesObs", "MeanStageDuration", "MeanStageDurationObs", "VarStateDuration", "VarStateDurationObs", "GrowthTransitionObs", "GeneralObs", "FecCorrect"))
-alldata <- left_join(alldata, mpm_data_ls3, by = c("DOI.ISBN", "FecCorrect"))
-alldata <- alldata[c("FecCorrect", "ReproWithMatLogical", "GTcorrect")]
+#alldata <- left_join(alldata, mpm_data_ls3, by = c("DOI.ISBN", "FecCorrect"))
+#alldata <- alldata[c("FecCorrect", "ReproWithMatLogical", "GTcorrect")]
+alldata <- alldata[c("FecCorrect", "ReproWithMatLogical")]
+alldata %<>% filter(!is.na(FecCorrect))
 alldata[is.na(alldata)] <- TRUE
-alldata %<>% mutate(err_num = (1 - FecCorrect) + (1 - ReproWithMatLogical) +
-                                    (1 - GTcorrect))
+alldata %<>% mutate(err_num = (1 - FecCorrect) + (1 - ReproWithMatLogical))# +
+                                  #  (1 - GTcorrect))
 error_perc <- 100 * table(alldata$err_num)/FecErrors$n
 error_perc[1] <- 100 - sum(error_perc[-1])
 ```
@@ -773,8 +775,9 @@ Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value 
 
 We have described and analyzed three errors that are sometimes made when constructing animal matrix population models.
 These errors, involving the fertility coefficients and the maturation rates, cause the MPM to misrepresent the intended life history of the species.
-Based on our analysis of the COMADRE animal matrix model database [@Salguero-Gomez2016], we find that these errors are quite common: `r round(sum(error_perc[2:4]))`% of the published models that we evaluated have at least one error, and `r round(error_perc[4])`% contain all three. 
-Furthermore, there is no evidence that these errors are becoming less frequent through time.
+Based on our analysis of the COMADRE animal matrix model database [@Salguero-Gomez2016], we find that these errors are quite common: `r round(sum(error_perc[2:3]))`% of the published models that we evaluated have incorrect fertility coefficients (missing survival component, failure to reproduce upon maturation, or both). 
+Furthermore, there is no evidence that these errors in the fertility coefficient are becoming less frequent through time (Fig. \@ref(fig:regplots)).
+Among the (admittedly small) sample of stage-structured models, fully half calculated the maturation rate in a way that would result in incorrect estimates of the asymptotic population growth rate.
 
 These errors affect the value of quantities commonly calculated from MPMs, such as asymptotic growth rate and stage structure, elasticity analysis, generation time, and characteristics of transient dynamics.
 We can make a few generalizations about these effects.
@@ -858,7 +861,7 @@ Fortunately, publications often contain enough life history information to allow
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, and Gordon Fox and Dmitrii Logofet for feedback on the manuscript.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, and Gordon Fox and Dmitrii Logofet for comments on the manuscript.
 
 # References {#references .unnumbered}
 

@@ -229,7 +229,7 @@ par(op)
 
 To get the timestep into the fertility coefficient, $b_x$ needs to be multiplied by a survival term---either that of the parent or of the offspring. 
 Failing to include survival term will inflate the fertility coefficients. 
-For a prebreeding census model, the fertility coefficient is $F_x = b_x \sigma_0$: the parent, in class $x$, produces $b_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $\sigma_0$---at which point the are age 1 (Fig. \@ref(fig:lifecycles)b). 
+For a prebreeding census model, the fertility coefficient is $F_x = b_x \sigma_0$: the parent, in class $x$, produces $b_x$ offspring immediately after the census, and then these offspring survive to the end of the timestep at rate $\sigma_0$---at which point they are age 1 (Fig. \@ref(fig:lifecycles)b). 
 For an annual timestep, $F_x$ represents the number of one-year-olds next year produced by an individual of age $x$ this year. 
 
 In a postbreeding census, the parent (which will have just reproduced if it is already an adult) must survive for a timestep, aging by a timestep and possibly maturing into a new class, and then reproduces with a birth rate appropriate to its class at the end of the timestep. 
@@ -267,7 +267,7 @@ In the prebreeding census model (Fig. \@ref(fig:SScycles)b), the individuals tha
 However, in the intuitive postbreeding census model (Fig. \@ref(fig:SScycles)c), the individuals that just matured won't reproduce until the end of the next timestep, a full timestep after their transition to adulthood. 
 In reality, the individuals that just made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
 To represent this, we need a fertility coefficient leading out of the juvenile class---$F_J = G_J b_A$ (Fig. \@ref(fig:SScycles)d)---which again seems to defy common sense.
-This is particularly well illustrated in Fig. 7.3 of @Mills2007.
+This is particularly well illustrated in Fig. 6.3 of Mills [@Mills2013; Fig. 7.3 in the 2007 first edition].
 Although this is the textbook solution, there a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
 However, these methods introduce additional complications such as giving the maturing juveniles adult survival rather than juvenile survival (which might or might not be desirable), or shortening the "juvenile" stage duration to account for the extra stage.
 
@@ -496,7 +496,7 @@ The effects of the missing fertility coefficient is expected to be large for spe
 If the stage durations are fixed, such that a Leslie matrix model, with all age classes within the stage having the same survival, is the best model, then only the AAS stage-structured model will give the approximately correct $\lambda_1$ in general. 
 The SAS model will be correct only if $\lambda_1 = 1$; if $\lambda_1 >1$, then the maturation fraction will be too large and $\lambda_1$ will be overestimated; the opposite will be true if $\lambda_1 < 1$. 
 Thus the SAS model will bias $\lambda_1$ away from one. 
-The the bias from FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i$. 
+The bias from FAS model is similar, except that the critical value for $\lambda_1$ is $\sigma_i$. 
 Thus, if there is more than one multi-timestep stage with different values of $\sigma_i$, and $\lambda_1$ is intermediate between these values, then the direction of bias introduced by the FAS model is unpredictable.
 The impact of using the observed transition rates is likely to be highly variable, depending on the nature of the deviations between the age structure when the population was observed and the asymptotic age structure.
 

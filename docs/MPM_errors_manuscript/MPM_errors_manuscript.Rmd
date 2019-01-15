@@ -77,7 +77,7 @@ knitr::opts_chunk$set(echo = show_code, message = show_code, warning = show_code
 
 # Introduction 
 The use of matrix population models (MPMs) for the ecological study of plants and animals has expanded rapidly in recent years [@Salguero-Gomez2015; @Salguero-Gomez2016].
-MPMs are a convenient way to synthesize demographic information about a population, and are useful in addressing ecological, evolutionary, and management questions [@Caswell2001; @Morris2002a].
+MPMs are a convenient way to synthesize demographic information about a population, and are useful in addressing ecological, evolutionary, and management questions [@Caswell2001; @Morris2002].
 Most early MPMs were developed by collaborations between biologists with expertise on the species at hand and modelers with deep understanding of the subtleties of modeling.
 MPMs now, having been long promoted as a straightforward translation of life-history information into quantitative analysis, are often being created by biologists who are primarily empirical ecologists or conservation biologists, and may have had little training in modeling beyond a graduate course in population ecology.
 One might then ask, do these MPMs reliably reproduce the life histories they are meant to represent? 

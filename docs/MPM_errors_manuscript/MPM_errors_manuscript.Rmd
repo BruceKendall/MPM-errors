@@ -70,7 +70,7 @@ header-includes:
 
 ```{r knitr_options, echo=FALSE, message=FALSE}
 show_code <- FALSE
-cache <- FALSE
+cache <- TRUE
 knitr::opts_chunk$set(echo = show_code, message = show_code, warning = show_code,
                       comment = NA, cache = cache)
 ```
@@ -91,7 +91,7 @@ One of us (Kendall) has spent two decades teaching MPMs to applied masters stude
 This experience has revealed several aspects of MPM construction that are particularly challenging to modelling novices, and thus might be similarly challenging to biologists who do not regularly create mathematical models of their system. 
 At one level, the errors made by these novices are "simply" accounting issues, but some students exhibit a strong attachment to the incorrect formulations.
 We suspect that this difficulty, for both students and researchers, is partly rooted in the contrast between the often-loose way that terms are used to describe biological populations and the very precise meanings of terms in MPMs (together with some genuine linguistic ambiguity that plagues the field).
-However, some of these issues may represent "threshold concepts" [@Cousin2006] which, seeming to violate common-sense intuition, are not easily learned through self-study of a textbook.
+However, some of these issues may be instances of what education scholars call a "threshold concept:" an understanding that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition [@Meyer2006; @Cousin2006].
 
 We have not infrequently encountered published MPMs that embody many the same mistakes made by Kendall's students.
 Our goal in this paper is to highlight these challenges (which are described in the next section), quantify their impacts on the outputs of MPMs, and document their prevalence in the peer-reviewed literature. 
@@ -797,9 +797,9 @@ In particular, many animal ecologists use the term "fertility" to refer to the p
 The use of a linguistically vague common language word to refer to a precisely defined model element creates the condition for nonmodellers to redefine the model element to match their understanding of the word, even when the textbook says otherwise.
 Second, the visual similarity between the conceptual life cycle graph (Figs. \@ref(fig:lifecycles)a, \@ref(fig:SScycles)a) and the life cycle graph that actually corresponds to the matrix may make it easy to forget to take the extra step of correctly formulating the fertility arrows.
 Finally, many nonmodellers seem to struggle to grasp the importance of having every transition in the MPM represent the same timestep.
-This may be a threshold concept, although students find it more to be unnecessary rather than counter-intuitive.
+This may be a threshold concept [i.e., an idea that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition; @Cousin2006; @Meyer2006], although students find it more to be unnecessary rather than counter-intuitive.
 
-The need to include reproduction when an individual first matures, which is solely found in postbreeding census models, appears to be what education scholars call a "threshold concept:" an understanding that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition [@Meyer2006; @Cousin2006].
+The need to include reproduction when an individual first matures, which is solely found in postbreeding census models, seems to be a clear example of a threshold concept.
 Here, the challenge is the intuition that no juveniles should have positive fertility coefficients.
 The challenge is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
 However, when these textbooks move to a (usually much briefer) description of stage-structured models, where this solution does not work, they generally switch notation without comment [a notable exception is @Mills2007, who calls newborns "$N_{\text{zero}}$" for all models, and provides a very clear graphical depiction of both age-structured and stage-structured models].

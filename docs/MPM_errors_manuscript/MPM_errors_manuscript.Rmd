@@ -447,6 +447,61 @@ The first stage was egg stage, but it only lasted for three months; therefore, t
 We developed two additional stage-structured models that correct some or all of these problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients, for each population. 
 The six population models for each population were used to calculate the same quantities that we calculated with the lionfish models (Appendix A). 
 
+```{r casedata}
+# Read in data
+library(dplyr)
+lf <- read.csv("lionfish9models.csv")
+lf <- lf %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
+                    FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+lf$MatMod <- factor(lf$MatMod, levels=c("AAS", "SAS", "FAS"))
+
+aN <- read.csv("alligatorNorth.csv")
+aN <- aN %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
+                    FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+aN$MatMod <- factor(aN$MatMod, levels=c("AAS", "SAS", "FAS"))
+
+aS <- read.csv("alligatorSouth.csv")
+aS <- aS %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
+                    FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+aS$MatMod <- factor(aS$MatMod, levels=c("AAS", "SAS", "FAS"))
+```
+
+```{r lflamfig, fig.cap='Asymptotic growth rate ($\\lambda_1$) for various prebreeding census MPMs of the lionfish population.  Factors varied include three maturation models (AAS, SAS, FAS), the presence (squares) or absence (circles) of reproduction by maturing juveniles, and the presence (open symbols) or absence (filled symbols)  of adult survival included in the fertility coefficient.  The correct model is the open square with the AAS maturation model.'}
+# Figure of lionfish lambdas
+library(ggplot2)
+ggplot(lf, aes(x = MatMod, y = Lambda)) +
+  geom_point(aes(shape = JuvRep, fill = FertSurv), size = 4) + 
+  scale_shape_manual(values = 21:22) +
+  scale_fill_manual(values = c("black", "white")) +
+  theme_classic() + theme(legend.position = "none") +
+  ylab(expression(paste("Aymptotic growth rate (", lambda[1], ")"))) + 
+  xlab("Maturation model") + ylim(1, NA)
+```
+
+```{r lflamtab, results='markup', echo=FALSE}
+# "anova" table of lambdas
+lambda_stats <- function(st) {
+  lambda <- filter(st, MatMod == "AAS" & FertSurv & JuvRep)$Lambda
+  lambda_SAS <- filter(st, MatMod == "SAS" & FertSurv & JuvRep)$Lambda
+  lambda_FAS <- filter(st, MatMod == "FAS" & FertSurv & JuvRep)$Lambda
+  lambda_good_fert <- mean(c(lambda, lambda_FAS, lambda_SAS))
+  lambda_no_juv <- mean(filter(st, (FertSurv) & (!JuvRep))$Lambda)
+  lambda_no_surv <- mean(filter(st, (!FertSurv) & (!JuvRep))$Lambda)
+  c(lambda, lambda_SAS - lambda, lambda_FAS - lambda, 
+    lambda_no_juv - lambda_good_fert, lambda_no_surv - lambda_no_juv)
+}
+
+lambda_a <- tibble(lionfish = lambda_stats(lf),
+                       "alligator (north)" = lambda_stats(aN),
+                       `alligator (south)` = lambda_stats(aS))
+rownames(lambda_a) <- c("$\\lambda_1$", "SAS", "FAS", "delayed maturity", "no survival")
+knitr::kable(round(lambda_a, 3), escape = FALSE, 
+             booktabs = TRUE,  format = "latex",
+             caption = "Effects of model construction errors on estimates of the asymptotic growth rate ($\\lambda_1$) in the lionfish and alligator populations. For each population, $\\lambda_1$ is shown for the AAS maturation model with reproduction by maturing juveniles and adult survival in the fertility coefficient. The subsequent rows show the changes in $\\lambda_1$ resulting from: switching to the SAS or FAS maturation models; omitting reproduction by maturing individuals; or omitting the survival term from the fertility coefficient. The contrast among maturation models was done holding the fertility coefficients at their correct values; the contrasts between different fertility coefficients were based on averages across the three maturation models.")
+```
 
 ## Failure to include survival terms in the fertility coefficients
 Failing to include survival terms in the fertility coefficients will make those coefficients too large (since survival is less than one).
@@ -524,6 +579,49 @@ This suggests that overestimates of the maturation rate should reduce the sensit
 In addition, failing to include survival terms in the fertility coefficients will necessarily lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
 For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Fig. A.6).
 This implies that conservation strategy can be affected by the errors in developing a population matrix.   
+
+```{r lfelasfig, fig.asp=1, fig.cap='Effects of MPM construction errors on the elasticity of $\\lambda_1$ to stage-specific survival in the lionfish model. (a) Contrasts among the three maturation models, using correct values for the fertility coefficients. (b) Contrasts between approaches to fertility coefficient constructon, using the (correct) AAS maturation model.'}
+# Figure of lionfish elasticities
+# reshape the data
+library(reshape2)
+lf2 <- melt(lf, c("MatMod", "FertSurv", "JuvRep"), 
+            c("Elasticity_1", "Elasticity_2", "Elasticity_3"),
+            "Stage", value.name = "Elasticity")
+levels(lf2$Stage) <- c("Larvae", "Juveniles", "Adults")
+
+# Contrast maturation models
+p1 <- ggplot(subset(lf2, FertSurv & JuvRep),
+       aes(x = Stage, y = Elasticity)) +
+  geom_point(aes(shape = MatMod), size = 4) +
+  geom_line(aes(group = MatMod)) +
+  theme_classic() +
+  theme(legend.position = c(0.8, 0.3)) +
+  labs(shape = "Maturation Model") +
+  ylab("") + xlab("")
+
+# Contrast fertility coefficients
+fert_names <- c("correct",
+                "delayed maturation",
+                "delayed maturation and missing survival")
+lf2 <- mutate(lf2,
+              fert_index = 1+ (!FertSurv) * (!JuvRep) + !JuvRep,
+              Fertility = fert_names[fert_index])
+
+p2 <- ggplot(subset(lf2, MatMod == "AAS"),
+       aes(x = Stage, y = Elasticity)) +
+  geom_point(aes(shape = Fertility), size = 4) +
+  geom_line(aes(group = Fertility)) +
+  theme_classic()+
+  theme(legend.position = c(0.7, 0.3)) +
+  labs(shape = "Fertility Coefficient") +
+  ylab("")
+
+library(ggpubr)
+
+pp <- ggarrange(p1, p2, ncol = 1, nrow = 2, labels = "auto", label.x = 0.95)
+# THere seems to be no way to use plotmath with annotate_figure
+annotate_figure(pp, left = "Elasticity of asymptotic growth rate to stage-specific survival")
+```
 
 There are a variety of ways to define generation time in demographic studies [@Coale1972]. 
 In this study, we used the mean age of mothers to represent the generation time, applying formulas developed by @Bienvenu2015, which is a function of elasticity and fertility coefficients. 

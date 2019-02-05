@@ -907,12 +907,34 @@ Most textbooks do not treat this issue, and those that do [e.g., @Caswell2001; @
 Furthermore, they do not include clear guidance on which approach is most suitable for a given modeling objective.
 
 How can the prevalence of these errors in MPM construction be reduced in the future?
-We have two pieces of advice to biologists seeking to construct an MPM for their species.
-First, we recommend that the model be constructed using the prebreeding framework.
-This reduces the likelihood of missing a survival term in the fecundity coefficient (as the newborn survival has to be put somewhere), and eliminates the nonintuitive fertility coefficients associated with transitions into reproductive classes.
-If a postbreeding census model is desired (e.g., so that model output can be compared with census data that includes newborns), then the prebreeding census model can be used to check the accuracy of the postbreeding census model (e.g., $\lambda_1$ should be identical for the two matrices), or emerging tools such as the `pre_to_post` function in the **mpmtools** R package [@Kendall2018a] can be used to do the conversion automatically.
+The standard recommendation from experts (including both reviewers of this paper) is that biologists should think carefully about what happens to individuals over the course of a timestep, think carefully about how the data relate to these events, and assemble everything in such a way that each transition spans a timestep.
+In essence, this advice boils down to "think like a modeller."
+In our experience, non-modellers require a lot of interactive tutorial examples to really learn this process.
+Current textbooks do not provide this; the best published examples we have seen are in articles describing modeling approaches for migratory species [e.g., Fig. 28.2 of @Runge2005].
+It is impossible to know how many instructors provide effective classroom teaching on this topic, but our analysis of the COMADRE database indicates that a substantial fraction of biologists have not adequately internalized this message.
 
-Second, we recommend that, when the stage durations are fixed (all individuals mature at the same age), the stage be "unrolled" into a Leslie matrix model.
+Clearly, there is a role for improved training materials (see below).
+In the meantime, is there anything that biologists seeking to construct an MPM for their species can do to increase the odds of constructing it correctly?
+Our analyses suggest two purely mechanical approaches that might substantially reduce error rates.
+
+First, we note that none of the prebreeding census MPMs that we examined had errors in the fertility coefficients.
+While we cannot assign causality to this outcome based simply on the data, prebreeding models simply do not require dealing with the troublesome reproductive transition by maturing juveniles, and it may be that the fact that newborn survival is "left over" after constructing the survival transitions encourages a closer look at the fertility coefficient.
+It is also important to recognize that, if one has information on age- or stage-specific birth rates and annual survival, then that information can be used to create *either* a prebreeding or a postbreeding census model (e.g., compare Figs. \@ref(fig:lifecycles)b and \@ref(fig:lifecycles)d, noticing that the same parameters occur in both).
+In particular, unless there is large age-dependent variation in mortality through the breeding season, it doesn't matter whether the survival is measured from the end of one breeding season to the end of the next, or from the beginning of one breeding season to the beginning of the next.
+The key is that the survival be measured over a full timestep (e.g., year).
+Furthermore, the prebreeding and postbreeding censuses are different views into the *same model*.
+In particular, the estimate of $\lambda_1$ and the elasticities of $\lambda_1$ to underlying demographic parameters will be identical between the two representations.
+
+Thus, we recommend that, even if the ultimate goal is a postbreeding census model, the model be constructed using the prebreeding framework.
+This reduces the likelihood of missing a survival term in the fecundity coefficient (as the newborn survival has to be put somewhere), and eliminates the nonintuitive fertility coefficients associated with transitions into reproductive classes.
+If a postbreeding census model is desired (e.g., so that model output can be compared with census data that includes newborns), then the prebreeding census model can be used to check the accuracy of the independently created postbreeding census model (e.g., $\lambda_1$ should be identical for the two matrices).
+In addition, for the simple sorts of models represented by Figs. \@ref(fig:lifecycles) and \@ref(fig:SScycles) (e.g., without clonal reproduction or multiple genders), the conversion of a matrix from a prebreeding representation to a postbreeding representation is a purely mechanical process that can be automated in software.
+The `pre_to_post` function in the **mpmtools** R package [@Kendall2018a] provides an example of this.
+
+Second, we found that most models in which a conceptually age-structured population had been collapsed into a small number of stages, each with a well-defined mean stage duration, were constructed in ways that would fail to reproduce the asymptotic growth rate---indeed, in our case studies this error had the largest impact on $\lambda_1$ estimates.
+We interpret this as being because the best stage-based approximation---the AAS model---is both conceptually and computationally challenging to produce.
+For simple life histories, we recommend using the **mpmtools** R package [@Kendall2018a] to automatically construct an AAS model from information on stage-specific demography and duration.
+More generally, if the among-individual stage variation is not too great (i.e., all individuals mature at about the same age), then we recommend that the stage be "unrolled" into a Leslie matrix model.
 This creates a model that makes correct projections under both transient and asymptotic conditions, and can be used both for projecting the population and for calculating life history statistics.
 This also allows the demographic rates to vary with age within a stage (e.g., for species such as fish with size-dependent demography), avoiding further pitfalls highlighted by @Fujiwara2017.
 We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).

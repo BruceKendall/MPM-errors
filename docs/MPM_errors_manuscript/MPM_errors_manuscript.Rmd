@@ -949,6 +949,12 @@ The clarity certainly requires consistent notation and terminology, as well as a
 Educational research suggests that when students arrive with misconceptions, clear and accessible expositions of correct principles do not lead to learning, as the students do not pay sufficient attention to recognize the difference between the exposition and their prior belief; better learning occurs when they are first presented with the misconception and then led to an understanding of why it is wrong [@Muller2008; @Muller2008a].
 The biologically-based intuitions that underlay incorrect formulations of MPMs may have the strength of scientific misconceptions, in which case the training material will need to actively uproot them before a better understanding of the model requirements can be learned.
 
+One pedagogical approach that may be helpful is to build "seasonal" submodels, and use matrix multiplication to generate the integration over the full timestep (rather than requiring the integration to be done in the brain of the model builder).
+@Williams2002 do this (for age-structured models only; section 8.4.2), creating "survivorship" and "reproduction" matrices and showing how they can be combined to produce both prebreeding and postbreeding census models. 
+Periodic matrix models are generally presented as advanced topics (the notation in Caswell's 2001 treatment of the topic is intimidating to non-modelers), and are typically applied to either annual species or species that breed continuously (at seasonally varying rates) throughout the year.
+Nevertheless, a more accessible presentation of periodic matrix models, showing how they can be used to integrate demographic processes that happen at different points in the annual cycle, might help alleviate many of the problems identified here.
+Such an approach to MPM construction might also encourage the development of models that more fully incorporate the richness of within-year life history processes.
+
 Experts must also address the fact that many creators of animal MPMs are not comfortable with even the simple programming required to calculate quantities like the AAS maturation coefficient.
 While there are tools for easing the *analysis* an MPM once the matrix has been constructed [e.g., @Stubben2007], little is available to help non-programmers *construct* complex MPMs.
 A set of such tools, in a software environment with which many ecologists are familiar, such as R, would be helpful, especially in connection with a tutorial.

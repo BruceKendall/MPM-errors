@@ -12,13 +12,13 @@ author:
     email: jasmindiazlopez@tamu.edu
     affiliation: TAMU Wildlife
   - name: Sandra Schneider
-    email: sschneider@demogr.mpg.de
+    email: sandra93schneider@web.de
     affiliation: MPIDR
   - name: Jakob Voigt
     email: voigt@demogr.mpg.de
     affiliation: MPIDR
   - name: Sören Wiesner
-    email: wiesner@demogr.mpg.de
+    email: soerenwiesner@mail.de
     affiliation: MPIDR
 address:
   - code: UCSB Bren

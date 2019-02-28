@@ -66,6 +66,8 @@ header-includes:
   - \usepackage{threeparttablex}
   - \usepackage[normalem]{ulem}
   - \usepackage{makecell}
+nocite: |
+  @Mills2007, @Mills2013
 ---
 
 ```{r knitr_options, echo=FALSE, message=FALSE}
@@ -267,7 +269,7 @@ In the prebreeding census model (Fig. \@ref(fig:SScycles)b), the individuals tha
 However, in the intuitive postbreeding census model (Fig. \@ref(fig:SScycles)c), the individuals that just matured won't reproduce until the end of the next timestep, a full timestep after their transition to adulthood. 
 In reality, the individuals that just made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
 To represent this, we need a fertility coefficient leading out of the juvenile class---$F_J = G_J b_A$ (Fig. \@ref(fig:SScycles)d)---which again seems to defy common sense.
-This is particularly well illustrated in Fig. 6.3 of Mills [@Mills2013; Fig. 7.3 in the 2007 first edition].
+This is particularly well illustrated in Fig. 6.3 of Mills (2013; Fig. 7.3 in the 2007 first edition).
 Although this is the textbook solution, there a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
 However, these methods introduce additional complications such as giving the maturing juveniles adult survival rather than juvenile survival (which might or might not be desirable), or shortening the "juvenile" stage duration to account for the extra stage.
 
@@ -911,7 +913,7 @@ This may be a threshold concept [i.e., an idea that is essential to mastery of a
 The need to include reproduction when an individual first matures, which is solely found in postbreeding census models, seems to be a clear example of a threshold concept.
 Here, the challenge is the intuition that no juveniles should have positive fertility coefficients.
 The challenge is probably exacerbated by the fact that most textbooks devote the most thorough explanation of MPM construction to age-structured models (where the confusing nature of postbreeding census models can be hidden by labeling an individual's age class as its age at its *next* birthday).
-However, when these textbooks move to a (usually much briefer) description of stage-structured models, where this solution does not work, they generally switch notation without comment [a notable exception is @Mills2007, who calls newborns "$N_{\text{zero}}$" for all models, and provides a very clear graphical depiction of both age-structured and stage-structured models].
+However, when these textbooks move to a (usually much briefer) description of stage-structured models, where this solution does not work, they generally switch notation without comment (a notable exception is Mills 2007; 2013, who calls newborns "$N_{\text{zero}}$" for all models, and provides a very clear graphical depiction of both age-structured and stage-structured models).
 
 The poor choice of maturation model is probably most easily understood.
 Most textbooks do not treat this issue, and those that do [e.g., @Caswell2001; @Ebert1998] tend to be more mathematical than many nonmodellers may be comfortable with. 

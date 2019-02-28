@@ -428,7 +428,7 @@ After analysis, the age classes can be collapsed back to their stage to generate
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda_1$), sensitivity analysis of $\lambda_1$ to changes in underlying vital rates, and life history statistics such as generation time. 
 We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011] and a pair of American alligator (*Alligator mississippiensis*) models that project rapidly declining and nearly constant population dynamics [@Dunham2014]. 
-We first focuce on the effects on $\lambda_1$ and then evaluate the effects on other endpoints.
+We first focus on the effects on $\lambda_1$ and then evaluate the effects on other endpoints.
 
 The studies by @Morris2011 and @Dunham2014 made all three of the errors described above; we singled them out not because they are particularly egregious (many other studies make these errors) but because the authors did an exceptional job of describing the species' life history, allowing us to infer the model they meant to construct.
 A matrix population model for lionfish was constructed by @Morris2011 to investigate the potential approaches for controlling this invasive species. 
@@ -436,15 +436,17 @@ The modeled life history consisted of three stages (larvae, juvenile, and adult)
 The original model was a post-breeding census model, but it did not include the survival of adults in the fertility rate. 
 The average duration of the juvenile stage was assumed to be 12 months in the model, and the fertility coefficient for juveniles was set to zero. 
 This meant that the modeled lionfish take 14 months to reach first reproduction (one month in larval stage, 12 months in juvenile stage, and one additional month in fertility rate), in contrast to the target reproductive age of 12 months. 
-The authors used the FAS model for calculating the transition rates for juveniles. 
+The authors used the FAS model for calculating the transition rates for juveniles.
+The full model is described (as model L1) in Appendix A.
 
 For the American alligator populations, @Dunham2014 developed two stage-structured matrix population models to compare the status of northern and southern populations, which differed in stage durations and birth rates. 
 The original models consisted of five stages (eggs, larvae, juvenile, subadults, and adults), and the time step of the model was one year.
 Similarly to the lionfish model, the alligator models were post-breeding census models, but the authors did not include the survival of adults in the fertility rate.
 The first stage was egg stage, but it only lasted for three months; therefore, there was clear inconsistency in the time steps among stages. 
-@Dunham2014 used the AAS model to calculate transition rates for juvenile and subadult stages.
+@Dunham2014 used the SAS model to calculate transition rates for juvenile and subadult stages.
+The full models are described (as models AN1 and AS1) in Appendix A.
 
-In order to investigate the effects of the errors on $\lambda_1$ with the lionfish and American alligator matrices, we constructed stage structured population matrices that corrected the three types of errors (L5, AN3, and AS3 in Appendix A). 
+In order to investigate the effects of the errors on $\lambda_1$ with the lionfish and American alligator matrices, we constructed stage structured population matrices that corrected the three types of errors (models L5, AN3, and AS3 in Appendix A). 
 Then, we systematically inserted the errors back to the model and developed the total of nine models for comparison. 
 These models vary in maturation models (AAS, SAS, FAS) and the presence or absence of reproduction by maturing juveniles (with adult survival in the fertility coefficient). 
 When the reproduction by maturing juveniles was absent, we also allowed adult survival in the fertility coefficient to be absent. 
@@ -471,7 +473,7 @@ aS <- aS %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
 aS$MatMod <- factor(aS$MatMod, levels=c("AAS", "SAS", "FAS"))
 ```
 
-```{r lflamfig, fig.cap='Asymptotic growth rate ($\\lambda_1$) for various prebreeding census MPMs of the lionfish population.  Factors varied include three maturation models (AAS, SAS, FAS), the presence (squares) or absence (circles) of reproduction by maturing juveniles, and the presence (open symbols) or absence (filled symbols)  of adult survival included in the fertility coefficient.  The correct model is the open square with the AAS maturation model.'}
+```{r lamfig, fig.cap='Asymptotic growth rate ($\\lambda_1$) for various prebreeding census MPMs of the lionfish population.  Factors varied include three maturation models (AAS, SAS, FAS), the presence (squares) or absence (circles) of reproduction by maturing juveniles, and the presence (open symbols) or absence (filled symbols)  of adult survival included in the fertility coefficient.  The correct model is the open square with the AAS maturation model.'}
 # Figure of lionfish lambdas
 library(ggplot2)
 ggplot(lf, aes(x = MatMod, y = Lambda)) +
@@ -517,13 +519,13 @@ where $S_{F_x}$ is the sensitivity of $\lambda_1$ to the fertility coefficient $
 Thus, if the survival terms are close to one (as they often are for adults) and the sensitivity of the asymptotic growth rate to survival is small (as it often is), then this error should generally be fairly small.
 
 The fertility coefficients in both lionfish and alligator models in the original papers omitted the survival of adults. 
-The effects of these errors can be observed by comparing open (with survival) and filled (without survival) circles on Figure X. 
+The effects of these errors can be observed by comparing open (with survival) and filled (without survival) circles on Figure \@ref(fig:lamfig). 
 When the survival rate was missing in the fertility coefficient, asymptotic population growth rate was always overestimated.
-However, for both lionfish and alligator populations, the survival rate over the time step of a model was high (0.95 per month for lionfish and 0.83 per year for alligator). 
+For both lionfish and alligator populations, the survival rate over the time step of a model was high (0.95 per month for lionfish and 0.83 per year for alligator). 
 Therefore, the effects were relatively minor. 
-However, when we deal with organisms with low adult survival rate or when the time step is extended (e.g. time step is changed to 1 year in the lionfish model), a fertility coefficient could be substantially inflated without adult survival rate being included, causing biases in demographic statistics. 
-The effect was slightly higher for the Southern poulation of American alligator than the Northern popualtion. 
-This resulted from a larger fecundity associated the Southern population (5.98 individuals per year) compared with the Northern popualtion (2.37 individuals per year), suggesting the error may be magnified for organisms with high fecundity.
+However, when we deal with organisms with low adult survival rate or when the time step is extended (e.g. the time step is changed to 1 year in the lionfish model), a fertility coefficient could be substantially inflated without adult survival rate being included, causing biases in demographic statistics. 
+The effect was slightly higher for the southern population of American alligator than the northern population. 
+This resulted from a larger fecundity associated with the southern population (5.98 individuals per year) compared with the northern population (2.37 individuals per year), suggesting the error may be magnified for organisms with high fecundity.
 
 
 ## Failure to allow individuals to reproduce when they first reach reproductive age 
@@ -537,10 +539,10 @@ $$
 where $\sigma_A$ is the one timestep survival of the newly matured class. This doesn't simplify easily, but it is clearly largest when the generation time is short or $R_0$ is large.
 
 
-Both original lionfish and alligator models did not include a fertility coefficient associated with individuals transitioning into an adult stage. 
-In all cases, the missing fertility coefficient caused the underestimation of asymptotic population growth rate. 
-The effects of the missing fertility coefficient depend on the life history strategy of organisms. 
-For example, the effects were greater for the southern alligator population than northern alligator population (Fig. X) because the duration from egg to adult stages was longer for northern population, causing fewer individuals to transition into adult stage each year, and the fecundity was lower for the northern population, causing fewer individuals to be born from each parent. 
+The original lionfish and alligator models did not include a fertility coefficient associated with individuals transitioning into an adult stage. 
+In all cases, the missing fertility coefficient caused an underestimation of the asymptotic population growth rate. 
+The effects of the missing fertility coefficient depend on the life history strategy of the organisms. 
+For example, the effects were greater for the southern alligator population than northern alligator population (compare open circles and squares in Fig. \@ref(fig:lamfig)) because the southern population had a shorter duration from egg to adult stages (resulting in smaller generation time) and higher birth rate (resulting in higher $R_0$) than the northern population.
 Both of these would cause the reproduction in the first year to be smaller, reducing the effects of the missing fertility coefficient to be small. 
 The effects of the missing fertility coefficient is expected to be large for species for which the contribution of offspring from individuals reproducing the first time is large. 
 
@@ -553,32 +555,32 @@ The bias from FAS model is similar, except that the critical value for $\lambda_
 Thus, if there is more than one multi-timestep stage with different values of $\sigma_i$, and $\lambda_1$ is intermediate between these values, then the direction of bias introduced by the FAS model is unpredictable.
 The impact of using the observed transition rates is likely to be highly variable, depending on the nature of the deviations between the age structure when the population was observed and the asymptotic age structure.
 
-The use of different maturation models (Table 2) has substantial effects on $\lambda_1$ (Fig. X). 
-Inp articular, the asymptotic population growth rate was substantially overestimated under the FAS models compared with the AAS models. 
+The use of different maturation models (Table 2) has substantial effects on $\lambda_1$ (Fig. \@ref(fig:lamfig)). 
+In particular, the asymptotic population growth rate was substantially overestimated under the FAS models compared with the AAS models. 
 On the other hand, SAS models overestimated $\lambda_1$ when $\lambda_1>1$ (lionfish and Southern population of American alligator) compared with AAS models, but it underestimated when $\lambda_1<1$ (Northern population of American alligator).
 In general, the SAS model magnifies the deviation in asymptotic population growth rate from 1, as predicted by the theory above. 
 
 ## Effects of errors on other endpoints
 As described above, the three common errors in constructing matrix population models can affect the population growth rate.
-However, calculating other endpoints such as stable stage distribution, reproductive value, sensitivity, elasticity, gneration time, and damping ration are often the primary goal of constructing an MPM, especially for management applications or studies of life history theory. 
-Here, we investigate the effects of the errors on these endpoints using matrices for the lionfish and two popualtions of Americcan alligators. 
+However, calculating other endpoints such as stable stage distribution, reproductive value, sensitivity, elasticity, generation time, and damping ratio are often the primary goal of constructing an MPM, especially for management applications or studies of life history theory. 
+Here, we investigate the effects of the errors on these endpoints using matrices for the lionfish and two populations of American alligators. 
 
 We started with the original matrices as "baseline" models, and constructed models that fixed various subsets of the focal errors to see how these errors affect the model projections and conclusions.
 For lionfish population, we developed four stage-structured population models that gradually correct for some or all of the problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients (Appendix A). 
-For American alligator popualtions, we developed two additional stage-structured models that correct some or all of the problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients, for each population. 
-All of these models were used to calculate $\lambda_1$, stable stage distribution, reproductive value, sensitivity and elasticity of $\lambda_1$ to stage-specific survival rate and fecundity, damping ratio, and generation time, and the results are shown in Appendix A. 
-Here, we highlight some of the results. 
+For American alligator populations, we developed two additional stage-structured models that correct some or all of the problems and three age-structured matrices, of which two include the original errors associated with the fertility coefficients, for each population. 
+All of these models were used to calculate $\lambda_1$, stable stage distribution, reproductive value, sensitivity and elasticity of $\lambda_1$ to stage-specific survival rate and fecundity, damping ratio, and generation time.
+The full results are shown in Appendix A; here, we highlight some of key outcomes. 
 
-The effects of failure to include survival terms in the fertility coefficients can be observed by comparing the age-structured matriceswith and without the correction. 
-The first set of age-structured matrices (L6, AN4, AS4) included corrected fertility coefficients with corresponding suurvival rates multiplied to the original fertility. 
-When the survival rate was missing in teh ferility coefficient, asymptotic popualtion growth rate was always overestimated, adult stable stage distrubiton was underestimated (Figs. A.2. and A.9), and adult reproductive value was overesitmated (Figs. A.8 and A.16).
-The reduced adult stable stage distrubituion and increased adult reproductive value resulted from the fact the models mistakenly assumed more offsprimg were born, inflating the number of younger individuals. 
+The effects of failure to include survival terms in the fertility coefficients can be observed by comparing the age-structured matrices with and without the correction.
+The first set of age-structured matrices (L6, AN4, AS4) included corrected fertility coefficients with corresponding survival rates multiplied to the original fertility. 
+When the survival rate was missing in the fertility coefficient, then the adult proportion of the stable stage distribution was underestimated (Figs. A.2. and A.9) and the adult reproductive value was overestimated (Figs. A.8 and A.16).
+These effects resulted from the fact the models mistakenly assumed more offspring were born, inflating the number of younger individuals. 
 
 The effects of the missing fertility coefficient can be found by comparing models L2 and L3 (stage-structured lionfish models), L7 and L8 (age-structured lionfish models), AN5 and AN6 (age-structured alligator models for northern population), and AS5 and AS6 (age-structured alligator models for southern population). 
-In all cases, the missing ferility coefficient caused the overestimation of adult stage distribution (Figs. A.2 and A.9), and underestimation of adult reproductive value (Figs. A.3 and A.10). 
+In all cases, the missing fertility coefficient caused and overestimation of the adult proportion of the stable stage distribution (Figs. A.2 and A.9) and an underestimation of adult reproductive value (Figs. A.3 and A.10). 
 
 The effects of using different maturation models can be observed by comparing the FAS (L3), SAS (L4), AAS (L5), and age-structured (L8) models for lionfish populations. 
-Although the stable stage distributions of adults under the four models appear similar (Fig. A.2), the stable stage distributions of juveniles were underestimated with the FAS and SAS models compared with the age structured models (Fig. A.2), suggesting that the stable stage distribution of the larval stage was overestimated under the two stage-structured models.
+Although the stable stage distributions of adults under the four models appear similar (Fig. A.2), the juvenile proportion in the stable stage distributions were underestimated with the FAS and SAS models compared with the age structured models (Fig. A.2).
 The reproductive value of adults were substantially underestimated with the FAS and SAS models compared with the AAS or age-structured models.
 
 Because the sensitivity and elasticity of the population growth rates to population parameters are functions of these basic statistics, they are also affected by the errors. 
@@ -586,7 +588,7 @@ Predicting the effects of MPM construction errors requires information about the
 In a Lefkovitch model, the second derivative of $\lambda_1$ with respect to diagonal matrix elements is positive, and with respect to off-diagonal elements seems to be generally negative [@McCarthy2008]. 
 This suggests that overestimates of the maturation rate should reduce the sensitivity of $\lambda_1$ to both stasis and growth terms, thus reducing the overall sensitivity of $\lambda_1$ to survival. 
 In addition, failing to include survival terms in the fertility coefficients will necessarily lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
-For lionfish population, the rank order of both sensitivity and elasticity among stages changed from L3 to L4 as we changed the way we calculate the transition rates (Fig. A.6).
+For lionfish population, the rank order of both sensitivity and elasticity among stages changed as we changed the way we calculate the transition rates (Fig. \@ref(fig:lfelasfig)).
 This implies that conservation strategy can be affected by the errors in developing a population matrix.   
 
 ```{r lfelasfig, fig.asp=1, fig.cap='Effects of MPM construction errors on the elasticity of $\\lambda_1$ to stage-specific survival in the lionfish model. (a) Contrasts among the three maturation models, using correct values for the fertility coefficients. (b) Contrasts between approaches to fertility coefficient constructon, using the (correct) AAS maturation model.'}
@@ -917,8 +919,8 @@ Furthermore, they do not include clear guidance on which approach is most suitab
 
 How can the prevalence of these errors in MPM construction be reduced in the future?
 The standard recommendation from experts (including both reviewers of this paper) is that biologists should think carefully about what happens to individuals over the course of a timestep, think carefully about how the data relate to these events, and assemble everything in such a way that each transition spans a timestep.
-In essence, this advice boils down to "think like a modeller."
-In our experience, non-modellers require a lot of interactive tutorial examples to really learn this process.
+In essence, this advice boils down to "think like a modeler."
+In our experience, non-modelers require a lot of interactive tutorial examples to really learn this process.
 Current textbooks do not provide this; the best published examples we have seen are in articles describing modeling approaches for migratory species [e.g., Fig. 28.2 of @Runge2005].
 It is impossible to know how many instructors provide effective classroom teaching on this topic, but our analysis of the COMADRE database indicates that a substantial fraction of biologists have not adequately internalized this message.
 
@@ -935,7 +937,7 @@ Furthermore, the prebreeding and postbreeding censuses are different views into 
 In particular, the estimate of $\lambda_1$ and the elasticities of $\lambda_1$ to underlying demographic parameters will be identical between the two representations.
 
 Thus, we recommend that, even if the ultimate goal is a postbreeding census model, the model be constructed using the prebreeding framework.
-This reduces the likelihood of missing a survival term in the fecundity coefficient (as the newborn survival has to be put somewhere), and eliminates the nonintuitive fertility coefficients associated with transitions into reproductive classes.
+This reduces the likelihood of missing a survival term in the fecundity coefficient (as the newborn survival has to be put somewhere), and eliminates the non-intuitive fertility coefficients associated with transitions into reproductive classes.
 If a postbreeding census model is desired (e.g., so that model output can be compared with census data that includes newborns), then the prebreeding census model can be used to check the accuracy of the independently created postbreeding census model (e.g., $\lambda_1$ should be identical for the two matrices).
 In addition, for the simple sorts of models represented by Figs. \@ref(fig:lifecycles) and \@ref(fig:SScycles) (e.g., without clonal reproduction or multiple genders), the conversion of a matrix from a prebreeding representation to a postbreeding representation is a purely mechanical process that can be automated in software.
 The `pre_to_post` function in the **mpmtools** R package [@Kendall2018a] provides an example of this.
@@ -949,7 +951,7 @@ This also allows the demographic rates to vary with age within a stage (e.g., fo
 We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).
 
 When the stage durations are not fixed, a more advanced solution is to develop a model that incorporates both age and stage (@Caswell2018).
-In this case, an accurate characterization of the distrubution of stage durations can be critical for many analytical outcomes, as described by @deValpine2014 for continuous-time models.
+In this case, an accurate characterization of the distribution of stage durations can be critical for many analytic outcomes, as described by @deValpine2014 for continuous-time models.
 However, estimating the parameter of such distributions can be challenging [see, e.g., the derivation of parameters for time to next breeding in sea turtles by @Ebert1998].
 
 Experts can also help, by developing handbooks and training materials that are both comprehensive and clear to non-modelers, who are experts in biology and ecology but novices at modeling.
@@ -958,7 +960,7 @@ The clarity certainly requires consistent notation and terminology, as well as a
 Educational research suggests that when students arrive with misconceptions, clear and accessible expositions of correct principles do not lead to learning, as the students do not pay sufficient attention to recognize the difference between the exposition and their prior belief; better learning occurs when they are first presented with the misconception and then led to an understanding of why it is wrong [@Muller2008; @Muller2008a].
 The biologically-based intuitions that underlay incorrect formulations of MPMs may have the strength of scientific misconceptions, in which case the training material will need to actively uproot them before a better understanding of the model requirements can be learned.
 
-One pedagogical approach that may be helpful is to build "seasonal" submodels, and use matrix multiplication to generate the integration over the full timestep (rather than requiring the integration to be done in the brain of the model builder).
+One pedagogical approach that may be helpful is to build "seasonal" sub-models, and use matrix multiplication to generate the integration over the full timestep (rather than requiring the integration to be done in the brain of the model builder).
 @Williams2002 do this (for age-structured models only; section 8.4.2), creating "survivorship" and "reproduction" matrices and showing how they can be combined to produce both prebreeding and postbreeding census models. 
 Periodic matrix models are generally presented as advanced topics (the notation in Caswell's 2001 treatment of the topic is intimidating to non-modelers), and are typically applied to either annual species or species that breed continuously (at seasonally varying rates) throughout the year.
 Nevertheless, a more accessible presentation of periodic matrix models, showing how they can be used to integrate demographic processes that happen at different points in the annual cycle, might help alleviate many of the problems identified here.
@@ -982,7 +984,7 @@ Thus, a systematic analysis of published plant MPMs may be warranted.
 
 In conclusion, we have found that errors in constructing animal population models are widespread, that these errors can have substantial quantitative (e.g., mis-estimation of the asymptotic growth rate, $\lambda_1$) and qualitative (e.g., mis-ranking the elasticity of $\lambda_1$ to various vital rates) consequences for the conclusions reached by the MPM analysis.
 This is bad news, and shows that we cannot count on peer review to ensure correct model construction.
-In some cases, the scientific conclustions or management recommendations supported by those models may be flawed.
+In some cases, the scientific conclusions or management recommendations supported by those models may be flawed.
 Furthermore, comparative studies that use the COMADRE database to obtain a "representative sample" of animal demography [e.g., @Paniw2018] will be subject to extra "noise" (that may bias parameter estimates) unless erroneous models are corrected or excluded from the analysis.
 Fortunately, publications often contain enough life history information to allow the model to be revised to more closely match the species' biology, allowing the conclusions of particular studies to be updated and comprehensive databases to be improved.
 

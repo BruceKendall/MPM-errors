@@ -1,34 +1,42 @@
 # Test script for making figures/tables from case studies
-
+setwd("~/Documents/Github/MPM-errors/docs/MPM_errors_manuscript")
 # Read in data
 library(dplyr)
+library(magrittr)
 lf <- read.csv("lionfish9models.csv")
 lf <- lf %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
                     FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
-                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)),
+                    Population = "Lionfish")
 lf$MatMod <- factor(lf$MatMod, levels=c("AAS", "SAS", "FAS"))
 
 aN <- read.csv("alligatorNorth.csv")
 aN <- aN %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
                     FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
-                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)),
+                    Population = "Alligator North")
 aN$MatMod <- factor(aN$MatMod, levels=c("AAS", "SAS", "FAS"))
 
 aS <- read.csv("alligatorSouth.csv")
 aS <- aS %>% mutate(MatMod = rep(c("FAS", "SAS", "AAS"), 3),
                     FertSurv = c(rep(TRUE, 6), rep(FALSE, 3)),
-                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)))
+                    JuvRep = c(rep(TRUE, 3), rep(FALSE, 6)),
+                    Population = "Alligator South")
 aS$MatMod <- factor(aS$MatMod, levels=c("AAS", "SAS", "FAS"))
-
+alldata <- rbind(lf[,-(2:17)], aN[,-(2:21)], aS[,-(2:21)])
+alldata$Population <- factor(alldata$Population, 
+                             levels=c("Lionfish", "Alligator South",
+                                      "Alligator North"))
 # Figure of lionfish lambdas
 library(ggplot2)
-ggplot(lf, aes(x = MatMod, y = Lambda)) +
+ggplot(alldata, aes(x = MatMod, y = Lambda)) +
   geom_point(aes(shape = JuvRep, fill = FertSurv), size = 4) + 
   scale_shape_manual(values = 21:22) +
   scale_fill_manual(values = c("black", "white")) +
   theme_classic() + theme(legend.position = "none") +
   ylab(expression(paste("Aymptotic growth rate (", lambda[1], ")"))) + 
-  xlab("Maturation model") + ylim(1, NA)
+  xlab("Maturation model") + #ylim(1, NA) +
+  facet_wrap("Population", scales = "free")
 
 # Figure of lionfish elasticities
 # reshape the data

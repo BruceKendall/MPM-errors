@@ -814,7 +814,7 @@ In addition, failing to include survival terms in the fertility coefficients wil
 
 To look at the specific effects on elasticities to particular parameters, we calculated the elasticities of $\lambda_1$ to stage-specific survival across the same suite of error combinations as we did for $\lambda_1$.
 For the lionfish population, the choice of maturation model had a substantial impact on the elasticity of $\lambda_1$ to juvenile survival, and the rank order of elasticities to juvenile and adult survival was reversed by the FAS model (Fig. \@ref(fig:lfelasfig)a).
-The impacts of of errors in the fertility coefficients had a very modest impact on elasticities \@ref(fig:lfelasfig)a).
+The impacts of of errors in the fertility coefficients had a very modest impact on elasticities (Fig. \@ref(fig:lfelasfig)b).
 In contrast, the elasticities of $\lambda_1$ to stage-specific survival in the alligator populations were nearly unaffected by any of the matrix construction errors (results not shown).
 
 

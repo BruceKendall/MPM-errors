@@ -915,7 +915,7 @@ Finally, most (but not all) of these errors are larger if $\lambda_1$ is far fro
 
 Nevertheless, the case studies we analyzed suggest that many analyses conducted with flawed MPMs may have broad validity.
 For example, in none of the case studies did the errors introduce misclassifications of population decline versus increase.
-Furthermore, errors in $\lambda_1$ are generally modest, except when an inappropriate maturation model is used.
+Furthermore, errors in $\lambda_1$ are generally modest, except when an inappropriate maturation model is used (Fig. \@ref(fig:lamfig)).
 Finally, the rank orders in stage-specific values in the stable stage  and reproductive value distributions were unaffected by the matrix construction errors.
 However, we have only a limited sample of case studies, and for some outcomes even this small sample gives inconsistent results for the direction or magnitude of biases introduced by the MPM construction errors.
 For example, the rank order of the elasticities of lambda to the vital rates might (alligator) or might not (lionfish) be robust to model errors.

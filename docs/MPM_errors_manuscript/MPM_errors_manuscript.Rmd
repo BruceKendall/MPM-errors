@@ -807,14 +807,14 @@ In general, the SAS model magnifies the deviation in asymptotic population growt
 
 ## Effects of errors on sensitivity and elasticity analysis
 A common goal of constructing a matrix population model is to examine the sensitivity or elasticity of $\lambda_1$ to underlying demographic parameters, often in the service of informing population management or understanding life history evolution.
-Predicting the effects of MPM construction errors on these quantites requires information about the second derivative of $\lambda_1$ with respect to model parameters [@Caswell1996], the theory of which seems to only have been developed for Lefkovitch models. 
+Predicting the effects of MPM construction errors on these quantities requires information about the second derivative of $\lambda_1$ with respect to model parameters [@Caswell1996], the theory of which seems to only have been developed for Lefkovitch models. 
 In a Lefkovitch model, the second derivative of $\lambda_1$ with respect to diagonal matrix elements is positive, and with respect to off-diagonal elements seems to be generally negative [@McCarthy2008]. 
 This suggests that overestimates of the maturation rate should reduce the sensitivity of $\lambda_1$ to both stasis and growth terms, thus reducing the overall sensitivity of $\lambda_1$ to survival. 
 In addition, failing to include survival terms in the fertility coefficients will necessarily lead to underestimates of the sensitivity (and elasticity) of $\lambda_1$ to survival.
 
 To look at the specific effects on elasticities to particular parameters, we calculated the elasticities of $\lambda_1$ to stage-specific survival across the same suite of error combinations as we did for $\lambda_1$.
-For the lionfish population, the choice of maturation model had a substantial impact on the eslasticity of $\lambda_1$ to juvenile survival, and the rank order of elasticities to juvenile and adult survival was reversed by the FAS model (Fig. \@ref(fig:lfelasfig)a).
-The impacts of of errors in the fertility coefficents had a very modest impact on elasticities \@ref(fig:lfelasfig)a).
+For the lionfish population, the choice of maturation model had a substantial impact on the elasticity of $\lambda_1$ to juvenile survival, and the rank order of elasticities to juvenile and adult survival was reversed by the FAS model (Fig. \@ref(fig:lfelasfig)a).
+The impacts of of errors in the fertility coefficients had a very modest impact on elasticities \@ref(fig:lfelasfig)a).
 In contrast, the elasticities of $\lambda_1$ to stage-specific survival in the alligator populations were nearly unaffected by any of the matrix construction errors (results not shown).
 
 
@@ -912,7 +912,13 @@ First, the two types of errors in the fertility coefficients have opposite effec
 Second, incorrect specification of the maturation rate tends to have a larger impact on these statistics than do the other errors.
 Third, when the age at maturation is fixed (so that a Leslie model is the most appropriate representation) even a stage-structured model that correctly matches the mean time to maturity gives incorrect transient dynamics and generation time.
 Finally, most (but not all) of these errors are larger if $\lambda_1$ is far from one.
-However, in many cases we cannot yet predict either the direction or magnitude of biases introduced by the MPM construction errors.
+
+Nevertheless, the case studies we analyzed suggest that many analyses conducted with flawed MPMs may have broad validity.
+For example, in none of the case studies did the errors introduce misclassifications of population decline versus increase.
+Furthermore, errors in $\lambda_1$ are generally modest, except when an inappropriate maturation model is used.
+Finally, the rank orders in stage-specific values in the stable stage  and reproductive value distributions were unaffected by the matrix construction errors.
+However, we have only a limited sample of case studies, and for some outcomes even this small sample gives inconsistent results for the direction or magnitude of biases introduced by the MPM construction errors.
+For example, the rank order of the elasticities of lambda to the vital rates might (alligator) or might not (lionfish) be robust to model errors.
 While a more complete understanding of these biases might be derived by analyzing more models, spanning a range of life histories, ecological understanding and management decisions would be better served by constructing the models correctly in the first place.
 
 
@@ -968,9 +974,18 @@ This creates a model that makes correct projections under both transient and asy
 This also allows the demographic rates to vary with age within a stage (e.g., for species such as fish with size-dependent demography), avoiding further pitfalls highlighted by @Fujiwara2017.
 We recognize that in long-lived species the results of sensitivity and elasticity analyses are often more useful when aggregated by stage [@Fujiwara2017]; we recommend performing this aggregation *after* analyzing the age-structured model (e.g., by summing the elasticities associated with all the age classes within a stage).
 
+Another reason for preferring age-structured to stage-structured models (when appropriate) is for the accurate calculation of generation time.
+Stage structured models in general are not particularly suitable for estimating generation time [@Lebreton2005; @Fujiwara2017] . 
+This is because stage structured modes lump individuals in multiple age classes into a single stage treating them equally. 
+This is a reasonable simplification if we are only calculating asymptotic population growth rate and stable stage distribution. 
+However, all individuals, regardless of duration of time spent in a stage, are treated equally to have the same rate of transitioning to another stage. 
+This has a large effect on generation time estimation. 
+Therefore, it is strongly recommended that generation time calculation should be based on an age structured model unless stage transitions are truly age-independent. 
+
+
 When the stage durations are not fixed, a more advanced solution is to develop a model that incorporates both age and stage (@Caswell2018).
 In this case, an accurate characterization of the distribution of stage durations can be critical for many analytic outcomes, as described by @deValpine2014 for continuous-time models.
-However, estimating the parameter of such distributions can be challenging [see, e.g., the derivation of parameters for time to next breeding in sea turtles by @Ebert1998].
+However, estimating the parameters of such distributions can be challenging [see, e.g., the derivation of parameters for time to next breeding in sea turtles by @Ebert1998].
 
 Experts can also help, by developing handbooks and training materials that are both comprehensive and clear to non-modelers, who are experts in biology and ecology but novices at modeling.
 The comprehensiveness requires, in part, a thorough treatment of stage-structured models (which are not described as completely as age-structured models in many texts), as well as a comprehensive discussion of the consequences of various choices of when the census should occur in the model.

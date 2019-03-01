@@ -1017,7 +1017,7 @@ Thus, a systematic analysis of published plant MPMs may be warranted.
 
 In conclusion, we have found that errors in constructing animal population models are widespread, that these errors can have substantial quantitative (e.g., mis-estimation of the asymptotic growth rate, $\lambda_1$) and qualitative (e.g., mis-ranking the elasticity of $\lambda_1$ to various vital rates) consequences for the conclusions reached by the MPM analysis.
 This is bad news, and shows that we cannot count on peer review to ensure correct model construction.
-In some cases, the scientific conclusions or management recommendations supported by those models may be flawed.
+While some analysis endpoints seem to be broadly robust to matrix construction errors (especially errors in the fertility coefficient), there may be some cases in which the scientific conclusions or management recommendations supported by those models could be flawed.
 Furthermore, comparative studies that use the COMADRE database to obtain a "representative sample" of animal demography [e.g., @Paniw2018] will be subject to extra "noise" (that may bias parameter estimates) unless erroneous models are corrected or excluded from the analysis.
 Fortunately, publications often contain enough life history information to allow the model to be revised to more closely match the species' biology, allowing the conclusions of particular studies to be updated and comprehensive databases to be improved.
 

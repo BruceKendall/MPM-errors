@@ -1023,7 +1023,7 @@ Fortunately, publications often contain enough life history information to allow
 
 
 # Acknowledgments {.unnumbered}
-This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, and Gordon Fox and Dmitrii Logofet for comments on the manuscript.
+This work was supported by a UCSB Faculty Senate grant to BEK; the analysis of the COMADRE database was supported by the Max Planck Institute for Demographic Research. We thank Rob Salguero-Gómez for feedback on the model evaluation protocol and manuscript, and Gordon Fox, Dmitrii Logofet, and two anonymous reviewers for comments on the manuscript.
 
 # References {#references .unnumbered}
 

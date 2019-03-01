@@ -96,7 +96,7 @@ We suspect that this difficulty, for both students and researchers, is partly ro
 However, some of these issues may be instances of what education scholars call a "threshold concept:" an understanding that is essential to mastery of a field but that is troublesome to students because it appears to violate common sense intuition [@Meyer2006; @Cousin2006].
 
 We have not infrequently encountered published MPMs that embody many the same mistakes made by Kendall's students.
-Our goal in this paper is to highlight these challenges (which are described in the next section), quantify their impacts on the outputs of MPMs, and document their prevalence in the peer-reviewed literature. 
+Our goal in this paper is to highlight these challenges (which are described in the next section), document their prevalence in the peer-reviewed literature, and quantify their impacts on the outputs of MPMs. 
 We conclude with a discussion of why these MPM construction errors are so prevalent, and how we might improve future practice.
 
 # Challenges in MPM construction
@@ -427,6 +427,241 @@ Among the AAS, SAS, and FAS models, only the AAS model will replicate $\lambda_1
 Of course, a final approach, if the stage durations really are fixed, is to "unroll" the stage, replacing the single stage class with $T_i$ age classes with identical survival coefficients (or, if the assumption of homogeneous survival within the stage was an approximation, with actual age-specific survival coefficients).
 After analysis, the age classes can be collapsed back to their stage to generate a stage structure or sensitivity analyses that are stage-specific rather than age-specific.
 
+# Prevalence of construction errors in published MPMs
+## Methods
+To evaluate the prevalence of these errors in published MPMs, we examined a sample of the studies contained in the COMADRE animal matrix model database [@Salguero-Gomez2016]. 
+Using version 2.01 of the database, we subset the data to studies of nonhuman animals that had a DOI (as a simple filter to eliminate non-peer-reviewed studies). 
+This left 65 studies published prior to the year 2000, and roughly twice that number published from 2000 to 2018. 
+We retained all of the 20th century studies and took a random sample of 60 of the 21st century studies. 
+Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
+Some of the studies did not actually contain MPMs (the models in the COMADRE database were constructed by the COMADRE digitization team based on information in the cited paper); we eliminated these.
+
+Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix B). 
+This protocol was applied by 3 members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.
+After initial training, consistency was ensured by having all members of the team, as well as the lead author of this paper, independently apply the protocol to the same set of papers until all were getting consistent results.
+If a question didn't apply (e.g., if it was not a stage-structure model), the answer was coded "NA;" if the answer could not be determined from the information in the publication, it was coded as "unknown."
+
+We coded a model as a postbreeding census if the first age or stage class appeared to be newborn (e.g., eggs, neonates) or a small fraction of a timestep old (e.g., hatchlings, larvae, fledglings).
+We coded a model as a prebreeding census if the first age or stage class appeared to be one timestep old (e.g., yearlings, juveniles, 1-year-olds).
+While a number of other breeding models are possible, in practice nearly all models fell into one of these categories.
+
+We examined the MPM to determine whether the fertility coefficients contained survival terms, and if so, whether they were appropriate to the model type.
+If the appropriate survival term was not present, we coded the model as "incorrect."
+
+To identify the the first reproductive stage or age class, we examined quantitative (e.g., life table) or qualitative (e.g., text description of the life history) information about the species, as presented in the study.
+For postbreeding census models, we then asked whether the individuals maturing into that reproductive class had a nonzero fertility coefficient.
+Models lacking this fertility coefficient were coded as "incorrect."
+
+For stage-structured models in which there was a target mean stage duration, we examined textual model descriptions and symbolic representations of the model to determine whether it was constructed using the AAS, SAS, FAS, or OAS formulations, or whether the stages were "unrolled" into a Leslie matrix formulation, with the implicit age-within-stage being made explicit.
+We examined the frequency of all formulations, and coded AAS and unrolled models as "correct" from the perspective of calculating the asymptotic growth rate, $\lambda_1$.
+
+For each of the three classes of errors, we calculated the overall percentage of relevant studies (i.e., studies that had a structure potentially subject to the error, and for which we could clearly determine how the model was constructed) that made that error.
+We also used logistic regression of error classification against publication year to examine whether these errors had become more or less frequent over time.
+
+## Results
+
+```{r get_data}
+library(xlsx)
+library(magrittr)
+library(tidyverse)
+data_file <- "../../reports/MPM_errors_results.xlsx"
+mpm_data <- as.tibble(read.xlsx(data_file, 1))
+```
+
+```{r error_stats}
+error_stats <- function(errmodel) {
+  error.perc <- round(mean(errmodel$model[[1]]) * 100)
+  error.n <- length(errmodel$model[[1]])
+  error.P <- round(summary(errmodel)$coef[2,4], 3)
+  error.trend <- if (error.P > 0.05) {
+    "had no detectable trend"
+  } else if (coef(errmodel)[2] > 0) {
+    "increased"
+  } else {
+    "decreased"
+  }
+  return(list(perc = error.perc,
+              n = error.n,
+              P = error.P,
+              trend = error.trend))
+}
+```
+
+```{r remove_no_matrix}
+num_no_matrix <- sum(mpm_data$MatrixModified == "No Matrix", na.rm = TRUE)
+num_data <- nrow(mpm_data)
+mpm_data %<>% filter(MatrixModified != "No Matrix")
+```
+
+```{r rep_in_fec}
+## Errors in fecundity term
+mpm_data %<>% mutate(
+  FecCorrect = (CensusType == "Pre" & SurvInRep == "Offspring") |
+    (CensusType == "Post" & SurvInRep == "Parent")) 
+mpm_data <- within(mpm_data, 
+                 FecCorrect[SurvInRep %in% c("Unknown", "Not Applicable")] <- NA)
+FecErrors.glm <- glm(!FecCorrect ~ YearPublication, data = mpm_data, 
+                      family = "binomial")
+
+FecErrors <- error_stats(FecErrors.glm)
+FecErrors$post <- (sum(
+    with(mpm_data, CensusType[!FecCorrect] == "Post"), na.rm = TRUE
+  ) / sum(!mpm_data$FecCorrect, na.rm = TRUE)) * 100
+
+```
+
+```{r mat_age}
+### Errors in age at maturity
+mpm_data_post <- mpm_data %>% 
+  filter(CensusType == "Post") %>%
+  mutate(
+    ReproWithMatLogical = as.logical(recode(ReproWithMaturation, 
+                                          "Not Applicable" = "NA", 
+                                          Unknown = "NA", 
+                                          Yes = "TRUE", 
+                                          No = "FALSE")) 
+)
+
+ReproWithMatErr.glm <- glm(!ReproWithMatLogical ~ YearPublication, 
+                           data = mpm_data_post, family = "binomial")
+ReproWithMatErrors <- error_stats(ReproWithMatErr.glm)
+```
+
+```{r stage_duration}
+mpm_data_ls <- mpm_data %>%
+  filter(!LongStages %in% c("0", "None", "No T")) %>%
+  mutate(
+    GrowthTransition = recode(GrowthTransition,
+                              Cohort = "SAS",
+                              "1/T" = "FAS",
+                              "Caswell6.103" = "AAS",
+                              "Crouse" = "SAS")
+  ) %>% droplevels()
+
+num_stage_dur_orig <- nrow(mpm_data_ls)
+
+# Read in the supplemental data
+mpm_data2 <- as.tibble(read.xlsx("Protocol_test_Kendall.xlsx", 1))
+mpm_data2 %<>% filter(!LongStages %in% c("0", "None", "No T")) %>%
+  mutate(
+    GrowthTransition = recode(GrowthTransition,
+                              Cohort = "SAS",
+                              "1/T" = "FAS",
+                              "Caswell6.103" = "AAS",
+                              "Crouse" = "SAS")
+  ) %>% droplevels()
+
+mpm_data_ls %<>% full_join(mpm_data2, by = c("CompadrinoName", "Authors", "Journal", "YearPublication", "DOI.ISBN",  "LongStages", "LongStagesObs", "MeanStageDuration", "VarStateDuration", "VarStateDurationObs", "GrowthTransition", "GrowthTransitionObs", "GeneralObs"))
+
+mpm_data_ls2 <- mpm_data_ls %>%
+  filter(GrowthTransition != "Unknown") %>% 
+  mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled")) %>%
+  droplevels()
+
+MatDurErr.glm <- glm(!GTcorrect ~ YearPublication, 
+                           data = mpm_data_ls2, family = "binomial")
+MatDurErrors <- error_stats(MatDurErr.glm)
+
+```
+
+```{r combined_errors}
+#L <- list(mpm_data, mpm_data_post, mpm_data_ls2)
+#alldata <- Reduce(full_join, L)
+
+# Re calculate long stages to avoid droplevels
+mpm_data_ls3 <- mpm_data %>%
+  filter(!LongStages %in% c("0", "None")) %>%
+  mutate(
+    GrowthTransition = recode(GrowthTransition,
+                              Cohort = "SAS",
+                              "1/T" = "FAS",
+                              "Caswell6.103" = "AAS")
+  ) %>%
+  filter(GrowthTransition != "Unknown") %>% 
+  mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled"))
+
+alldata <- full_join(mpm_data, mpm_data_post)
+# alldata %<>% left_join(mpm_data_ls3, by = c("CompadrinoName", "EntryDate", "ValidatedBy", "ValidationDate", "Authors", "Journal", "YearPublication", "DOI.ISBN", "AdditionalSource", "Authors.corr", "Journal.corr", "YearPublication.corr", "DOI.ISBN.corr", "SourceCorrectionObs", "MatrixModified", "MatrixModifiedObs", "MatrixIDfield", "MatrixIDvalue", "MatrixIDfield2", "MatrixIDvalue2", "CensusType", "CensusTypeObs", "SurvInRep", "SurvInRepObs", "MeanAgeFirstRep", "MeanAgeFirstRepObs", "StageFirstRep", "StageFirstRepObs", "ReproWithMaturation", "ReproWithMaturationObs", "LongStages", "LongStagesObs", "MeanStageDuration", "MeanStageDurationObs", "VarStateDuration", "VarStateDurationObs", "GrowthTransitionObs", "GeneralObs", "FecCorrect"))
+#alldata <- left_join(alldata, mpm_data_ls3, by = c("DOI.ISBN", "FecCorrect"))
+#alldata <- alldata[c("FecCorrect", "ReproWithMatLogical", "GTcorrect")]
+alldata <- alldata[c("FecCorrect", "ReproWithMatLogical")]
+alldata %<>% filter(!is.na(FecCorrect))
+alldata[is.na(alldata)] <- TRUE
+alldata %<>% mutate(err_num = (1 - FecCorrect) + (1 - ReproWithMatLogical))# +
+                                  #  (1 - GTcorrect))
+error_perc <- 100 * table(alldata$err_num)/FecErrors$n
+error_perc[1] <- 100 - sum(error_perc[-1])
+```
+
+```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models.'}
+## Make plots
+# Create a function for the plot
+# Have x label only for last, y label only for middle
+ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "", xrange = NULL) {
+  jit <- 0.2
+  if (is.null(xrange)) {
+    xmin <- min(dataset$YearPublication) - jit
+    xmax <- max(dataset$YearPublication) + jit
+  } else {
+    xmin <- xrange[1] - jit
+    xmax <- xrange[2] + jit
+  }
+  ggplot(dataset, aesthetic) + 
+    geom_jitter(width = jit, height = 0, shape = "|", size = 2) +
+    geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
+    theme_classic()  + xlab(xlabel) +
+    ylab(ylabel)  + xlim(xmin, xmax)
+}
+# p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
+# p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+#               ylabel = "Frequency of MPM construction errors")
+# p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
+#               xlabel = "Publication Year")
+
+library(ggpubr)
+# ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
+
+
+p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)),
+              xrange = c(1985, 2016))
+p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
+              xrange = c(1985, 2016))
+
+pp <- ggarrange(p1, p2, ncol = 1, nrow = 2, labels = "auto", label.x = 0.95)
+annotate_figure(pp, left = "Frequency of MPM construction errors")
+```
+
+```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table 2 for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
+ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
+  geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
+  theme_classic() +
+  xlab("Maturation rule") + ylab("Frequency") +
+  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS"))
+```
+
+The COMADRE Animal Matrix Database advertises itself as a repository of peer-reviewed published MPMs [@Salguero-Gomez2016].
+Fine print in the user's guide [@COMADRE2017] reveals that, in some cases, the matrix does not actually appear in the cited paper, but was provided to the database as a personal communication.
+However, in the course of assessing articles from the database, we found many examples where the original publication did not construct an MPM.
+Instead, it appears that the database collators constructed MPMs from published demographic data, such as life tables.
+Since our goal was to assess the model construction accuracy of authors, not the database maintainers, we excluded these studies from our analysis.
+This removed `r num_no_matrix` studies, leaving `r num_data - num_no_matrix` for us to analyze.
+
+We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
+`r FecErrors$perc`% of these studies failed to include an appropriate survival component in the fertility coefficients; `r FecErrors$post`% of these errors were in post-breeding census models.
+The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
+
+The potential for missing the reproductive event associated with first reaching reproductive age is only a feature of post-breeding census models.
+Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify fertility coefficients, `r ReproWithMatErrors$perc`% made this error.
+The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
+
+In our random sample, only `r num_stage_dur_orig` studies included models having at least one stage class that was meant to last for multiple timesteps.
+To obtain a reasonable sample size, we augmented this with the haphazard sample we had used to develop the evaluation protocol, which focused on stage structured models published since 2010.
+This led to `r MatDurErrors$n` in which we were able to unambiguously classify the rule defining the maturation rate out of the stage(s); however, the date range was too narrow to evaluate trends through time.
+Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value of $\lambda_1$ that would match an age-structured model with the target mean stage duration (Fig. \@ref(fig:matdist)).
+
+
+
+
 # Consequences of incorrect MPM construction
 We evaluate the impacts of these errors in MPM construction by examining several endpoints that many analyses focus on: the asymptotic population growth rate ($\lambda_1$), sensitivity analysis of $\lambda_1$ to changes in underlying vital rates, and life history statistics such as generation time. 
 We approach this evaluation through theoretical analysis (where feasible and informative) and by examining two case studies: a lionfish (*Pterois* sp.) model with very high population growth [@Morris2011] and a pair of American alligator (*Alligator mississippiensis*) models that project rapidly declining and nearly constant population dynamics [@Dunham2014]. 
@@ -661,240 +896,6 @@ These results suggest that the calculation of generation time needs to be done c
 The damping ratio is given by $\lambda_1/\left|\lambda_2\right|$, where $\lambda_1$  is the eigenvalue of the largest magnitude and $\lambda_2$  is that of the second largest, and it measures how quickly transient dynamics dissipate over time. 
 If $\lambda_2$ were not affected by the errors in constructing population matrices, then the damping ratio and the asymptotic population growth rate should correlate with each other. 
 The fact they deviate from each other (cf. Figs. A.1 and A.5,  Figs. A.8 and A.15) suggests the estimation of $\lambda_2$ is also affected by the errors in constructing population matrices. 
-
-
-# Prevalence of construction errors in published MPMs
-## Methods
-To evaluate the prevalence of these errors in published MPMs, we examined a sample of the studies contained in the COMADRE animal matrix model database [@Salguero-Gomez2016]. 
-Using version 2.01 of the database, we subset the data to studies of nonhuman animals that had a DOI (as a simple filter to eliminate non-peer-reviewed studies). 
-This left 65 studies published prior to the year 2000, and roughly twice that number published from 2000 to 2018. 
-We retained all of the 20th century studies and took a random sample of 60 of the 21st century studies. 
-Although many studies publish multiple models, representing different sites or species, we take the study as the unit of observation, as a similar approach was usually taken in all the models within a publication.
-Some of the studies did not actually contain MPMs (the models in the COMADRE database were constructed by the COMADRE digitization team based on information in the cited paper); we eliminated these.
-
-Using a haphazard subset of studies, we developed a protocol to systematically assess each study (Appendix B). 
-This protocol was applied by 3 members of the COMADRE digitization team, all graduate students in demography at the Max Planck Institute for Demographic Research.
-After initial training, consistency was ensured by having all members of the team, as well as the lead author of this paper, independently apply the protocol to the same set of papers until all were getting consistent results.
-If a question didn't apply (e.g., if it was not a stage-structure model), the answer was coded "NA;" if the answer could not be determined from the information in the publication, it was coded as "unknown."
-
-We coded a model as a postbreeding census if the first age or stage class appeared to be newborn (e.g., eggs, neonates) or a small fraction of a timestep old (e.g., hatchlings, larvae, fledglings).
-We coded a model as a prebreeding census if the first age or stage class appeared to be one timestep old (e.g., yearlings, juveniles, 1-year-olds).
-While a number of other breeding models are possible, in practice nearly all models fell into one of these categories.
-
-We examined the MPM to determine whether the fertility coefficients contained survival terms, and if so, whether they were appropriate to the model type.
-If the appropriate survival term was not present, we coded the model as "incorrect."
-
-To identify the the first reproductive stage or age class, we examined quantitative (e.g., life table) or qualitative (e.g., text description of the life history) information about the species, as presented in the study.
-For postbreeding census models, we then asked whether the individuals maturing into that reproductive class had a nonzero fertility coefficient.
-Models lacking this fertility coefficient were coded as "incorrect."
-
-For stage-structured models in which there was a target mean stage duration, we examined textual model descriptions and symbolic representations of the model to determine whether it was constructed using the AAS, SAS, FAS, or OAS formulations, or whether the stages were "unrolled" into a Leslie matrix formulation, with the implicit age-within-stage being made explicit.
-We examined the frequency of all formulations, and coded AAS and unrolled models as "correct" from the perspective of calculating the asymptotic growth rate, $\lambda_1$.
-
-For each of the three classes of errors, we calculated the overall percentage of relevant studies (i.e., studies that had a structure potentially subject to the error, and for which we could clearly determine how the model was constructed) that made that error.
-We also used logistic regression of error classification against publication year to examine whether these errors had become more or less frequent over time.
-
-## Results
-
-```{r get_data}
-library(xlsx)
-library(magrittr)
-library(tidyverse)
-data_file <- "../../reports/MPM_errors_results.xlsx"
-mpm_data <- as.tibble(read.xlsx(data_file, 1))
-```
-
-```{r error_stats}
-error_stats <- function(errmodel) {
-  error.perc <- round(mean(errmodel$model[[1]]) * 100)
-  error.n <- length(errmodel$model[[1]])
-  error.P <- round(summary(errmodel)$coef[2,4], 3)
-  error.trend <- if (error.P > 0.05) {
-    "had no detectable trend"
-  } else if (coef(errmodel)[2] > 0) {
-    "increased"
-  } else {
-    "decreased"
-  }
-  return(list(perc = error.perc,
-              n = error.n,
-              P = error.P,
-              trend = error.trend))
-}
-```
-
-```{r remove_no_matrix}
-num_no_matrix <- sum(mpm_data$MatrixModified == "No Matrix", na.rm = TRUE)
-num_data <- nrow(mpm_data)
-mpm_data %<>% filter(MatrixModified != "No Matrix")
-```
-
-```{r rep_in_fec}
-## Errors in fecundity term
-mpm_data %<>% mutate(
-  FecCorrect = (CensusType == "Pre" & SurvInRep == "Offspring") |
-    (CensusType == "Post" & SurvInRep == "Parent")) 
-mpm_data <- within(mpm_data, 
-                 FecCorrect[SurvInRep %in% c("Unknown", "Not Applicable")] <- NA)
-FecErrors.glm <- glm(!FecCorrect ~ YearPublication, data = mpm_data, 
-                      family = "binomial")
-
-FecErrors <- error_stats(FecErrors.glm)
-FecErrors$post <- (sum(
-    with(mpm_data, CensusType[!FecCorrect] == "Post"), na.rm = TRUE
-  ) / sum(!mpm_data$FecCorrect, na.rm = TRUE)) * 100
-
-```
-
-```{r mat_age}
-### Errors in age at maturity
-mpm_data_post <- mpm_data %>% 
-  filter(CensusType == "Post") %>%
-  mutate(
-    ReproWithMatLogical = as.logical(recode(ReproWithMaturation, 
-                                          "Not Applicable" = "NA", 
-                                          Unknown = "NA", 
-                                          Yes = "TRUE", 
-                                          No = "FALSE")) 
-)
-
-ReproWithMatErr.glm <- glm(!ReproWithMatLogical ~ YearPublication, 
-                           data = mpm_data_post, family = "binomial")
-ReproWithMatErrors <- error_stats(ReproWithMatErr.glm)
-```
-
-```{r stage_duration}
-mpm_data_ls <- mpm_data %>%
-  filter(!LongStages %in% c("0", "None", "No T")) %>%
-  mutate(
-    GrowthTransition = recode(GrowthTransition,
-                              Cohort = "SAS",
-                              "1/T" = "FAS",
-                              "Caswell6.103" = "AAS",
-                              "Crouse" = "SAS")
-  ) %>% droplevels()
-
-num_stage_dur_orig <- nrow(mpm_data_ls)
-
-# Read in the supplemental data
-mpm_data2 <- as.tibble(read.xlsx("Protocol_test_Kendall.xlsx", 1))
-mpm_data2 %<>% filter(!LongStages %in% c("0", "None", "No T")) %>%
-  mutate(
-    GrowthTransition = recode(GrowthTransition,
-                              Cohort = "SAS",
-                              "1/T" = "FAS",
-                              "Caswell6.103" = "AAS",
-                              "Crouse" = "SAS")
-  ) %>% droplevels()
-
-mpm_data_ls %<>% full_join(mpm_data2, by = c("CompadrinoName", "Authors", "Journal", "YearPublication", "DOI.ISBN",  "LongStages", "LongStagesObs", "MeanStageDuration", "VarStateDuration", "VarStateDurationObs", "GrowthTransition", "GrowthTransitionObs", "GeneralObs"))
-
-mpm_data_ls2 <- mpm_data_ls %>%
-  filter(GrowthTransition != "Unknown") %>% 
-  mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled")) %>%
-  droplevels()
-
-MatDurErr.glm <- glm(!GTcorrect ~ YearPublication, 
-                           data = mpm_data_ls2, family = "binomial")
-MatDurErrors <- error_stats(MatDurErr.glm)
-
-```
-
-```{r combined_errors}
-#L <- list(mpm_data, mpm_data_post, mpm_data_ls2)
-#alldata <- Reduce(full_join, L)
-
-# Re calculate long stages to avoid droplevels
-mpm_data_ls3 <- mpm_data %>%
-  filter(!LongStages %in% c("0", "None")) %>%
-  mutate(
-    GrowthTransition = recode(GrowthTransition,
-                              Cohort = "SAS",
-                              "1/T" = "FAS",
-                              "Caswell6.103" = "AAS")
-  ) %>%
-  filter(GrowthTransition != "Unknown") %>% 
-  mutate(GTcorrect = GrowthTransition %in% c("AAS", "Unrolled"))
-
-alldata <- full_join(mpm_data, mpm_data_post)
-# alldata %<>% left_join(mpm_data_ls3, by = c("CompadrinoName", "EntryDate", "ValidatedBy", "ValidationDate", "Authors", "Journal", "YearPublication", "DOI.ISBN", "AdditionalSource", "Authors.corr", "Journal.corr", "YearPublication.corr", "DOI.ISBN.corr", "SourceCorrectionObs", "MatrixModified", "MatrixModifiedObs", "MatrixIDfield", "MatrixIDvalue", "MatrixIDfield2", "MatrixIDvalue2", "CensusType", "CensusTypeObs", "SurvInRep", "SurvInRepObs", "MeanAgeFirstRep", "MeanAgeFirstRepObs", "StageFirstRep", "StageFirstRepObs", "ReproWithMaturation", "ReproWithMaturationObs", "LongStages", "LongStagesObs", "MeanStageDuration", "MeanStageDurationObs", "VarStateDuration", "VarStateDurationObs", "GrowthTransitionObs", "GeneralObs", "FecCorrect"))
-#alldata <- left_join(alldata, mpm_data_ls3, by = c("DOI.ISBN", "FecCorrect"))
-#alldata <- alldata[c("FecCorrect", "ReproWithMatLogical", "GTcorrect")]
-alldata <- alldata[c("FecCorrect", "ReproWithMatLogical")]
-alldata %<>% filter(!is.na(FecCorrect))
-alldata[is.na(alldata)] <- TRUE
-alldata %<>% mutate(err_num = (1 - FecCorrect) + (1 - ReproWithMatLogical))# +
-                                  #  (1 - GTcorrect))
-error_perc <- 100 * table(alldata$err_num)/FecErrors$n
-error_perc[1] <- 100 - sum(error_perc[-1])
-```
-
-```{r regplots, fig.asp=1, fig.cap='Trends in matrix population model construction errors through time. Trend line is logistic regression; vertical lines represent the data (jittered horizontally to prevent overlap). (a) Frequency of errors in the fertility coefficient, among all studies. (b) Frequency of errors in timing of first reproduction, among studies with post-breeding census models.'}
-## Make plots
-# Create a function for the plot
-# Have x label only for last, y label only for middle
-ts_plot <- function(dataset, aesthetic, xlabel = "", ylabel = "", xrange = NULL) {
-  jit <- 0.2
-  if (is.null(xrange)) {
-    xmin <- min(dataset$YearPublication) - jit
-    xmax <- max(dataset$YearPublication) + jit
-  } else {
-    xmin <- xrange[1] - jit
-    xmax <- xrange[2] + jit
-  }
-  ggplot(dataset, aesthetic) + 
-    geom_jitter(width = jit, height = 0, shape = "|", size = 2) +
-    geom_smooth(method = "glm",  method.args = list(family = "binomial")) +
-    theme_classic()  + xlab(xlabel) +
-    ylab(ylabel)  + xlim(xmin, xmax)
-}
-# p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)))
-# p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
-#               ylabel = "Frequency of MPM construction errors")
-# p3 <- ts_plot(mpm_data_ls2, aes(YearPublication, as.numeric(!GTcorrect)),
-#               xlabel = "Publication Year")
-
-library(ggpubr)
-# ggarrange(p1, p2, p3, ncol = 1, nrow = 3, labels = "auto", label.x = 0.95)
-
-
-p1 <- ts_plot(mpm_data, aes(YearPublication, as.numeric(!FecCorrect)),
-              xrange = c(1985, 2016))
-p2 <- ts_plot(mpm_data_post, aes(YearPublication, as.numeric(!ReproWithMatLogical)),
-              xrange = c(1985, 2016))
-
-pp <- ggarrange(p1, p2, ncol = 1, nrow = 2, labels = "auto", label.x = 0.95)
-annotate_figure(pp, left = "Frequency of MPM construction errors")
-```
-
-```{r matdist, fig.cap='Frequency of approaches for setting maturation rates from stages with mean duration exceeding one timestep. See section 2.3 and Table 2 for descriptions of the approaches. Only the "Unrolled" and "AAS" approaches generate mean stage durations that match the target life history when the population is at the stable stage distribution.'}
-ggplot(mpm_data_ls2, aes(GrowthTransition)) + 
-  geom_bar(aes(group=factor(0), y = ..prop..), fill = "white", colour = "black") +
-  theme_classic() +
-  xlab("Maturation rule") + ylab("Frequency") +
-  scale_x_discrete(limits = c("Unrolled", "AAS", "Observed", "SAS", "FAS"))
-```
-
-The COMADRE Animal Matrix Database advertises itself as a repository of peer-reviewed published MPMs [@Salguero-Gomez2016].
-Fine print in the user's guide [@COMADRE2017] reveals that, in some cases, the matrix does not actually appear in the cited paper, but was provided to the database as a personal communication.
-However, in the course of assessing articles from the database, we found many examples where the original publication did not construct an MPM.
-Instead, it appears that the database collators constructed MPMs from published demographic data, such as life tables.
-Since our goal was to assess the model construction accuracy of authors, not the database maintainers, we excluded these studies from our analysis.
-This removed `r num_no_matrix` studies, leaving `r num_data - num_no_matrix` for us to analyze.
-
-We were able to unambiguously identify the components of the fecundity term in `r FecErrors$n` studies.
-`r FecErrors$perc`% of these studies failed to include an appropriate survival component in the fertility coefficients; `r FecErrors$post`% of these errors were in post-breeding census models.
-The frequency of these errors `r FecErrors$trend` over time ($P =$ `r FecErrors$P`; Fig. \@ref(fig:regplots)a).
-
-The potential for missing the reproductive event associated with first reaching reproductive age is only a feature of post-breeding census models.
-Of the `r ReproWithMatErrors$n` studies in which we could unambiguously determine both the last pre-reproductive stage or age class and in which we could identify fertility coefficients, `r ReproWithMatErrors$perc`% made this error.
-The frequency of these errors `r ReproWithMatErrors$trend` over time ($P =$ `r ReproWithMatErrors$P`; Fig. \@ref(fig:regplots)b).
-
-In our random sample, only `r num_stage_dur_orig` studies included models having at least one stage class that was meant to last for multiple timesteps.
-To obtain a reasonable sample size, we augmented this with the haphazard sample we had used to develop the evaluation protocol, which focused on stage structured models published since 2010.
-This led to `r MatDurErrors$n` in which we were able to unambiguously classify the rule defining the maturation rate out of the stage(s); however, the date range was too narrow to evaluate trends through time.
-Of these, `r MatDurErrors$perc`% did not use a rule that would generate a value of $\lambda_1$ that would match an age-structured model with the target mean stage duration (Fig. \@ref(fig:matdist)).
-
 
 
 # Discussion

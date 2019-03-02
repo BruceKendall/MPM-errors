@@ -946,7 +946,7 @@ The standard recommendation from experts (including both reviewers of this paper
 In essence, this advice boils down to "think like a modeler."
 In our experience, non-modelers require a lot of interactive tutorial examples to really learn this process.
 Current textbooks do not provide this; the best published examples we have seen are in articles describing modeling approaches for migratory species [e.g., Fig. 28.2 of @Runge2005].
-It is impossible to know how many instructors provide effective classroom teaching on this topic, but our analysis of the COMADRE database indicates that a substantial fraction of biologists have not adequately internalized this message.
+It is impossible to know how many instructors provide effective classroom teaching on this topic, but our analysis of the COMADRE database indicates that a substantial number of biologists have not adequately internalized this message.
 
 Clearly, there is a role for improved training materials (see below).
 In the meantime, is there anything that biologists seeking to construct an MPM for their species can do to increase the odds of constructing it correctly?

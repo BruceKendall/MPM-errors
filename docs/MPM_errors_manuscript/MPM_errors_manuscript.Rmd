@@ -85,7 +85,7 @@ MPMs now, having been long promoted as a straightforward translation of life-his
 One might then ask, do these MPMs reliably reproduce the life histories they are meant to represent? 
 
 It is important to remember that MPMs are approximations, both because they still abstract away much biological detail and because demographic measurements are imprecise. 
-There are a variety of subtleties in constructing such models, especially when breeding is spread across a substantial fraction of the year or when there is substantial heterogeneity among individuals within an age or stage class; much theoretical work has gone into making MPMs more complex to account for this, and we are starting to better understand the effects of these phenomena on simple models [e.g., @Fujiwara2017]. 
+There are a variety of subtleties in constructing such models, especially when breeding is spread across a substantial fraction of the year or when there is substantial heterogeneity among individuals within an age or stage class; much theoretical work has gone into making MPMs more complex to account for this, and we are starting to better understand the effects of these phenomena on simple models [e.g., @Fujiwara2017; @Salguero-Gomez2010]. 
 But even setting aside these issues, we might hope that, if we assume that a simple life history description (e.g., as embodied in a life table or set of stage-based life-history parameters) is a useful description of the population, then the constructed MPM should accurately reproduce that description. 
 If it does not, then we are introducing additional errors into the analysis above and beyond the inherent approximations of modeling.
 
@@ -270,7 +270,7 @@ However, in the intuitive postbreeding census model (Fig. \@ref(fig:SScycles)c),
 In reality, the individuals that just made the Juvenile--Adult transition were already adults at the just-passed breeding season, and hence have had their first opportunity to reproduce.
 To represent this, we need a fertility coefficient leading out of the juvenile class---$F_J = G_J b_A$ (Fig. \@ref(fig:SScycles)d)---which again seems to defy common sense.
 This is particularly well illustrated in Fig. 6.3 of Mills (2013; Fig. 7.3 in the 2007 first edition).
-Although this is the textbook solution, there a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
+Although this is the textbook solution, there are a number of other ways one might finesse this issue, such as classifying individuals as adults at the beginning of the timestep in which they mature, or creating a special "pre-adult" class between juveniles and adults.
 However, these methods introduce additional complications such as giving the maturing juveniles adult survival rather than juvenile survival (which might or might not be desirable), or shortening the "juvenile" stage duration to account for the extra stage.
 
 ```{r SScycles, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='Four life cycle graphs that might (correctly or incorrectly) represent stage structured demographic parameters in Table 1. (a) A "naive" representation that associates each arrow with a vital rate. This fails to account for the fact that the fertility coefficients must span a timestep and therefore include a survival term. (b) A prebreeding census representation, in which the youngest censused class is the juvenile stage and the adult birth rate is multiplied by newborn survival. (c) An "intuitive" postbreeding census representation, in which the adult birth rate is correctly multiplied by adult survival, but which fails to account for the fact that the maturing juveniles will have reproduced (as adults) just prior to the next census. (d) A correct postbreeding census representation.'}
@@ -856,7 +856,7 @@ p2 <- ggplot(subset(lf2, MatMod == "AAS"),
 
 library(ggpubr)
 
-pp <- ggarrange(p1, p2, ncol = 2, nrow = 1, labels = "auto", label.x = 0.95)
+pp <- ggarrange(p1, p2, ncol = 2, nrow = 1, labels = "auto", label.x = 0.9)
 # THere seems to be no way to use plotmath with annotate_figure
 annotate_figure(pp, left = "Elasticity of asymptotic growth rate \n to stage-specific survival", bottom = "Stage")
 ```
@@ -983,7 +983,7 @@ This has a large effect on generation time estimation.
 Therefore, it is strongly recommended that generation time calculation should be based on an age structured model unless stage transitions are truly age-independent. 
 
 
-When the stage durations are not fixed, a more advanced solution is to develop a model that incorporates both age and stage (@Caswell2018).
+When the stage durations are not fixed, a more advanced solution is to develop a model that incorporates both age and stage [@Lebreton2005; @Caswell2018].
 In this case, an accurate characterization of the distribution of stage durations can be critical for many analytic outcomes, as described by @deValpine2014 for continuous-time models.
 However, estimating the parameters of such distributions can be challenging [see, e.g., the derivation of parameters for time to next breeding in sea turtles by @Ebert1998].
 
